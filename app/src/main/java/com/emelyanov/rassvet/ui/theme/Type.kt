@@ -72,7 +72,7 @@ val RassvetTypographyImpl = RassvetTypography(
     ),
     backButtonText = TextStyle(
         fontFamily = Mulish,
-        fontWeight = FontWeight.Normal,
+        fontWeight = FontWeight.Medium,
         fontSize = 14.sp
     ),
     toolbarTitle = TextStyle(
