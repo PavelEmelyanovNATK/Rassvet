@@ -82,4 +82,7 @@ dependencies {
 
     //NumberPicker
     implementation "com.chargemap.compose:numberpicker:$numberpicker_version"
+
+    //Flinger
+    implementation "com.github.iamjosephmj:Flinger:$flinger_version"
 }

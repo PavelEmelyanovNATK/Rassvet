@@ -15,6 +15,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.tooling.preview.Preview
 import com.emelyanov.rassvet.R
 import com.emelyanov.rassvet.modules.firstboot.presentation.components.FirstBootScreen
+import com.emelyanov.rassvet.modules.firstboot.presentation.components.SectionDetailsScreen
 import com.emelyanov.rassvet.ui.theme.*
 import com.google.accompanist.pager.ExperimentalPagerApi
 

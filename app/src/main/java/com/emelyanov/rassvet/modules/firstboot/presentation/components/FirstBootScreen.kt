@@ -29,10 +29,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.emelyanov.rassvet.R
-import com.emelyanov.rassvet.shared.presentation.components.GlassButton
-import com.emelyanov.rassvet.shared.presentation.components.GradientBackgroundBox
-import com.emelyanov.rassvet.shared.presentation.components.LinkButton
-import com.emelyanov.rassvet.shared.presentation.components.SectionCard
+import com.emelyanov.rassvet.shared.presentation.components.*
 import com.emelyanov.rassvet.ui.theme.Black
 import com.emelyanov.rassvet.ui.theme.RassvetTheme
 import com.emelyanov.rassvet.ui.theme.Red
@@ -43,7 +40,7 @@ import com.google.accompanist.pager.rememberPagerState
 import kotlinx.coroutines.launch
 import kotlin.math.abs
 
-private const val QUOTE_WIDTH = 260f
+private const val QUOTE_WIDTH = 320f
 private const val QUOTE_HEIGHT = 100f
 private const val LOGO_TITLE_HEIGHT = 32f
 private const val LOGO_TITLE_BOTTOM_PADDING = 18f
@@ -66,117 +63,120 @@ private const val MINIMIZED_LOGO_START_PADDING = 10f
 fun FirstBootScreen() {
     var areSizesCalculated by remember { mutableStateOf(false)}
     val pagerState = rememberPagerState(0)
-    var screenHeight by remember { mutableStateOf(0f) }
-    var screenWidth by remember { mutableStateOf(0f) }
+    //var screenHeight by remember { mutableStateOf(0f) }
+    //var screenWidth by remember { mutableStateOf(0f) }
     val density = LocalDensity.current.density
     val coroutineScope = rememberCoroutineScope()
 
-    LaunchedEffect(key1 = screenHeight, key2 = screenWidth){
-
-    }
-
     GradientBackgroundBox(
-        Modifier.onGloballyPositioned {
-        if (!areSizesCalculated) {
-            screenHeight = it.size.height / density
-            screenWidth = it.size.width / density
-            areSizesCalculated = true
-        }
-    }
+        //Modifier.onGloballyPositioned {
+        //    if (!areSizesCalculated) {
+        //        screenHeight = it.size.height / density
+        //        screenWidth = it.size.width / density
+        //        areSizesCalculated = true
+        //    }
+        //}
     ) {
-        HorizontalPager(
+        BoxWithConstraints(
             modifier = Modifier
-                .fillMaxSize(),
-            count = 2,
-            state = pagerState
-        ) { page ->
-            when(page){
-                0 -> FirstBootInfoPage(
-                    onNextClick = {
-                        coroutineScope.launch {
-                            pagerState.animateScrollToPage(1)
-                        }
-                    }
-                )
-                1 -> FirstBootSectionsPage()
-            }
-        }
-
-
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.Bottom,
-            horizontalAlignment = Alignment.CenterHorizontally
+                .fillMaxSize()
         ) {
-            DotTabs(
-                pagerState = pagerState
-            )
-
-            Spacer(
+            val screenHeight = maxHeight.value
+            val screenWidth = maxWidth.value
+            HorizontalPager(
                 modifier = Modifier
-                    .fillMaxHeight(0.06f)
-                    .sizeIn(maxHeight = 46.dp)
-            )
-
-        }
-
-
-        val minimizedLogoOffsetY = -(screenHeight/2 - MINIMIZED_LOGO_TOP_PADDING - LOGO_MINIMIZED_HEIGHT/2)
-        val minimizedLogoOffsetX = -(screenWidth/2 - MINIMIZED_LOGO_START_PADDING - LOGO_MINIMIZED_WIDTH/2)
-
-        val logoCurrentOffsetY =
-            if(pagerState.currentPage == 0)
-                LOGO_DEFAULT_OFFSET_Y
-            else
-                minimizedLogoOffsetY
-
-        val logoCurrentOffsetX =
-            if(pagerState.currentPage == 0)
-                0f
-            else
-                minimizedLogoOffsetX
-
-        val additionalLogoOffsetY = (minimizedLogoOffsetY - LOGO_DEFAULT_OFFSET_Y) * pagerState.currentPageOffset
-        val additionalLogoOffsetX = minimizedLogoOffsetX * pagerState.currentPageOffset
-
-        val logoCurrentWidth =
-            if(pagerState.currentPage == 0)
-                LOGO_DEFAULT_WIDTH
-            else
-                LOGO_MINIMIZED_WIDTH
-
-        val logoCurrentHeight =
-            if(pagerState.currentPage == 0)
-                LOGO_DEFAULT_HEIGHT
-            else
-                LOGO_MINIMIZED_HEIGHT
-
-        val additionalLogoHeight = (LOGO_MINIMIZED_HEIGHT - LOGO_DEFAULT_HEIGHT) * pagerState.currentPageOffset
-        val additionalLogoWidth = (LOGO_MINIMIZED_WIDTH - LOGO_DEFAULT_WIDTH) * pagerState.currentPageOffset
-
-        Icon(
-            modifier = Modifier
-                .size(
-                    (logoCurrentWidth + additionalLogoWidth).dp,
-                    (logoCurrentHeight + additionalLogoHeight).dp
-                )
-                .align(Alignment.Center)
-                .offset(x = logoCurrentOffsetX.dp, y = logoCurrentOffsetY.dp)
-                .offset(x = additionalLogoOffsetX.dp, y = additionalLogoOffsetY.dp)
-                .clickable(
-                    onClick = {
-                        if (pagerState.currentPage == 1)
+                    .fillMaxSize(),
+                count = 2,
+                state = pagerState
+            ) { page ->
+                when(page){
+                    0 -> FirstBootInfoPage(
+                        onNextClick = {
                             coroutineScope.launch {
-                                pagerState.animateScrollToPage(0)
+                                pagerState.animateScrollToPage(1)
                             }
-                    },
-                    interactionSource = remember { MutableInteractionSource() },
-                    indication = null
-                ),
-            painter = painterResource(id = R.drawable.ic_rassvet_logo),
-            contentDescription = "Logo",
-            tint = RassvetTheme.colors.logoColor
-        )
+                        }
+                    )
+                    1 -> FirstBootSectionsPage()
+                }
+            }
+
+
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Bottom,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                DotTabs(
+                    pagerState = pagerState
+                )
+
+                Spacer(
+                    modifier = Modifier
+                        .fillMaxHeight(0.06f)
+                        .sizeIn(maxHeight = 46.dp)
+                )
+
+            }
+
+
+            val minimizedLogoOffsetY = -(screenHeight/2 - MINIMIZED_LOGO_TOP_PADDING - LOGO_MINIMIZED_HEIGHT/2)
+            val minimizedLogoOffsetX = -(screenWidth/2 - MINIMIZED_LOGO_START_PADDING - LOGO_MINIMIZED_WIDTH/2)
+
+            val logoCurrentOffsetY =
+                if(pagerState.currentPage == 0)
+                    LOGO_DEFAULT_OFFSET_Y
+                else
+                    minimizedLogoOffsetY
+
+            val logoCurrentOffsetX =
+                if(pagerState.currentPage == 0)
+                    0f
+                else
+                    minimizedLogoOffsetX
+
+            val additionalLogoOffsetY = (minimizedLogoOffsetY - LOGO_DEFAULT_OFFSET_Y) * pagerState.currentPageOffset
+            val additionalLogoOffsetX = minimizedLogoOffsetX * pagerState.currentPageOffset
+
+            val logoCurrentWidth =
+                if(pagerState.currentPage == 0)
+                    LOGO_DEFAULT_WIDTH
+                else
+                    LOGO_MINIMIZED_WIDTH
+
+            val logoCurrentHeight =
+                if(pagerState.currentPage == 0)
+                    LOGO_DEFAULT_HEIGHT
+                else
+                    LOGO_MINIMIZED_HEIGHT
+
+            val additionalLogoHeight = (LOGO_MINIMIZED_HEIGHT - LOGO_DEFAULT_HEIGHT) * pagerState.currentPageOffset
+            val additionalLogoWidth = (LOGO_MINIMIZED_WIDTH - LOGO_DEFAULT_WIDTH) * pagerState.currentPageOffset
+
+            Icon(
+                modifier = Modifier
+                    .size(
+                        (logoCurrentWidth + additionalLogoWidth).dp,
+                        (logoCurrentHeight + additionalLogoHeight).dp
+                    )
+                    .align(Alignment.Center)
+                    .offset(x = logoCurrentOffsetX.dp, y = logoCurrentOffsetY.dp)
+                    .offset(x = additionalLogoOffsetX.dp, y = additionalLogoOffsetY.dp)
+                    .clickable(
+                        onClick = {
+                            if (pagerState.currentPage == 1)
+                                coroutineScope.launch {
+                                    pagerState.animateScrollToPage(0)
+                                }
+                        },
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = null
+                    ),
+                painter = painterResource(id = R.drawable.ic_rassvet_logo),
+                contentDescription = "Logo",
+                tint = RassvetTheme.colors.logoColor
+            )
+        }
     }
 }
 
@@ -220,6 +220,9 @@ fun FirstBootInfoPage(
                 text = "Далее",
                 onClick = onNextClick
             )
+            var value by remember {mutableStateOf("")}
+
+            GlassTextFiled(value = value, onValueChange = {value = it})
 
             Spacer(
                 modifier = Modifier
@@ -275,7 +278,7 @@ fun FirstBootSectionsPage(){
                             SectionCard(
                                 title = "Card $card",
                                 onClick = {
-                                    Toast.makeText(context, "card $card clicked", Toast.LENGTH_SHORT).show()
+                                            Toast.makeText(context, "card $card clicked", Toast.LENGTH_SHORT).show()
                                 }
                             )
                         }
@@ -347,8 +350,10 @@ fun DotTabs(
                         .size(11.dp)
                         .clip(CircleShape)
                         .background(RassvetTheme.colors.tabCircleUnselected)
-                        .background(RassvetTheme.colors.tabCircleSelected
-                            .copy(alpha = targetColorAlpha))
+                        .background(
+                            RassvetTheme.colors.tabCircleSelected
+                                .copy(alpha = targetColorAlpha)
+                        )
                 )
             }
         }
@@ -357,7 +362,7 @@ fun DotTabs(
 @ExperimentalMaterialApi
 @ExperimentalPagerApi
 @ExperimentalFoundationApi
-@Preview(widthDp = 900, heightDp = 720)
+@Preview(widthDp = 300, heightDp = 500)
 @Composable
 private fun Preview(){
     RassvetTheme {

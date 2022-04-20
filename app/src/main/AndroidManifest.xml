@@ -12,7 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:hardwareAccelerated="true"
         android:supportsRtl="true"
-        android:theme="@style/Theme.RassvetSplash">
+        android:theme="@style/Theme.Rassvet">
         <activity
             android:name=".modules.core.presentation.MainActivity"
             android:exported="true"

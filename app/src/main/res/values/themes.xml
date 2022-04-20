@@ -2,10 +2,11 @@
 <resources>
     <style name="Theme.RassvetSplash" parent="android:Theme.Material.Light.NoActionBar">
         <item name="android:statusBarColor">@color/purple_700</item>
-        <item name="android:background">@drawable/bg_splashscreen</item>
+        <item name="android:windowBackground">@drawable/bg_splashscreen</item>
     </style>
 
     <style name="Theme.Rassvet" parent="android:Theme.Material.Light.NoActionBar">
-        <item name="android:statusBarColor">@color/purple_700</item>
+        <item name="android:statusBarColor">#00ffffff</item>
+        <item name="android:windowBackground">@drawable/bg_gradient_light</item>
     </style>
 </resources>
