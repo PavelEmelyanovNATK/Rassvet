@@ -203,7 +203,7 @@ fun FirstBootInfoPage(
             modifier = Modifier
                 .size(QUOTE_WIDTH.dp, QUOTE_HEIGHT.dp)
                 .align(Alignment.Center),
-            text = "Крупнейший спортивный комплекс Новосибирска",
+            text = "Крупнейший\nспортивный комплекс\nНовосибирска",
             style = RassvetTheme.typography.quoteText
                 .copy(
                     color = RassvetTheme.colors.logoColor,
