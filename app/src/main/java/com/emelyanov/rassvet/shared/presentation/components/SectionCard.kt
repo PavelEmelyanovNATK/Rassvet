@@ -37,7 +37,7 @@ fun SectionCard(
         modifier = Modifier,
         color = RassvetTheme.colors.surfaceBackground,
         shape = RoundedCornerShape(cornerRadius),
-        elevation = 2.dp,
+        elevation = 1.dp,
         onClick = onClick
     ) {
         Column(

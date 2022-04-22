@@ -61,22 +61,10 @@ private const val MINIMIZED_LOGO_START_PADDING = 10f
 @ExperimentalMaterialApi
 @Composable
 fun FirstBootScreen() {
-    var areSizesCalculated by remember { mutableStateOf(false)}
     val pagerState = rememberPagerState(0)
-    //var screenHeight by remember { mutableStateOf(0f) }
-    //var screenWidth by remember { mutableStateOf(0f) }
-    val density = LocalDensity.current.density
     val coroutineScope = rememberCoroutineScope()
 
-    GradientBackgroundBox(
-        //Modifier.onGloballyPositioned {
-        //    if (!areSizesCalculated) {
-        //        screenHeight = it.size.height / density
-        //        screenWidth = it.size.width / density
-        //        areSizesCalculated = true
-        //    }
-        //}
-    ) {
+    GradientBackgroundBox {
         BoxWithConstraints(
             modifier = Modifier
                 .fillMaxSize()
@@ -220,9 +208,6 @@ fun FirstBootInfoPage(
                 text = "Далее",
                 onClick = onNextClick
             )
-            var value by remember {mutableStateOf("")}
-
-            GlassTextFiled(value = value, onValueChange = {value = it})
 
             Spacer(
                 modifier = Modifier
@@ -323,40 +308,6 @@ fun FirstBootSectionsPage(){
             Spacer(Modifier.height(80.dp))
         }
     }
-}
-
-@ExperimentalPagerApi
-@Composable
-fun DotTabs(
-    modifier: Modifier = Modifier,
-    pagerState: PagerState
-) {
-    if(pagerState.pageCount > 0)
-        Row(
-            modifier = modifier,
-            horizontalArrangement = Arrangement.spacedBy(18.dp)
-        ){
-            (0 until pagerState.pageCount).forEach { pageIndex ->
-
-                val targetColorAlpha =
-                    when {
-                        pagerState.currentPage == pageIndex -> 1f - abs(pagerState.currentPageOffset)
-                        pagerState.targetPage == pageIndex -> abs(pagerState.currentPageOffset)
-                        else -> 0f
-                    }
-
-                Box(
-                    modifier = Modifier
-                        .size(11.dp)
-                        .clip(CircleShape)
-                        .background(RassvetTheme.colors.tabCircleUnselected)
-                        .background(
-                            RassvetTheme.colors.tabCircleSelected
-                                .copy(alpha = targetColorAlpha)
-                        )
-                )
-            }
-        }
 }
 
 @ExperimentalMaterialApi

@@ -36,6 +36,10 @@ import com.emelyanov.rassvet.R
 import com.emelyanov.rassvet.ui.theme.CreamyPurple
 import com.emelyanov.rassvet.ui.theme.RassvetTheme
 
+private const val TOP_PADDING = 6f
+private const val SPACE_BETWEEN_PLACEHOLDER = 0f
+private const val PLACEHOLDER_OFFSET = 30f
+
 @Composable
 fun GlassTextFiled(
     modifier: Modifier = Modifier,
@@ -62,17 +66,15 @@ fun GlassTextFiled(
         else
             VisualTransformation.None
 
-    val TOP_PADDING = 6f
-    val SPACE_BETWEEN_PLACEHOLDER = 0f
 
-    var placeholderHeight by remember { mutableStateOf(0f) }
+
+    //var placeholderHeight by remember { mutableStateOf(0f) }
     val density = LocalDensity.current
 
-    val targetOffset = -(TOP_PADDING +SPACE_BETWEEN_PLACEHOLDER + placeholderHeight)
+    //val targetOffset = -(TOP_PADDING +SPACE_BETWEEN_PLACEHOLDER + placeholderHeight)
 
     var isInfocus by remember { mutableStateOf(false) }
     val placeholderTriggered = value != "" || isInfocus
-
 
     val transition = updateTransition(targetState = placeholderTriggered, "Placeholder transition")
 
@@ -86,7 +88,7 @@ fun GlassTextFiled(
         label = "Offset animation"
     ) {
         if(it)
-            targetOffset
+            -PLACEHOLDER_OFFSET
         else
             0f
     }
@@ -108,7 +110,7 @@ fun GlassTextFiled(
     }
 
     Row(
-        modifier = modifier,
+        modifier = modifier.padding(top = (PLACEHOLDER_OFFSET).dp),
         verticalAlignment = Alignment.CenterVertically
     ){
         Box(
@@ -139,9 +141,9 @@ fun GlassTextFiled(
             Text(
                 modifier = Modifier
                     .padding(start = 18.dp, top = TOP_PADDING.dp, bottom = 7.dp, end = 18.dp)
-                    .onGloballyPositioned {
-                        placeholderHeight = (it.size.height / density.density)
-                    }
+                    //.onGloballyPositioned {
+                    //    placeholderHeight = (it.size.height / density.density)
+                    //}
                     .offset(y = placeholderOffset.value.dp),
                 style = textStyle.copy(
                     color = placeholderColorAnimation.value,
@@ -159,7 +161,9 @@ fun GlassTextFiled(
 
         if(keyboardType == KeyboardType.Password || keyboardType == KeyboardType.NumberPassword)
             IconButton(
-                modifier = Modifier.padding(start=12.dp),
+                modifier = Modifier
+                    .padding(start=12.dp)
+                    .size(25.dp, 17.dp),
                 onClick = {
                     isPassVisible = !isPassVisible
                 }) {

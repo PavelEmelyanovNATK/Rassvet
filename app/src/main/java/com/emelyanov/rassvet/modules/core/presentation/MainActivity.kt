@@ -14,8 +14,11 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.tooling.preview.Preview
 import com.emelyanov.rassvet.R
+import com.emelyanov.rassvet.modules.authorization.presentation.components.LoginScreen
+import com.emelyanov.rassvet.modules.authorization.presentation.components.RegistrationScreen
 import com.emelyanov.rassvet.modules.firstboot.presentation.components.FirstBootScreen
 import com.emelyanov.rassvet.modules.firstboot.presentation.components.SectionDetailsScreen
+import com.emelyanov.rassvet.modules.main.presentation.components.MainScreen
 import com.emelyanov.rassvet.ui.theme.*
 import com.google.accompanist.pager.ExperimentalPagerApi
 
@@ -28,7 +31,7 @@ class MainActivity : ComponentActivity() {
         setTheme(R.style.Theme_Rassvet)
         setContent {
             RassvetTheme {
-                FirstBootScreen()
+                MainScreen()
             }
         }
     }

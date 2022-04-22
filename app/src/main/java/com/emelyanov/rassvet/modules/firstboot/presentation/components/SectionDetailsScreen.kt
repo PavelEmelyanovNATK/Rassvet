@@ -119,7 +119,7 @@ fun SectionDetailsScreen(
                 )
                 .background(RassvetTheme.colors.surfaceBackground)
                 .shadow(
-                    elevation = (-2).dp,
+                    elevation = 2.dp,
                     shape = RoundedCornerShape(topStart = 15.dp, topEnd = 15.dp),
                 )
                 .swipeable(
