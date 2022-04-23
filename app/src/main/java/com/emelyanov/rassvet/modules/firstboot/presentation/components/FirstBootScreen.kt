@@ -251,8 +251,6 @@ fun FirstBootSectionsPage(){
             ) {
 
                 LazyVerticalGrid(
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(25.dp)),
                     cells = GridCells.Adaptive(150.dp,),
                     contentPadding = PaddingValues(vertical = 15.dp, horizontal = 15.dp),
                     horizontalArrangement = Arrangement.spacedBy(10.dp),

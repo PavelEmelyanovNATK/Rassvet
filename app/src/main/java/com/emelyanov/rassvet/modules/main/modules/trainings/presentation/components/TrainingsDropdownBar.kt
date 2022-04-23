@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -17,7 +18,6 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.emelyanov.rassvet.R
 import com.emelyanov.rassvet.ui.theme.RassvetTheme
@@ -25,11 +25,10 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.PagerState
 import kotlinx.coroutines.launch
 import kotlin.math.abs
-import kotlin.math.roundToInt
 
 
-private const val EXPANDED_HEIGHT = 135f
-private const val COLLAPSED_HEIGHT = 60f
+const val TOOLBAR_EXPANDED_HEIGHT = 135f
+const val TOOLBAR_COLLAPSED_HEIGHT = 60f
 private const val OVER_DRAG_AMOUNT = 30f
 private const val TEXT_HEIGHT = 20f
 
@@ -38,13 +37,16 @@ private const val TEXT_HEIGHT = 20f
 @Composable
 fun TrainingsDropdownBar(
     modifier: Modifier = Modifier,
-    pagerState: PagerState
+    pagerState: PagerState,
+    gradientOffsetX: Float = Float.POSITIVE_INFINITY,
+    gradientOffsetY: Float = Float.POSITIVE_INFINITY,
+    onStateChanged: (Boolean) -> Unit = {}
 ) {
     val coroutineScope = rememberCoroutineScope()
 
     val swipeState = rememberSwipeableState(initialValue = true)
-    val expandedHeightPx =  with(LocalDensity.current){ EXPANDED_HEIGHT.dp.toPx() }
-    val collapsedHeightPx = with(LocalDensity.current){ COLLAPSED_HEIGHT.dp.toPx() }
+    val expandedHeightPx =  with(LocalDensity.current){ TOOLBAR_EXPANDED_HEIGHT.dp.toPx() }
+    val collapsedHeightPx = with(LocalDensity.current){ TOOLBAR_COLLAPSED_HEIGHT.dp.toPx() }
     val actualHeight = with(LocalDensity.current) { swipeState.offset.value.toDp() }
 
     val firstPageLineAlpha =
@@ -61,6 +63,10 @@ fun TrainingsDropdownBar(
 
     val interactionSource = remember { MutableInteractionSource() }
 
+    LaunchedEffect(swipeState.currentValue) {
+        onStateChanged(swipeState.currentValue)
+    }
+
     Box(
         modifier = modifier
             .clip(RoundedCornerShape(bottomStart = 15.dp, bottomEnd = 15.dp))
@@ -68,8 +74,8 @@ fun TrainingsDropdownBar(
             .background(
                 brush = Brush.linearGradient(
                     RassvetTheme.colors.toolbarBackground,
-                    start = Offset(0f, Float.POSITIVE_INFINITY),
-                    end = Offset(Float.POSITIVE_INFINITY, 0f)
+                    start = Offset(0f, gradientOffsetY),
+                    end = Offset(gradientOffsetX, 0f)
                 )
             )
             .height(actualHeight),

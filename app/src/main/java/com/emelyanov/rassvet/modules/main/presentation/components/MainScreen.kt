@@ -19,11 +19,15 @@ import androidx.compose.ui.unit.dp
 import com.emelyanov.rassvet.shared.presentation.components.SolidBackgroundBox
 import com.emelyanov.rassvet.ui.theme.RassvetTheme
 import com.emelyanov.rassvet.R
+import com.emelyanov.rassvet.modules.main.modules.profile.presentation.components.ProfileTab
+import com.emelyanov.rassvet.modules.main.modules.subscriptions.presentation.SubscriptionsTab
+import com.emelyanov.rassvet.modules.main.modules.trainings.presentation.components.TrainingDetailsScreen
 import com.emelyanov.rassvet.modules.main.modules.trainings.presentation.components.TrainingsTab
 import com.google.accompanist.pager.ExperimentalPagerApi
 
 const val NAV_BAR_PADDING = 10f
 
+@ExperimentalFoundationApi
 @ExperimentalPagerApi
 @ExperimentalMaterialApi
 @Composable
@@ -32,6 +36,9 @@ fun MainScreen() {
         modifier = Modifier.fillMaxSize()
     ) {
         TrainingsTab()
+        //SubscriptionsTab()
+        //TrainingDetailsScreen()
+        //ProfileTab()
 
         RassvetNavBar(
             modifier = Modifier
