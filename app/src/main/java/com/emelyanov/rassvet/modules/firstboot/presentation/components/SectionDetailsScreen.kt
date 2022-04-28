@@ -29,9 +29,11 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.emelyanov.rassvet.R
+import com.emelyanov.rassvet.modules.firstboot.domain.models.SectionDetailsViewState
 import com.emelyanov.rassvet.shared.presentation.components.GradientButton
 import com.emelyanov.rassvet.shared.presentation.components.HighlightedBackButton
 import com.emelyanov.rassvet.ui.theme.Black
+import com.emelyanov.rassvet.ui.theme.CreamyPurple
 import com.emelyanov.rassvet.ui.theme.RassvetTheme
 import io.iamjosephmj.flinger.bahaviours.StockFlingBehaviours
 import kotlin.math.roundToInt
@@ -46,7 +48,9 @@ private const val SURFACE_CORNER_RADIUS = 15f
 @ExperimentalMaterialApi
 @Composable
 fun SectionDetailsScreen(
-
+    sectionDetailsViewState: SectionDetailsViewState,
+    onAuthClick: () -> Unit,
+    onBackClick: () -> Unit
 ) {
     val surfaceSwipeState = rememberSwipeableState(initialValue = false)
     val bodyScrollState = rememberScrollState()
@@ -78,16 +82,12 @@ fun SectionDetailsScreen(
                 .fillMaxWidth()
                 .height(200.dp)
         ) {
-            AsyncImage(
-                modifier = Modifier
-                    .fillMaxSize(),
-                model = ImageRequest.Builder(LocalContext.current)
-                    .data("https://www.moview.jp/wp-content/uploads/2019/04/senkosan1-1.jpg")
-                    .crossfade(true)
-                    .build(),
-                placeholder = painterResource(R.drawable.image_placeholder),
+            Image(
+                painter = painterResource(R.drawable.image_placeholder),
                 contentDescription = "stringResource(R.string.description)",
-                contentScale = ContentScale.Crop
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .fillMaxSize()
             )
 
             Box(
@@ -95,7 +95,7 @@ fun SectionDetailsScreen(
                     .fillMaxSize()
                     .background(
                         brush = SolidColor(Black),
-                        alpha = ( 0.5f * imageShadingMultiplier)
+                        alpha = (0.5f * imageShadingMultiplier)
                     )
             )
 
@@ -103,7 +103,7 @@ fun SectionDetailsScreen(
                 modifier = Modifier
                     .align(Alignment.TopStart)
                     .padding(start = 15.dp, top = 15.dp),
-                onClick = { }
+                onClick = onBackClick
             )
         }
 
@@ -118,10 +118,10 @@ fun SectionDetailsScreen(
                     )
                 )
                 .background(RassvetTheme.colors.surfaceBackground)
-                .shadow(
-                    elevation = 2.dp,
-                    shape = RoundedCornerShape(topStart = 15.dp, topEnd = 15.dp),
-                )
+                //.shadow(
+                //    elevation = 1.dp,
+                //    shape = RoundedCornerShape(topStart = 15.dp, topEnd = 15.dp),
+                //)
                 .swipeable(
                     state = surfaceSwipeState,
                     anchors = mapOf(
@@ -145,21 +145,27 @@ fun SectionDetailsScreen(
                     )
                     .padding(25.dp)
             ) {
-                Text(
-                    text = "Title",
-                    style = RassvetTheme.typography.title
-                        .copy(RassvetTheme.colors.surfaceText)
-                )
+                when(sectionDetailsViewState) {
+                    is SectionDetailsViewState.Loading -> {
+                        //CircularProgressIndicator(Modifier.align(Alignment.Center))
+                    }
 
-                (1..40).forEach {
-                    Text(
-                        text = "Описание Описание Описание $it",
-                        style = RassvetTheme.typography.cardBody1
-                            .copy(RassvetTheme.colors.surfaceText)
-                    )
+                    is SectionDetailsViewState.PresentInfo -> {
+                        Text(
+                            text = sectionDetailsViewState.title,
+                            style = RassvetTheme.typography.title
+                                .copy(RassvetTheme.colors.surfaceText)
+                        )
+
+                        Text(
+                            text = sectionDetailsViewState.description,
+                            style = RassvetTheme.typography.cardBody1
+                                .copy(RassvetTheme.colors.surfaceText)
+                        )
+
+                        Spacer(Modifier.height(100.dp))
+                    }
                 }
-
-                Spacer(Modifier.height(100.dp))
             }
 
             Box(
@@ -217,23 +223,25 @@ fun SectionDetailsScreen(
             verticalArrangement = Arrangement.spacedBy(2.dp),
             horizontalAlignment = Alignment.End
         ) {
-            Box(
-                modifier = Modifier
-                    .clip(RoundedCornerShape(25.dp))
-                    .background(RassvetTheme.colors.surfaceBackground)
-                    .padding(start = 8.dp, top = 2.dp, end = 8.dp, bottom = 3.dp)
-            ) {
-                Text(
-                    text = "1920 р/мес",
-                    style = RassvetTheme.typography.cardBody1
-                        .copy(RassvetTheme.colors.surfaceText)
-                )
+            if(sectionDetailsViewState is SectionDetailsViewState.PresentInfo) {
+                Box(
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(25.dp))
+                        .background(RassvetTheme.colors.surfaceBackground)
+                        .padding(start = 8.dp, top = 2.dp, end = 8.dp, bottom = 3.dp)
+                ) {
+                    Text(
+                        text = "${sectionDetailsViewState.price} р/мес",
+                        style = RassvetTheme.typography.cardBody1
+                            .copy(RassvetTheme.colors.surfaceText)
+                    )
+                }
             }
 
             GradientButton(
                 modifier = Modifier.fillMaxWidth(),
                 text = "Авторизоваться",
-                onClick = { /*TODO*/ },
+                onClick = onAuthClick,
                 gradient = RassvetTheme.colors.positiveButton)
         }
     }
@@ -288,6 +296,14 @@ private class NestedScrollConnectionImpl<T> (
 @Composable
 private fun Preview(){
     RassvetTheme {
-        SectionDetailsScreen()
+        SectionDetailsScreen(
+            onAuthClick = {},
+            sectionDetailsViewState = SectionDetailsViewState.PresentInfo(
+                "asdasd",
+                "asdasd",
+                1000f
+            ),
+            onBackClick = {}
+        )
     }
 }

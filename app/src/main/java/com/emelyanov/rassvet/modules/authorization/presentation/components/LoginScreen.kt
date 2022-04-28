@@ -18,7 +18,8 @@ import com.emelyanov.rassvet.ui.theme.RassvetTheme
 
 @Composable
 fun LoginScreen(
-
+    onCreateAccountClick: () -> Unit,
+    onLogInClick: () -> Unit
 ) {
     GradientBackgroundBox {
         BoxWithConstraints(
@@ -89,7 +90,7 @@ fun LoginScreen(
 
                     GlassButton(
                         text = "Войти",
-                        onClick = { /*TODO*/ }
+                        onClick = onLogInClick
                     )
 
                     Spacer(
@@ -105,7 +106,7 @@ fun LoginScreen(
                     .align(Alignment.BottomCenter)
                     .padding(bottom = 24.dp),
                 text = "Создать аккаунт",
-                onClick = {}
+                onClick = onCreateAccountClick
             )
         }
     }

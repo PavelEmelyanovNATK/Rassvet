@@ -2,6 +2,7 @@ package com.emelyanov.rassvet.modules.main.modules.trainings.presentation.compon
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
@@ -30,9 +31,10 @@ fun TrainingGroup(
         elevation = 2.dp
     ) {
         Column(
-            modifier = Modifier.padding(15.dp)
+            //modifier = Modifier.padding(15.dp)
         ) {
             Text(
+                modifier = Modifier.padding(start = 15.dp, top = 15.dp, end = 15.dp, bottom = 15.dp),
                 text = "Секция",
                 style = RassvetTheme.typography.cardGroupTitle
                     .copy(color = RassvetTheme.colors.surfaceText)
@@ -45,7 +47,8 @@ fun TrainingGroup(
 
 @Composable
 fun TrainingShortCard(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit
 ) {
     Surface(
         modifier = modifier,
@@ -56,9 +59,13 @@ fun TrainingShortCard(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
+                .clickable(
+                    onClick = onClick
+                )
                 .padding(15.dp)
         ) {
             Text(
+                //modifier = Modifier.padding(start = 20.dp, top = 5.dp, end = 20.dp),
                 text = "Заголовок",
                 style = RassvetTheme.typography.cardTitle
                     .copy(color = RassvetTheme.colors.surfaceText)
@@ -129,24 +136,29 @@ fun TrainingShortCard(
 interface TrainingGroupScope {
     @Composable
     fun TrainingGroupItem(
-
+        onClick: () -> Unit
     ) {
         Column(
-            modifier = Modifier.padding(vertical = 4.dp, horizontal = 10.dp)
+            modifier = Modifier.clickable(
+                onClick = onClick
+            )
         ) {
             Divider(
+                modifier = Modifier.padding(horizontal = 10.dp),
                 color = Gray.copy(alpha = 0.5f),
                 thickness = 0.5.dp
             )
             Text(
+                modifier = Modifier.padding(start = 20.dp, top = 5.dp, end = 20.dp),
                 text = "Заголовок",
                 style = RassvetTheme.typography.cardTitle
                     .copy(color = RassvetTheme.colors.surfaceText)
             )
 
-            Spacer(Modifier.height(2.dp))
+            Spacer(Modifier.height(3.dp))
 
             Row(
+                modifier = Modifier.padding(horizontal = 20.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Icon(
@@ -164,9 +176,10 @@ interface TrainingGroupScope {
                 )
             }
 
-            Spacer(Modifier.height(2.dp))
+            Spacer(Modifier.height(3.dp))
 
             Row(
+                modifier = Modifier.padding(horizontal = 20.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
@@ -182,10 +195,12 @@ interface TrainingGroupScope {
                 )
             }
 
-            Spacer(Modifier.height(2.dp))
+            Spacer(Modifier.height(3.dp))
 
             Row(
-                modifier = Modifier.align(Alignment.End),
+                modifier = Modifier
+                    .align(Alignment.End)
+                    .padding(horizontal = 20.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Icon(
@@ -202,6 +217,8 @@ interface TrainingGroupScope {
                         .copy(color = RassvetTheme.colors.surfaceText)
                 )
             }
+
+            Spacer(Modifier.height(20.dp))
         }
     }
 }
@@ -227,10 +244,10 @@ private fun Preview(){
             Column(
                 verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
-                TrainingShortCard()
-                TrainingShortCard()
-                TrainingShortCard()
-                TrainingShortCard()
+                //TrainingShortCard()
+                //TrainingShortCard()
+                //TrainingShortCard()
+                //TrainingShortCard()
             }
         }
     }

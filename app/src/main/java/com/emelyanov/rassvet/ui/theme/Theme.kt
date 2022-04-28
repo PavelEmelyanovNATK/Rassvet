@@ -48,7 +48,7 @@ private val LightColorPalette = RassvetColors(
     dialogBackground = White,
     dialogText = Black,
     input = TransparentGray,
-    inputPlaceholder = Gray,
+    inputPlaceholder = LightGray,
     inputText = White,
     dialogSeparator = TransparentGray,
     linkButton = White,
@@ -58,38 +58,38 @@ private val LightColorPalette = RassvetColors(
 )
 
 private val DarkColorPalette = RassvetColors(
-    layoutBackground = LayoutBackgroundColor,
-    surfaceBackground = White,
-    toolbarBackground = listOf(CreamyBlue, CreamyPurple),
-    layoutGradientBackground = listOf(CreamyBlue, CreamyPurple),
+    layoutBackground = Color(0xff514C5C),
+    surfaceBackground = Color(0xff2D2D2D),
+    toolbarBackground = listOf(Color(0xff2D2D2D), Color(0xff2D2D2D)),
+    layoutGradientBackground = listOf(Color(0xff0D324D), Color(0xff7F5A83)),
     layoutBackgroundIcons = LayoutBackgroundIconsColor,
-    surfaceText = Black,
+    surfaceText = White,
     toolBarText = White,
     buttonText = White,
-    layoutText = Black,
-    sectionBackButton = CreamyViolet,
+    layoutText = White,
+    sectionBackButton = White,
     cardIcons = DarkViolet,
     positiveButton = listOf(CreamyBlue, CreamyPurple),
     negativeButton = listOf(PaleRed, CreamyRed),
     error = Red,
     navbarSelectedItem = CreamyViolet,
-    navbarUnselectedItem = Gray,
-    dialogBackground = White,
-    dialogText = Black,
-    input = TransparentGray,
-    inputPlaceholder = Gray,
+    navbarUnselectedItem = Color(0xff848290),
+    dialogBackground = Color(0xff2D2D2D),
+    dialogText = White,
+    input = Color(0xcc2D2D2D),
+    inputPlaceholder = LightGray,
     inputText = White,
     dialogSeparator = TransparentGray,
     linkButton = White,
-    tabCircleSelected = White,
-    tabCircleUnselected = TransparentGray,
+    tabCircleSelected = Color(0xff514C5C),
+    tabCircleUnselected = Color(0xcc2D2D2D),
     logoColor = White
 )
 
 @ExperimentalFoundationApi
 @Composable
 fun RassvetTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
-    val colors = if (darkTheme) {
+    val colors = if (false) {
         DarkColorPalette
     } else {
         LightColorPalette

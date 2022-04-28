@@ -1,5 +1,6 @@
 package com.emelyanov.rassvet.modules.main.modules.trainings.presentation.components
 
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.FastOutLinearInEasing
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.spring
@@ -12,108 +13,28 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.emelyanov.rassvet.modules.main.presentation.components.LocalNavBarVisibilityState
 import com.emelyanov.rassvet.modules.main.presentation.components.NAV_BAR_HEIGHT
 import com.emelyanov.rassvet.modules.main.presentation.components.NAV_BAR_PADDING
+import com.emelyanov.rassvet.navigation.trainings.TrainingsNavHost
 import com.emelyanov.rassvet.shared.presentation.components.SolidBackgroundBox
+import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 import io.iamjosephmj.flinger.bahaviours.StockFlingBehaviours
 
 
+@ExperimentalAnimationApi
 @ExperimentalPagerApi
 @ExperimentalMaterialApi
 @Composable
 fun TrainingsTab(
 
 ) {
-    val pagerState = rememberPagerState(0)
+    val trainingsNavController = rememberAnimatedNavController()
 
-    SolidBackgroundBox {
-        BoxWithConstraints {
-            val pxHeight = with(LocalDensity.current) { maxHeight.toPx() }
-            val pxWidth = with(LocalDensity.current) { maxWidth.toPx() }
-            var toolbarExpanderState by remember { mutableStateOf(true) }
-
-            val pagerOffset = animateDpAsState(
-                targetValue =
-                if(toolbarExpanderState)
-                    TOOLBAR_EXPANDED_HEIGHT.dp
-                else
-                    TOOLBAR_COLLAPSED_HEIGHT.dp,
-                animationSpec = spring(
-                    //durationMillis = 40,
-                    //easing = FastOutLinearInEasing
-                )
-            )
-            Box(
-                modifier = Modifier.fillMaxSize()
-            ) {
-                HorizontalPager(
-                    modifier = Modifier
-                        .fillMaxSize(),
-                    count = 2,
-                    state = pagerState
-                ) { page ->
-                    when(page) {
-                        0 -> ActiveTrainingsPage(topOffset = pagerOffset.value)
-                        1 -> PastTrainingsPage(topOffset = pagerOffset.value)
-                    }
-                }
-
-                TrainingsDropdownBar(
-                    pagerState = pagerState,
-                    gradientOffsetX = pxWidth,
-                    gradientOffsetY = pxHeight,
-                    onStateChanged = {
-                        toolbarExpanderState = it
-                    }
-                )
-            }
-        }
-    }
-}
-
-@Composable
-fun ActiveTrainingsPage(
-    topOffset: Dp = 0.dp
-) {
-    LazyColumn(
-        modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(start = 15.dp, top = 15.dp, end = 15.dp, bottom = (NAV_BAR_HEIGHT + NAV_BAR_PADDING + 15).dp),
-        verticalArrangement = Arrangement.spacedBy(10.dp),
-        flingBehavior = StockFlingBehaviours.smoothScroll()
-    ) {
-        item {
-            Spacer(Modifier.height(topOffset))
-        }
-
-        items(4) {
-            TrainingGroup {
-                TrainingGroupItem()
-                TrainingGroupItem()
-                TrainingGroupItem()
-            }
-        }
-    }
-}
-
-@Composable
-fun PastTrainingsPage(
-    topOffset: Dp = 0.dp
-) {
-    LazyColumn(
-        modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(start = 15.dp, top = 15.dp, end = 15.dp, bottom = (NAV_BAR_HEIGHT + NAV_BAR_PADDING + 15).dp),
-        verticalArrangement = Arrangement.spacedBy(10.dp),
-        flingBehavior = StockFlingBehaviours.smoothScroll()
-    ) {
-        item {
-            Spacer(Modifier.height(topOffset))
-        }
-
-        items(16) {
-            TrainingShortCard()
-        }
-    }
+    TrainingsNavHost(
+        trainingsNavController = trainingsNavController
+    )
 }

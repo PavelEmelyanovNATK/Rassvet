@@ -1,5 +1,6 @@
 package com.emelyanov.rassvet.modules.authorization.presentation.components
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -26,7 +27,7 @@ import kotlin.math.max
 @ExperimentalPagerApi
 @Composable
 fun RegistrationScreen(
-
+    onBackClick: () -> Unit
 ) {
     GradientBackgroundBox {
         BoxWithConstraints(
@@ -70,7 +71,7 @@ fun RegistrationScreen(
                 color = RassvetTheme.colors.logoColor,
                 onClick = {
                     if(pagerState.currentPage == 0) {
-
+                        onBackClick()
                     }
                     else {
                         coroutineScope.launch {
@@ -79,6 +80,18 @@ fun RegistrationScreen(
                     }
                 }
             )
+
+
+            BackHandler {
+                if(pagerState.currentPage == 0) {
+                    onBackClick()
+                }
+                else {
+                    coroutineScope.launch {
+                        pagerState.animateScrollToPage(0)
+                    }
+                }
+            }
 
             DotTabs(
                 modifier = Modifier
@@ -232,6 +245,8 @@ fun RegistrationPersonalPage(
 @Composable
 private fun Preview(){
     RassvetTheme {
-        RegistrationScreen()
+        RegistrationScreen(
+            onBackClick = {}
+        )
     }
 }

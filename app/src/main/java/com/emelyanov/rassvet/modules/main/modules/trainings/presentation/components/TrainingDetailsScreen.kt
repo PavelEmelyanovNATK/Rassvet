@@ -27,7 +27,9 @@ import com.emelyanov.rassvet.ui.theme.RassvetTheme
 import io.iamjosephmj.flinger.bahaviours.StockFlingBehaviours
 
 @Composable
-fun TrainingDetailsScreen() {
+fun TrainingDetailsScreen(
+    onBackPressed: () -> Unit
+) {
 
     val scrollState = rememberScrollState()
 
@@ -46,7 +48,8 @@ fun TrainingDetailsScreen() {
                     modifier = Modifier.padding(15.dp)
                 ) {
                     BackButtonLeft(
-                        color = RassvetTheme.colors.sectionBackButton
+                        color = RassvetTheme.colors.sectionBackButton,
+                        onClick = onBackPressed
                     )
 
                     Spacer(Modifier.height(15.dp))
@@ -180,6 +183,6 @@ fun TrainingDetailsScreen() {
 @Composable
 private fun Preview() {
     RassvetTheme {
-        TrainingDetailsScreen()
+        TrainingDetailsScreen({})
     }
 }

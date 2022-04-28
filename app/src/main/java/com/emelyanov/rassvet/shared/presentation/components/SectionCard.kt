@@ -43,12 +43,8 @@ fun SectionCard(
         Column(
             modifier = modifier.height(150.dp)
         ){
-            AsyncImage(
-                model = ImageRequest.Builder(LocalContext.current)
-                    .data("https://www.moview.jp/wp-content/uploads/2019/04/senkosan1-1.jpg")
-                    .crossfade(true)
-                    .build(),
-                placeholder = painterResource(R.drawable.image_placeholder),
+            Image(
+                painter = painterResource(R.drawable.image_placeholder),
                 contentDescription = "stringResource(R.string.description)",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier

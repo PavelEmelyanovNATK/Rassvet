@@ -11,12 +11,11 @@ import androidx.compose.ui.unit.dp
 import com.emelyanov.rassvet.ui.theme.RassvetTheme
 
 @Composable
-fun NoSectionsScreen(
-
+fun NoSubscriptionsScreen(
+    modifier: Modifier = Modifier
 ) {
     Box(
-        modifier = Modifier
-            .fillMaxSize(),
+        modifier = modifier,
         contentAlignment = Alignment.Center
     ) {
         Column(

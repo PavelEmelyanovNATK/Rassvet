@@ -1,6 +1,7 @@
 package com.emelyanov.rassvet.modules.main.modules.subscriptions.presentation
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
@@ -20,7 +21,8 @@ import com.emelyanov.rassvet.ui.theme.RassvetTheme
 
 @Composable
 fun SubscriptionShortCard(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit
 ) {
     BoxWithConstraints(
         modifier = modifier
@@ -36,6 +38,9 @@ fun SubscriptionShortCard(
                         start = Offset(0f, Float.POSITIVE_INFINITY),
                         end = Offset(Float.POSITIVE_INFINITY, 0f)
                     )
+                )
+                .clickable(
+                    onClick = onClick
                 )
                 .padding(15.dp)
         ) {

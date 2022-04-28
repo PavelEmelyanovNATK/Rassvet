@@ -32,6 +32,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.emelyanov.rassvet.R
 import com.emelyanov.rassvet.ui.theme.CreamyPurple
 import com.emelyanov.rassvet.ui.theme.RassvetTheme
@@ -66,10 +67,7 @@ fun GlassTextFiled(
         else
             VisualTransformation.None
 
-
-
-    //var placeholderHeight by remember { mutableStateOf(0f) }
-    val density = LocalDensity.current
+    val placeholderHeight = with(LocalDensity.current) { RassvetTheme.typography.inputText.fontSize.value.sp.toDp() }
 
     //val targetOffset = -(TOP_PADDING +SPACE_BETWEEN_PLACEHOLDER + placeholderHeight)
 
@@ -138,31 +136,33 @@ fun GlassTextFiled(
                 cursorBrush = cursorBrush
             )
 
-            Text(
-                modifier = Modifier
-                    .padding(start = 18.dp, top = TOP_PADDING.dp, bottom = 7.dp, end = 18.dp)
-                    //.onGloballyPositioned {
-                    //    placeholderHeight = (it.size.height / density.density)
-                    //}
-                    .offset(y = placeholderOffset.value.dp),
-                style = textStyle.copy(
-                    color = placeholderColorAnimation.value,
-                    fontWeight =
-                    if(placeholderTriggered)
-                        FontWeight.Bold
-                    else
-                        FontWeight.Normal
-                ),
-                text = placeholderText,
-                overflow = TextOverflow.Clip,
-                maxLines = maxLines
-            )
+            BoxWithConstraints {
+                Text(
+                    modifier = Modifier
+                        .padding(start = 18.dp, top = TOP_PADDING.dp, bottom = 7.dp, end = 18.dp)
+                        //.onGloballyPositioned {
+                        //    placeholderHeight = (it.size.height / density.density)
+                        //}
+                        .offset(y = placeholderOffset.value.dp),
+                    style = textStyle.copy(
+                        color = placeholderColorAnimation.value,
+                        fontWeight =
+                        if(placeholderTriggered)
+                            FontWeight.Bold
+                        else
+                            FontWeight.Normal
+                    ),
+                    text = placeholderText,
+                    overflow = TextOverflow.Clip,
+                    maxLines = maxLines
+                )
+            }
         }
 
         if(keyboardType == KeyboardType.Password || keyboardType == KeyboardType.NumberPassword)
             IconButton(
                 modifier = Modifier
-                    .padding(start=12.dp)
+                    .padding(start = 12.dp)
                     .size(25.dp, 17.dp),
                 onClick = {
                     isPassVisible = !isPassVisible
