@@ -7,7 +7,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.emelyanov.rassvet.modules.main.modules.trainings.domain.models.TrainingsListViewState
-import com.emelyanov.rassvet.navigation.trainings.ITrainingsNavProvider
+import com.emelyanov.rassvet.navigation.trainings.TrainingsDestinations
+import com.emelyanov.rassvet.navigation.trainings.TrainingsNavProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -17,7 +18,7 @@ import javax.inject.Inject
 class TrainingsListViewModel
 @Inject
 constructor(
-    private val _trainingsNavProvider: ITrainingsNavProvider
+    private val _trainingsNavProvider: TrainingsNavProvider
 ) : ViewModel() {
     private val _trainingsListViewState: MutableState<TrainingsListViewState> = mutableStateOf(TrainingsListViewState.Loading)
     val trainingsListViewState: State<TrainingsListViewState>
@@ -96,7 +97,9 @@ constructor(
                     pastTrainings = pastTrainings,
                     sections = sections,
                     selectedSection = -1,
-                    onTrainingClick = _trainingsNavProvider::navigateToDetails
+                    onTrainingClick = {
+                        _trainingsNavProvider.navigateTo(TrainingsDestinations.TrainingDetails(it))
+                    }
                 )
             }
         }

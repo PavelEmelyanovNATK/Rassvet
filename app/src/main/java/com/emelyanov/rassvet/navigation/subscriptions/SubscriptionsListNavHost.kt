@@ -35,7 +35,7 @@ fun SubscriptionsListNavHost(
     val subscriptionsContainerViewModel = hiltViewModel<SubscriptionsContainerViewModel>()
 
     LaunchedEffect(key1 = true) {
-        subscriptionsContainerViewModel.subscriptionsListNavProvider.getDestinationFlow().onEach { destination ->
+        subscriptionsContainerViewModel.subscriptionsListNavProvider.destinationFlow.onEach { destination ->
             if(destination is SubscriptionsListDestinations.PopBack)
                 subscriptionsListNavController.popBackStack()
             else

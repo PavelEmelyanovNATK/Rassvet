@@ -1,35 +1,10 @@
 package com.emelyanov.rassvet.navigation.core
 
+import com.emelyanov.rassvet.shared.domain.utils.BaseNavProvider
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.StateFlow
 
-class CoreNavProvider : ICoreNavProvider {
-    private val _currentDestination: MutableSharedFlow<CoreDestinations> = MutableSharedFlow(
-        replay = 1,
-        extraBufferCapacity = 1
-    )
-    override fun getDestinationFlow(): SharedFlow<CoreDestinations>
-        = _currentDestination
-
-    override fun navigateToLaunching() {
-        _currentDestination.tryEmit(CoreDestinations.Launching)
-    }
-
-    override fun navigateToFirstBoot() {
-        _currentDestination.tryEmit(CoreDestinations.FirstBoot)
-    }
-
-    override fun navigateToAuth() {
-        _currentDestination.tryEmit(CoreDestinations.Authorization)
-    }
-
-    override fun navigateToMain() {
-        _currentDestination.tryEmit(CoreDestinations.Main)
-    }
-
-    override fun popBack() {
-        _currentDestination.tryEmit(CoreDestinations.PopBack)
-    }
-
-
-}
+class CoreNavProvider(startDestination: CoreDestinations) :
+    BaseNavProvider<CoreDestinations>(startDestination)

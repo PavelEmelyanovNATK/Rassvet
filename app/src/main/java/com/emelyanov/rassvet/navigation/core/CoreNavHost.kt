@@ -7,6 +7,7 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -21,6 +22,7 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
+@ExperimentalComposeUiApi
 @ExperimentalAnimationApi
 @ExperimentalMaterialApi
 @ExperimentalPagerApi
@@ -33,7 +35,7 @@ fun CoreNavHost(
     val coreViewModel = hiltViewModel<CoreViewModel>()
 
     LaunchedEffect(true) {
-        coreViewModel.coreNavProvider.getDestinationFlow().onEach { destination ->
+        coreViewModel.coreNavProvider.destinationFlow.onEach { destination ->
             if(destination is CoreDestinations.PopBack)
                 navHostController.popBackStack()
             else
@@ -68,7 +70,7 @@ fun CoreNavHost(
         ) {
             FirstBootScreen(
                 onAuthClick = {
-                    coreViewModel.coreNavProvider.navigateToAuth()
+                    coreViewModel.coreNavProvider.navigateTo(CoreDestinations.Authorization)
                 }
             )
         }
@@ -82,7 +84,7 @@ fun CoreNavHost(
         ) {
             AuthorizationScreen(
                 onLogInClick = {
-                    coreViewModel.coreNavProvider.navigateToMain()
+                    coreViewModel.coreNavProvider.navigateTo(CoreDestinations.Main)
                 }
             )
         }

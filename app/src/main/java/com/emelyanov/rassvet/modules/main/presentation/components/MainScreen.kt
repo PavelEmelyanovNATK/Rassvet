@@ -13,6 +13,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
@@ -38,6 +39,7 @@ const val NAV_BAR_PADDING = 10f
 
 val LocalNavBarVisibilityState = compositionLocalOf { mutableStateOf(true) }
 
+@ExperimentalComposeUiApi
 @ExperimentalAnimationApi
 @ExperimentalFoundationApi
 @ExperimentalPagerApi
@@ -74,7 +76,9 @@ fun MainScreen(
                     .padding(NAV_BAR_PADDING.dp)
                     .offset(y = navbarOffset.value.dp),
                 mainNavController = mainNavController,
-                onTabClick = mainViewModel::navigateTo
+                onTabClick = {
+                    mainViewModel.mainNavProvider.navigateTo(it)
+                }
             )
         }
     }

@@ -39,7 +39,7 @@ fun FirstBootNavHost(
     LaunchedEffect(true) {
         firstBootViewModel.fetchSections()
 
-        firstBootViewModel.firstBootNavProvider.getDestinationFlow().onEach { destination ->
+        firstBootViewModel.firstBootNavProvider.destinationFlow.onEach { destination ->
             if(destination is FirstBootDestinations.PopBack)
                 firstBootNavController.popBackStack()
             else
@@ -81,7 +81,7 @@ fun FirstBootNavHost(
                 sectionDetailsViewState = sectionDetailsViewModel.sectionsListViewState.value,
                 onAuthClick = onAuthClick,
                 onBackClick = {
-                    firstBootViewModel.firstBootNavProvider.popBack()
+                    firstBootViewModel.firstBootNavProvider.navigateTo(FirstBootDestinations.PopBack)
                 }
             )
         }

@@ -35,7 +35,7 @@ fun SubscriptionsNavHost(
     val subscriptionsViewModel = hiltViewModel<SubscriptionsViewModel>()
 
     LaunchedEffect(key1 = true) {
-        subscriptionsViewModel.subscriptionsNavProvider.getDestinationFlow().onEach { destination ->
+        subscriptionsViewModel.subscriptionsNavProvider.destinationFlow.onEach { destination ->
             if(destination is SubscriptionsDestinations.PopBack)
                 subscriptionsNavController.popBackStack()
             else
@@ -54,8 +54,12 @@ fun SubscriptionsNavHost(
             route = SubscriptionsDestinations.SubscriptionsList.route
         ) {
             SubscriptionsContainer(
-                onAddButtonClick = subscriptionsViewModel.subscriptionsListNavProvider::navigateToAllSubscriptions,
-                onBackClick = subscriptionsViewModel.subscriptionsListNavProvider::popBack
+                onAddButtonClick ={
+                    subscriptionsViewModel.subscriptionsListNavProvider.navigateTo(SubscriptionsListDestinations.AllSubscriptions)
+                },
+                onBackClick = {
+                    subscriptionsViewModel.subscriptionsListNavProvider.navigateTo(SubscriptionsListDestinations.PopBack)
+                }
             )
         }
 
@@ -83,7 +87,9 @@ fun SubscriptionsNavHost(
         ) {
             SubscriptionDetailsScreen(
                 onActionClick = {},
-                onBackClick = subscriptionsViewModel.subscriptionsNavProvider::popBack
+                onBackClick = {
+                    subscriptionsViewModel.subscriptionsNavProvider.navigateTo(SubscriptionsDestinations.PopBack)
+                }
             )
         }
     }

@@ -8,7 +8,6 @@ import androidx.lifecycle.viewModelScope
 import com.emelyanov.rassvet.modules.firstboot.domain.models.SectionDetailsViewState
 import com.emelyanov.rassvet.modules.firstboot.domain.models.SectionsListViewState
 import com.emelyanov.rassvet.navigation.firstboot.FirstBootNavProvider
-import com.emelyanov.rassvet.navigation.firstboot.IFirstBootNavProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch

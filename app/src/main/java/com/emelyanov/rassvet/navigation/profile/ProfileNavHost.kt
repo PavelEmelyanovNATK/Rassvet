@@ -32,7 +32,7 @@ fun ProfileNavHost(
     val profileViewModel = hiltViewModel<ProfileViewModel>()
 
     LaunchedEffect(key1 = true) {
-        profileViewModel.profileNavProvider.getDestinationFlow().onEach { destination ->
+        profileViewModel.profileNavProvider.destinationFlow.onEach { destination ->
             if(destination is ProfileDestinations.PopBack)
                 profileNavController.popBackStack()
             else
@@ -50,7 +50,9 @@ fun ProfileNavHost(
         ) {
             ProfileMenuScreen(
                 onAboutClick = {},
-                onSectionsClick = profileViewModel.profileNavProvider::navigateToSubscriptions,
+                onSectionsClick = {
+                    profileViewModel.profileNavProvider.navigateTo(ProfileDestinations.Subscriptions)
+                },
                 onExitClick = {}
             )
         }
@@ -73,7 +75,9 @@ fun ProfileNavHost(
             val profileSectionsViewModel = hiltViewModel<ProfileSectionsViewModel>()
 
             ProfileSectionsScreen(
-                onBackClick = profileViewModel.profileNavProvider::popBack,
+                onBackClick = {
+                    profileViewModel.profileNavProvider.navigateTo(ProfileDestinations.PopBack)
+                },
                 profileSectionsViewState = profileSectionsViewModel.profileSectionsViewState.value
             )
         }
@@ -89,7 +93,9 @@ fun ProfileNavHost(
         ) {
             SubscriptionDetailsScreen(
                 onActionClick = { /*TODO*/ },
-                onBackClick = profileViewModel.profileNavProvider::popBack
+                onBackClick = {
+                    profileViewModel.profileNavProvider.navigateTo(ProfileDestinations.PopBack)
+                },
             )
         }
     }

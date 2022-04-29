@@ -1,7 +1,7 @@
 package com.emelyanov.rassvet.modules.main.modules.profile.domain
 
 import androidx.lifecycle.ViewModel
-import com.emelyanov.rassvet.navigation.profile.IProfileNavProvider
+import com.emelyanov.rassvet.navigation.profile.ProfileNavProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -9,6 +9,6 @@ import javax.inject.Inject
 class ProfileViewModel
 @Inject
 constructor(
-    val profileNavProvider: IProfileNavProvider
+    val profileNavProvider: ProfileNavProvider
 ) : ViewModel(){
 }

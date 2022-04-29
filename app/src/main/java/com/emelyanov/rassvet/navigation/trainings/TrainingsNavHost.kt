@@ -15,7 +15,6 @@ import com.emelyanov.rassvet.modules.main.modules.trainings.domain.TrainingsView
 import com.emelyanov.rassvet.modules.main.modules.trainings.presentation.components.TrainingDetailsScreen
 import com.emelyanov.rassvet.modules.main.modules.trainings.presentation.components.TrainingsListScreen
 import com.emelyanov.rassvet.modules.main.presentation.components.LocalNavBarVisibilityState
-import com.emelyanov.rassvet.navigation.firstboot.FirstBootDestinations
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -32,7 +31,7 @@ fun TrainingsNavHost(
     val trainingsViewModel = hiltViewModel<TrainingsViewModel>()
 
     LaunchedEffect(true) {
-        trainingsViewModel.trainingsNavProvider.getDestinationFlow().onEach { destination ->
+        trainingsViewModel.trainingsNavProvider.destinationFlow.onEach { destination ->
             if(destination is TrainingsDestinations.PopBack)
                 trainingsNavController.popBackStack()
             else
@@ -84,7 +83,11 @@ fun TrainingsNavHost(
             }
         ) {
             LocalNavBarVisibilityState.current.value = false
-            TrainingDetailsScreen(trainingsViewModel.trainingsNavProvider::popBack)
+            TrainingDetailsScreen(
+                onBackClick = {
+                    trainingsViewModel.trainingsNavProvider.navigateTo(TrainingsDestinations.PopBack)
+                }
+            )
         }
     }
 }

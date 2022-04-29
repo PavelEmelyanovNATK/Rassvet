@@ -7,9 +7,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.emelyanov.rassvet.modules.firstboot.domain.models.SectionsListViewState
 import com.emelyanov.rassvet.navigation.firstboot.FirstBootNavProvider
-import com.emelyanov.rassvet.navigation.firstboot.IFirstBootNavProvider
-import com.emelyanov.rassvet.navigation.subscriptions.ISubscriptionsListNavProvider
-import com.emelyanov.rassvet.navigation.subscriptions.ISubscriptionsNavProvider
+import com.emelyanov.rassvet.navigation.subscriptions.SubscriptionsDestinations
+import com.emelyanov.rassvet.navigation.subscriptions.SubscriptionsNavProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -19,7 +18,7 @@ import javax.inject.Inject
 class AllSubscriptionsListViewModel
 @Inject
 constructor(
-    private val _subscriptionsNavProvider: ISubscriptionsNavProvider
+    private val _subscriptionsNavProvider: SubscriptionsNavProvider
 ) : ViewModel() {
     private val _sectionsListViewState: MutableState<SectionsListViewState> = mutableStateOf(
         SectionsListViewState.Loading)
@@ -40,7 +39,7 @@ constructor(
             _sectionsListViewState.value = SectionsListViewState.PresentSections(
                 sections = (1..9).toList(),
                 onSectionClick = { sectionId ->
-                    _subscriptionsNavProvider.navigateToDetails(sectionId)
+                    _subscriptionsNavProvider.navigateTo(SubscriptionsDestinations.SubscriptionDetails(sectionId))
                 }
             )
         }

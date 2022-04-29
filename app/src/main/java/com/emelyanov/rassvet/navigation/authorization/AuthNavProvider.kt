@@ -1,22 +1,10 @@
 package com.emelyanov.rassvet.navigation.authorization
 
+import com.emelyanov.rassvet.shared.domain.utils.BaseNavProvider
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.StateFlow
 
-class AuthNavProvider : IAuthNavProvider {
-    private val _currentDestination: MutableSharedFlow<AuthDestinations> = MutableSharedFlow(extraBufferCapacity = 1)
-    override fun getDestinationFlow(): SharedFlow<AuthDestinations>
-        = _currentDestination
-
-    override fun navigateLogin() {
-        _currentDestination.tryEmit(AuthDestinations.Login)
-    }
-
-    override fun navigateRegistration() {
-        _currentDestination.tryEmit(AuthDestinations.Registration)
-    }
-
-    override fun popBack() {
-        _currentDestination.tryEmit(AuthDestinations.PopBack)
-    }
-}
+class AuthNavProvider(startDestination: AuthDestinations) :
+    BaseNavProvider<AuthDestinations>(startDestination)

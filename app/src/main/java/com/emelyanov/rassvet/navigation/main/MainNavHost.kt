@@ -39,7 +39,7 @@ fun MainNavHost(
     mainViewModel: MainViewModel
 ) {
     LaunchedEffect(key1 = true) {
-        mainViewModel.mainNavProvider.getDestinationFlow().onEach { destination ->
+        mainViewModel.mainNavProvider.destinationFlow.onEach { destination ->
             when (destination) {
                 is MainDestinations.PopBack -> mainNavController.popBackStack()
                 else -> mainNavController.navigate(destination.route) {

@@ -26,7 +26,7 @@ fun AuthNavHost(
     val authViewModel = hiltViewModel<AuthorizationViewModel>()
 
     LaunchedEffect(true) {
-        authViewModel.authNavController.getDestinationFlow().onEach { destination ->
+        authViewModel.authNavController.destinationFlow.onEach { destination ->
             if(destination is AuthDestinations.PopBack)
                 authNavController.popBackStack()
             else
@@ -42,7 +42,7 @@ fun AuthNavHost(
         composable(AuthDestinations.Login.route) {
             LoginScreen(
                 onCreateAccountClick = {
-                    authViewModel.authNavController.navigateRegistration()
+                    authViewModel.authNavController.navigateTo(AuthDestinations.Login)
                 },
                 onLogInClick = onLogInClick
             )
@@ -51,7 +51,7 @@ fun AuthNavHost(
         composable(AuthDestinations.Registration.route) {
             RegistrationScreen(
                 onBackClick = {
-                    authViewModel.authNavController.popBack()
+                    authViewModel.authNavController.navigateTo(AuthDestinations.PopBack)
                 }
             )
         }

@@ -1,22 +1,8 @@
 package com.emelyanov.rassvet.navigation.subscriptions
 
+import com.emelyanov.rassvet.shared.domain.utils.BaseNavProvider
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 
-class SubscriptionsListNavProvider : ISubscriptionsListNavProvider {
-    private val _currentDestination: MutableSharedFlow<SubscriptionsListDestinations> = MutableSharedFlow(extraBufferCapacity = 1)
-    override fun getDestinationFlow(): SharedFlow<SubscriptionsListDestinations>
-        = _currentDestination
-
-    override fun navigateToClientSubscriptions() {
-        _currentDestination.tryEmit(SubscriptionsListDestinations.ClientSubscriptions)
-    }
-
-    override fun navigateToAllSubscriptions() {
-        _currentDestination.tryEmit(SubscriptionsListDestinations.AllSubscriptions)
-    }
-
-    override fun popBack() {
-        _currentDestination.tryEmit(SubscriptionsListDestinations.PopBack)
-    }
-}
+class SubscriptionsListNavProvider(startDestination: SubscriptionsListDestinations) :
+    BaseNavProvider<SubscriptionsListDestinations>(startDestination)

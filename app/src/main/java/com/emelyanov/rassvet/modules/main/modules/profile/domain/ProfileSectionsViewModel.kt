@@ -7,7 +7,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.emelyanov.rassvet.modules.firstboot.domain.models.SectionsListViewState
 import com.emelyanov.rassvet.modules.main.modules.profile.domain.domain.ProfileSectionsViewState
-import com.emelyanov.rassvet.navigation.profile.IProfileNavProvider
+import com.emelyanov.rassvet.navigation.firstboot.FirstBootDestinations
+import com.emelyanov.rassvet.navigation.profile.ProfileDestinations
+import com.emelyanov.rassvet.navigation.profile.ProfileNavProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -17,7 +19,7 @@ import javax.inject.Inject
 class ProfileSectionsViewModel
 @Inject
 constructor(
-    private val _profileNavProvider: IProfileNavProvider
+    private val _profileNavProvider: ProfileNavProvider
 ) : ViewModel() {
     private val _profileSectionsViewState: MutableState<ProfileSectionsViewState>
         = mutableStateOf(ProfileSectionsViewState.Loading)
@@ -37,7 +39,7 @@ constructor(
             _profileSectionsViewState.value = ProfileSectionsViewState.PresentInfo(
                 sections = (1..9).toList(),
                 onSectionClick = { sectionId ->
-                    _profileNavProvider.navigateToSectionDetails(sectionId)
+                    _profileNavProvider.navigateTo(ProfileDestinations.SubscriptionDetails(sectionId))
                 }
             )
         }

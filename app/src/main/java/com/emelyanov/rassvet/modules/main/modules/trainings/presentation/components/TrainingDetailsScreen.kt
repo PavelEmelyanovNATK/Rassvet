@@ -2,8 +2,6 @@ package com.emelyanov.rassvet.modules.main.modules.trainings.presentation.compon
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -28,7 +26,7 @@ import io.iamjosephmj.flinger.bahaviours.StockFlingBehaviours
 
 @Composable
 fun TrainingDetailsScreen(
-    onBackPressed: () -> Unit
+    onBackClick: () -> Unit
 ) {
 
     val scrollState = rememberScrollState()
@@ -49,7 +47,7 @@ fun TrainingDetailsScreen(
                 ) {
                     BackButtonLeft(
                         color = RassvetTheme.colors.sectionBackButton,
-                        onClick = onBackPressed
+                        onClick = onBackClick
                     )
 
                     Spacer(Modifier.height(15.dp))

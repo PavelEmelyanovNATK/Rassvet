@@ -1,8 +1,7 @@
 package com.emelyanov.rassvet.modules.main.modules.subscriptions.domain
 
 import androidx.lifecycle.ViewModel
-import com.emelyanov.rassvet.navigation.subscriptions.ISubscriptionsListNavProvider
-import com.emelyanov.rassvet.navigation.subscriptions.ISubscriptionsNavProvider
+import com.emelyanov.rassvet.navigation.subscriptions.SubscriptionsListNavProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -10,7 +9,7 @@ import javax.inject.Inject
 class SubscriptionsContainerViewModel
 @Inject
 constructor(
-    val subscriptionsListNavProvider: ISubscriptionsListNavProvider
+    val subscriptionsListNavProvider: SubscriptionsListNavProvider
 ) : ViewModel() {
 
 }
