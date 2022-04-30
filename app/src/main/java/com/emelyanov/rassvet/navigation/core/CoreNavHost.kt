@@ -36,13 +36,17 @@ fun CoreNavHost(
 
     LaunchedEffect(true) {
         coreViewModel.coreNavProvider.destinationFlow.onEach { destination ->
-            if(destination is CoreDestinations.PopBack)
-                navHostController.popBackStack()
-            else
-                navHostController.navigate(destination.route) {
-                    launchSingleTop = true
-                    navHostController.backQueue.clear()
-                }
+            destination?.let {
+                if(destination is CoreDestinations.PopBack)
+                    navHostController.popBackStack()
+                else
+                    navHostController.navigate(destination.route) {
+                        launchSingleTop = true
+                        navHostController.backQueue.clear()
+                    }
+
+                coreViewModel.coreNavProvider.navigated()
+            }
         }.launchIn(this)
     }
 
@@ -68,11 +72,7 @@ fun CoreNavHost(
             popEnterTransition = { null },
             popExitTransition = { null }
         ) {
-            FirstBootScreen(
-                onAuthClick = {
-                    coreViewModel.coreNavProvider.navigateTo(CoreDestinations.Authorization)
-                }
-            )
+            FirstBootScreen()
         }
 
         composable(

@@ -27,10 +27,14 @@ fun AuthNavHost(
 
     LaunchedEffect(true) {
         authViewModel.authNavController.destinationFlow.onEach { destination ->
-            if(destination is AuthDestinations.PopBack)
-                authNavController.popBackStack()
-            else
-                authNavController.navigate(destination.route) { launchSingleTop = true }
+            destination?.let {
+                if(destination is AuthDestinations.PopBack)
+                    authNavController.popBackStack()
+                else
+                    authNavController.navigate(destination.route) { launchSingleTop = true }
+
+                authViewModel.authNavController.navigated()
+            }
         }.launchIn(this)
     }
 

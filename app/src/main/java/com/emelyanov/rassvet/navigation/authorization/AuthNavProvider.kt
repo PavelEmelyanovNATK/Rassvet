@@ -6,5 +6,5 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 
-class AuthNavProvider(startDestination: AuthDestinations) :
-    BaseNavProvider<AuthDestinations>(startDestination)
+class AuthNavProvider() :
+    BaseNavProvider<AuthDestinations>()

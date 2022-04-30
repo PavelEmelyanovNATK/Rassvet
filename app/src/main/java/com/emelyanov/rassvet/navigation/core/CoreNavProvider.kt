@@ -6,5 +6,5 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 
-class CoreNavProvider(startDestination: CoreDestinations) :
-    BaseNavProvider<CoreDestinations>(startDestination)
+class CoreNavProvider() :
+    BaseNavProvider<CoreDestinations>()

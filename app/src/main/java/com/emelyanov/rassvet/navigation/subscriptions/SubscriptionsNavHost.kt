@@ -36,12 +36,16 @@ fun SubscriptionsNavHost(
 
     LaunchedEffect(key1 = true) {
         subscriptionsViewModel.subscriptionsNavProvider.destinationFlow.onEach { destination ->
-            if(destination is SubscriptionsDestinations.PopBack)
-                subscriptionsNavController.popBackStack()
-            else
-                subscriptionsNavController.navigate(destination.route) {
-                    launchSingleTop = true
-                }
+            destination?.let {
+                if(destination is SubscriptionsDestinations.PopBack)
+                    subscriptionsNavController.popBackStack()
+                else
+                    subscriptionsNavController.navigate(destination.route) {
+                        launchSingleTop = true
+                    }
+
+                subscriptionsViewModel.subscriptionsNavProvider.navigated()
+            }
         }.launchIn(this)
     }
 

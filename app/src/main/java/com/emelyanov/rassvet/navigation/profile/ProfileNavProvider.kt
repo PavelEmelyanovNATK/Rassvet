@@ -6,5 +6,5 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 
-class ProfileNavProvider(startDestination: ProfileDestinations) :
-    BaseNavProvider<ProfileDestinations>(startDestination)
+class ProfileNavProvider() :
+    BaseNavProvider<ProfileDestinations>()

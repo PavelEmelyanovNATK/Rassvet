@@ -3,8 +3,6 @@ package com.emelyanov.rassvet.navigation.firstboot
 import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.spring
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
@@ -13,12 +11,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
-import com.google.accompanist.navigation.animation.navigation
 import com.emelyanov.rassvet.modules.firstboot.domain.FirstBootViewModel
 import com.emelyanov.rassvet.modules.firstboot.domain.SectionDetailsViewModel
 import com.emelyanov.rassvet.modules.firstboot.presentation.components.FirstBootContainer
 import com.emelyanov.rassvet.modules.firstboot.presentation.components.SectionDetailsScreen
-import com.emelyanov.rassvet.navigation.core.CoreDestinations
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -31,19 +27,20 @@ import kotlinx.coroutines.flow.onEach
 @ExperimentalAnimationApi
 @Composable
 fun FirstBootNavHost(
-    firstBootNavController: NavHostController,
-    onAuthClick: () -> Unit,
+    firstBootNavController: NavHostController
 ) {
     val firstBootViewModel = hiltViewModel<FirstBootViewModel>()
 
     LaunchedEffect(true) {
-        firstBootViewModel.fetchSections()
-
         firstBootViewModel.firstBootNavProvider.destinationFlow.onEach { destination ->
-            if(destination is FirstBootDestinations.PopBack)
-                firstBootNavController.popBackStack()
-            else
-                firstBootNavController.navigate(destination.route) { launchSingleTop = true }
+            destination?.let {
+                if(destination is FirstBootDestinations.PopBack)
+                    firstBootNavController.popBackStack()
+                else
+                    firstBootNavController.navigate(destination.route) { launchSingleTop = true }
+
+                firstBootViewModel.firstBootNavProvider.navigated()
+            }
         }.launchIn(this)
     }
 
@@ -56,7 +53,8 @@ fun FirstBootNavHost(
         ) {
             FirstBootContainer(
                 sectionsListViewState = firstBootViewModel.sectionsListViewState.value,
-                onAuthClick = onAuthClick
+                onAuthClick = firstBootViewModel::authClicked,
+                onRefresh = firstBootViewModel::reloadSections
             )
         }
 
@@ -79,10 +77,8 @@ fun FirstBootNavHost(
 
             SectionDetailsScreen(
                 sectionDetailsViewState = sectionDetailsViewModel.sectionsListViewState.value,
-                onAuthClick = onAuthClick,
-                onBackClick = {
-                    firstBootViewModel.firstBootNavProvider.navigateTo(FirstBootDestinations.PopBack)
-                }
+                onAuthClick = sectionDetailsViewModel::authClicked,
+                onBackClick = sectionDetailsViewModel::backClicked
             )
         }
     }

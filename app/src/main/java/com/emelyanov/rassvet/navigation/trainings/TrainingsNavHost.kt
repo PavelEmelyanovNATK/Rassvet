@@ -32,10 +32,14 @@ fun TrainingsNavHost(
 
     LaunchedEffect(true) {
         trainingsViewModel.trainingsNavProvider.destinationFlow.onEach { destination ->
-            if(destination is TrainingsDestinations.PopBack)
-                trainingsNavController.popBackStack()
-            else
-                trainingsNavController.navigate(destination.route) { launchSingleTop = true }
+            destination?.let {
+                if(destination is TrainingsDestinations.PopBack)
+                    trainingsNavController.popBackStack()
+                else
+                    trainingsNavController.navigate(destination.route) { launchSingleTop = true }
+
+                trainingsViewModel.trainingsNavProvider.navigated()
+            }
         }.launchIn(this)
     }
 

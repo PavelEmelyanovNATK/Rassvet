@@ -40,15 +40,19 @@ fun MainNavHost(
 ) {
     LaunchedEffect(key1 = true) {
         mainViewModel.mainNavProvider.destinationFlow.onEach { destination ->
-            when (destination) {
-                is MainDestinations.PopBack -> mainNavController.popBackStack()
-                else -> mainNavController.navigate(destination.route) {
-                    launchSingleTop = true
-                    restoreState = true
-                    popUpTo(mainNavController.graph.startDestinationId) {
-                        saveState = true
+            destination?.let {
+                when (destination) {
+                    is MainDestinations.PopBack -> mainNavController.popBackStack()
+                    else -> mainNavController.navigate(destination.route) {
+                        launchSingleTop = true
+                        restoreState = true
+                        popUpTo(mainNavController.graph.startDestinationId) {
+                            saveState = true
+                        }
                     }
                 }
+
+                mainViewModel.mainNavProvider.navigated()
             }
         }.launchIn(this)
     }

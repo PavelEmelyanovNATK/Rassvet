@@ -36,16 +36,20 @@ fun SubscriptionsListNavHost(
 
     LaunchedEffect(key1 = true) {
         subscriptionsContainerViewModel.subscriptionsListNavProvider.destinationFlow.onEach { destination ->
-            if(destination is SubscriptionsListDestinations.PopBack)
-                subscriptionsListNavController.popBackStack()
-            else
-                subscriptionsListNavController.navigate(destination.route) {
-                    launchSingleTop = true
-                    restoreState = true
-                    popUpTo(subscriptionsListNavController.graph.startDestinationId) {
-                        saveState = true
+            destination?.let {
+                if(destination is SubscriptionsListDestinations.PopBack)
+                    subscriptionsListNavController.popBackStack()
+                else
+                    subscriptionsListNavController.navigate(destination.route) {
+                        launchSingleTop = true
+                        restoreState = true
+                        popUpTo(subscriptionsListNavController.graph.startDestinationId) {
+                            saveState = true
+                        }
                     }
-                }
+
+                subscriptionsContainerViewModel.subscriptionsListNavProvider.navigated()
+            }
         }.launchIn(this)
     }
 

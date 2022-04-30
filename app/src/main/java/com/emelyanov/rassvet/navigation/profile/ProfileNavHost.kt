@@ -33,10 +33,14 @@ fun ProfileNavHost(
 
     LaunchedEffect(key1 = true) {
         profileViewModel.profileNavProvider.destinationFlow.onEach { destination ->
-            if(destination is ProfileDestinations.PopBack)
-                profileNavController.popBackStack()
-            else
-                profileNavController.navigate(destination.route) { launchSingleTop = true }
+            destination?.let {
+                if(destination is ProfileDestinations.PopBack)
+                    profileNavController.popBackStack()
+                else
+                    profileNavController.navigate(destination.route) { launchSingleTop = true }
+
+                profileViewModel.profileNavProvider.navigated()
+            }
         }.launchIn(this)
     }
 
