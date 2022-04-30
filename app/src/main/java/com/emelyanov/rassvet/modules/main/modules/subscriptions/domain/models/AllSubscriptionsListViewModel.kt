@@ -37,7 +37,7 @@ constructor(
             delay(5000)
 
             _sectionsListViewState.value = SectionsListViewState.PresentSections(
-                sections = (1..9).toList(),
+                sections = listOf(),
                 onSectionClick = { sectionId ->
                     _subscriptionsNavProvider.navigateTo(SubscriptionsDestinations.SubscriptionDetails(sectionId))
                 }

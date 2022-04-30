@@ -51,13 +51,10 @@ import kotlin.math.abs
 @ExperimentalPagerApi
 @ExperimentalMaterialApi
 @Composable
-fun FirstBootScreen(
-    onAuthClick: () -> Unit
-) {
+fun FirstBootScreen() {
     val navController = rememberAnimatedNavController()
 
     FirstBootNavHost(
-        firstBootNavController = navController,
-        onAuthClick = onAuthClick,
+        firstBootNavController = navController
     )
 }

@@ -30,33 +30,33 @@ import javax.inject.Singleton
 class Navigation {
     @Singleton
     @Provides
-    fun provideCoreNavigation(): CoreNavProvider = CoreNavProvider(CoreDestinations.Launching)
+    fun provideCoreNavigation(): CoreNavProvider = CoreNavProvider()
 
     @Singleton
     @Provides
-    fun provideFirstBootNavigation(): FirstBootNavProvider = FirstBootNavProvider(FirstBootDestinations.FirstBootScreen)
+    fun provideFirstBootNavigation(): FirstBootNavProvider = FirstBootNavProvider()
 
     @Singleton
     @Provides
-    fun provideAuthNavigation(): AuthNavProvider = AuthNavProvider(AuthDestinations.Login)
+    fun provideAuthNavigation(): AuthNavProvider = AuthNavProvider()
 
     @Singleton
     @Provides
-    fun provideMainNavigation(): MainNavProvider = MainNavProvider(MainDestinations.Trainings)
+    fun provideMainNavigation(): MainNavProvider = MainNavProvider()
 
     @Singleton
     @Provides
-    fun provideTrainingsNavigation(): TrainingsNavProvider = TrainingsNavProvider(TrainingsDestinations.TrainingsList)
+    fun provideTrainingsNavigation(): TrainingsNavProvider = TrainingsNavProvider()
 
     @Singleton
     @Provides
-    fun provideSubscriptionsNavigation(): SubscriptionsNavProvider = SubscriptionsNavProvider(SubscriptionsDestinations.SubscriptionsList)
+    fun provideSubscriptionsNavigation(): SubscriptionsNavProvider = SubscriptionsNavProvider()
 
     @Singleton
     @Provides
-    fun provideSubscriptionsListNavigation(): SubscriptionsListNavProvider = SubscriptionsListNavProvider(SubscriptionsListDestinations.ClientSubscriptions)
+    fun provideSubscriptionsListNavigation(): SubscriptionsListNavProvider = SubscriptionsListNavProvider()
 
     @Singleton
     @Provides
-    fun provideProfileNavigation(): ProfileNavProvider = ProfileNavProvider(ProfileDestinations.Menu)
+    fun provideProfileNavigation(): ProfileNavProvider = ProfileNavProvider()
 }

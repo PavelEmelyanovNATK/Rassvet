@@ -6,6 +6,6 @@ sealed class SectionDetailsViewState {
     data class PresentInfo(
         val title: String,
         val description: String,
-        val price: Float
+        val price: Int
     ) : SectionDetailsViewState()
 }

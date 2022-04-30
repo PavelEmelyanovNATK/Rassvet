@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import com.emelyanov.rassvet.modules.firstboot.domain.models.SectionsListViewState
 import com.emelyanov.rassvet.modules.main.presentation.components.NAV_BAR_HEIGHT
 import com.emelyanov.rassvet.modules.main.presentation.components.NAV_BAR_PADDING
+import com.emelyanov.rassvet.shared.domain.models.responseModels.SectionResponse
 import com.emelyanov.rassvet.shared.presentation.components.SectionCard
 
 @ExperimentalFoundationApi
@@ -49,7 +50,7 @@ fun AllSubscriptionsPage(
 @ExperimentalFoundationApi
 @Composable
 fun SectionsPage(
-    sections: List<Int>,
+    sections: List<SectionResponse>,
     onSectionClick: (Int) -> Unit
 ) {
     LazyVerticalGrid(
@@ -63,7 +64,7 @@ fun SectionsPage(
                 SectionCard(
                     title = "Card $card",
                     onClick = {
-                        onSectionClick(card)
+                        onSectionClick(card.id)
                     }
                 )
             }

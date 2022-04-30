@@ -30,6 +30,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.emelyanov.rassvet.R
 import com.emelyanov.rassvet.modules.firstboot.domain.models.SectionDetailsViewState
+import com.emelyanov.rassvet.modules.firstboot.domain.models.SectionsListViewState
 import com.emelyanov.rassvet.shared.presentation.components.GradientButton
 import com.emelyanov.rassvet.shared.presentation.components.HighlightedBackButton
 import com.emelyanov.rassvet.ui.theme.Black
@@ -118,10 +119,6 @@ fun SectionDetailsScreen(
                     )
                 )
                 .background(RassvetTheme.colors.surfaceBackground)
-                //.shadow(
-                //    elevation = 1.dp,
-                //    shape = RoundedCornerShape(topStart = 15.dp, topEnd = 15.dp),
-                //)
                 .swipeable(
                     state = surfaceSwipeState,
                     anchors = mapOf(
@@ -136,83 +133,20 @@ fun SectionDetailsScreen(
                 ),
             contentAlignment = Alignment.TopCenter
         ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .verticalScroll(
-                        state = bodyScrollState,
-                        flingBehavior = StockFlingBehaviours.getAndroidNativeScroll()
-                    )
-                    .padding(25.dp)
-            ) {
-                when(sectionDetailsViewState) {
-                    is SectionDetailsViewState.Loading -> {
-                        //CircularProgressIndicator(Modifier.align(Alignment.Center))
-                    }
-
-                    is SectionDetailsViewState.PresentInfo -> {
-                        Text(
-                            text = sectionDetailsViewState.title,
-                            style = RassvetTheme.typography.title
-                                .copy(RassvetTheme.colors.surfaceText)
-                        )
-
-                        Text(
-                            text = sectionDetailsViewState.description,
-                            style = RassvetTheme.typography.cardBody1
-                                .copy(RassvetTheme.colors.surfaceText)
-                        )
-
-                        Spacer(Modifier.height(100.dp))
-                    }
-                }
+            when(sectionDetailsViewState) {
+                is SectionDetailsViewState.Loading
+                    -> LoadingView()
+                is SectionDetailsViewState.PresentInfo
+                    -> PresentationView(
+                    viewState = sectionDetailsViewState,
+                    bodyScrollState = bodyScrollState,
+                    swipeState = surfaceSwipeState,
+                    pxSurfaceOffset = pxSurfaceOffset,
+                    onAuthClick = onAuthClick
+                ) 
+                is SectionDetailsViewState.Error
+                    -> ErrorView(message = sectionDetailsViewState.message)
             }
-
-            Box(
-                modifier = Modifier
-                    .padding(top = 12.dp)
-                    .size(66.dp, 11.dp)
-                    .clip(RoundedCornerShape(50))
-                    .border(
-                        width = (-2).dp,
-                        color = RassvetTheme.colors.surfaceBackground,
-                        shape = RoundedCornerShape(50)
-                    )
-                    .background(
-                        RassvetTheme.colors.surfaceBackground
-                    ),
-                contentAlignment = Alignment.Center
-            ) {
-                Box(
-                    modifier = Modifier
-                        .size(60.dp, 5.dp)
-                        .clip(RoundedCornerShape(50))
-                        .border(
-                            width = (-2).dp,
-                            color = RassvetTheme.colors.surfaceBackground,
-                            shape = RoundedCornerShape(50)
-                        )
-                        .background(
-                            RassvetTheme.colors.surfaceText
-                                .copy(alpha = 0.65f)
-                        )
-                )
-            }
-
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(20.dp)
-                    .swipeable(
-                        state = surfaceSwipeState,
-                        anchors = mapOf(
-                            0f to true,
-                            pxSurfaceOffset to false
-                        ),
-                        orientation = Orientation.Vertical,
-                        resistance = null
-                    )
-            )
         }
 
         Column(
@@ -223,19 +157,19 @@ fun SectionDetailsScreen(
             verticalArrangement = Arrangement.spacedBy(2.dp),
             horizontalAlignment = Alignment.End
         ) {
-            if(sectionDetailsViewState is SectionDetailsViewState.PresentInfo) {
-                Box(
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(25.dp))
-                        .background(RassvetTheme.colors.surfaceBackground)
-                        .padding(start = 8.dp, top = 2.dp, end = 8.dp, bottom = 3.dp)
-                ) {
+
+            Box(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(25.dp))
+                    .background(RassvetTheme.colors.surfaceBackground)
+                    .padding(start = 8.dp, top = 2.dp, end = 8.dp, bottom = 3.dp)
+            ) {
+                if(sectionDetailsViewState is SectionDetailsViewState.PresentInfo)
                     Text(
                         text = "${sectionDetailsViewState.price} р/мес",
                         style = RassvetTheme.typography.cardBody1
                             .copy(RassvetTheme.colors.surfaceText)
                     )
-                }
             }
 
             GradientButton(
@@ -245,6 +179,114 @@ fun SectionDetailsScreen(
                 gradient = RassvetTheme.colors.positiveButton)
         }
     }
+}
+
+@Composable
+private fun LoadingView() {
+    Box(
+        modifier = Modifier
+            .fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        CircularProgressIndicator(
+            color = RassvetTheme.colors.cardIcons
+        )
+    }
+}
+
+@ExperimentalMaterialApi
+@Composable
+private fun PresentationView(
+    viewState: SectionDetailsViewState.PresentInfo,
+    bodyScrollState: ScrollState,
+    swipeState: SwipeableState<Boolean>,
+    pxSurfaceOffset: Float,
+    onAuthClick: () -> Unit
+) {
+    Box(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(
+                    state = bodyScrollState,
+                    flingBehavior = StockFlingBehaviours.getAndroidNativeScroll()
+                )
+                .padding(25.dp)
+        ) {
+            Text(
+                text = viewState.title,
+                style = RassvetTheme.typography.title
+                    .copy(RassvetTheme.colors.surfaceText)
+            )
+            Text(
+                text = viewState.description,
+                style = RassvetTheme.typography.cardBody1
+                    .copy(RassvetTheme.colors.surfaceText)
+            )
+            Spacer(Modifier.height(100.dp))
+        }
+
+        Box(
+            modifier = Modifier
+                .padding(top = 12.dp)
+                .size(66.dp, 11.dp)
+                .clip(RoundedCornerShape(50))
+                .border(
+                    width = (-2).dp,
+                    color = RassvetTheme.colors.surfaceBackground,
+                    shape = RoundedCornerShape(50)
+                )
+                .background(
+                    RassvetTheme.colors.surfaceBackground
+                )
+                .align(Alignment.TopCenter),
+            contentAlignment = Alignment.Center
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(60.dp, 5.dp)
+                    .clip(RoundedCornerShape(50))
+                    .border(
+                        width = (-2).dp,
+                        color = RassvetTheme.colors.surfaceBackground,
+                        shape = RoundedCornerShape(50)
+                    )
+                    .background(
+                        RassvetTheme.colors.surfaceText
+                            .copy(alpha = 0.65f)
+                    )
+            )
+        }
+
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(20.dp)
+                .swipeable(
+                    state = swipeState,
+                    anchors = mapOf(
+                        0f to true,
+                        pxSurfaceOffset to false
+                    ),
+                    orientation = Orientation.Vertical,
+                    resistance = null
+                )
+        )
+    }
+}
+
+@Composable
+private fun ErrorView(
+    message: String
+) {
+    com.emelyanov.rassvet.shared.presentation.components.ErrorView(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(20.dp),
+        message = message
+    )
 }
 
 @ExperimentalMaterialApi
@@ -301,7 +343,7 @@ private fun Preview(){
             sectionDetailsViewState = SectionDetailsViewState.PresentInfo(
                 "asdasd",
                 "asdasd",
-                1000f
+                1000
             ),
             onBackClick = {}
         )

@@ -49,7 +49,8 @@ const val LOGO_DELTA_WIDTH = LOGO_MINIMIZED_WIDTH - LOGO_DEFAULT_WIDTH
 @Composable
 fun FirstBootContainer(
     sectionsListViewState: SectionsListViewState,
-    onAuthClick: () -> Unit
+    onAuthClick: () -> Unit,
+    onRefresh: () -> Unit
 ) {
     val pagerState = rememberPagerState(0)
     val coroutineScope = rememberCoroutineScope()
@@ -77,7 +78,8 @@ fun FirstBootContainer(
                     )
                     1 -> FirstBootSectionsPage(
                         sectionsListViewState = sectionsListViewState,
-                        onAuthClick = onAuthClick
+                        onAuthClick = onAuthClick,
+                        onRefresh = onRefresh
                     )
                 }
             }

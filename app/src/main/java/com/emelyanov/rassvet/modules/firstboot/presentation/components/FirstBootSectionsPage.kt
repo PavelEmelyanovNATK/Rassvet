@@ -6,7 +6,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
@@ -23,6 +25,8 @@ import com.emelyanov.rassvet.modules.firstboot.domain.models.SectionsListViewSta
 import com.emelyanov.rassvet.shared.presentation.components.LinkButton
 import com.emelyanov.rassvet.shared.presentation.components.SectionCard
 import com.emelyanov.rassvet.ui.theme.RassvetTheme
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
 
 @ExperimentalFoundationApi
@@ -30,8 +34,13 @@ import com.emelyanov.rassvet.ui.theme.RassvetTheme
 @Composable
 fun FirstBootSectionsPage(
     sectionsListViewState: SectionsListViewState,
-    onAuthClick: () -> Unit
-){
+    onAuthClick: () -> Unit,
+    onRefresh: () -> Unit
+) {
+    val swipeRefreshState = rememberSwipeRefreshState(
+        isRefreshing = sectionsListViewState is SectionsListViewState.Loading
+    )
+
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -56,29 +65,17 @@ fun FirstBootSectionsPage(
                     .fillMaxWidth()
                     .weight(1f)
             ) {
-
-                when(sectionsListViewState) {
-                    is SectionsListViewState.PresentSections -> {
-                        LazyVerticalGrid(
-                            cells = GridCells.Adaptive(150.dp,),
-                            contentPadding = PaddingValues(vertical = 15.dp, horizontal = 15.dp),
-                            horizontalArrangement = Arrangement.spacedBy(10.dp),
-                            verticalArrangement = Arrangement.spacedBy(10.dp)
-                        ) {
-                            items(sectionsListViewState.sections) { card ->
-                                key(card){
-                                    SectionCard(
-                                        title = "Card $card",
-                                        onClick = {
-                                            sectionsListViewState.onSectionClick(card)
-                                        }
-                                    )
-                                }
-                            }
-                        }
-                    }
-                    is SectionsListViewState.Loading -> {
-                        CircularProgressIndicator(Modifier.align(Alignment.Center))
+                SwipeRefresh(
+                    state = swipeRefreshState,
+                    onRefresh = onRefresh
+                ) {
+                    when(sectionsListViewState) {
+                        is SectionsListViewState.PresentSections
+                        -> PresentationView(viewState = sectionsListViewState)
+                        is SectionsListViewState.Loading
+                        -> LoadingView()
+                        is SectionsListViewState.Error
+                        -> ErrorView(message = sectionsListViewState.message)
                     }
                 }
 
@@ -121,4 +118,53 @@ fun FirstBootSectionsPage(
             Spacer(Modifier.height(80.dp))
         }
     }
+}
+
+@Composable
+private fun LoadingView() {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState()),
+        contentAlignment = Alignment.Center
+    ) {
+
+    }
+}
+
+@ExperimentalMaterialApi
+@ExperimentalFoundationApi
+@Composable
+private fun PresentationView(
+    viewState: SectionsListViewState.PresentSections
+) {
+    LazyVerticalGrid(
+        cells = GridCells.Adaptive(150.dp,),
+        contentPadding = PaddingValues(vertical = 15.dp, horizontal = 15.dp),
+        horizontalArrangement = Arrangement.spacedBy(10.dp),
+        verticalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        items(viewState.sections) { card ->
+            key(card){
+                SectionCard(
+                    title = card.sectionName,
+                    onClick = {
+                        viewState.onSectionClick(card.id)
+                    }
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun ErrorView(
+    message: String
+) {
+    com.emelyanov.rassvet.shared.presentation.components.ErrorView(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(20.dp),
+        message = message
+    )
 }
