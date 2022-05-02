@@ -13,6 +13,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.emelyanov.rassvet.modules.authorization.presentation.components.AuthorizationScreen
 import com.emelyanov.rassvet.modules.core.domain.CoreViewModel
+import com.emelyanov.rassvet.modules.core.presentation.LaunchingScreen
 import com.emelyanov.rassvet.modules.firstboot.presentation.components.FirstBootScreen
 import com.emelyanov.rassvet.modules.main.domain.MainViewModel
 import com.emelyanov.rassvet.modules.main.presentation.components.MainScreen
@@ -30,9 +31,9 @@ import kotlinx.coroutines.flow.onEach
 @Composable
 fun CoreNavHost(
     modifier: Modifier = Modifier,
-    navHostController: NavHostController
+    navHostController: NavHostController,
+    coreViewModel: CoreViewModel
 ) {
-    val coreViewModel = hiltViewModel<CoreViewModel>()
 
     LaunchedEffect(true) {
         coreViewModel.coreNavProvider.destinationFlow.onEach { destination ->
@@ -62,7 +63,7 @@ fun CoreNavHost(
             popEnterTransition = { null },
             popExitTransition = { null }
         ) {
-
+            LaunchingScreen()
         }
 
         composable(

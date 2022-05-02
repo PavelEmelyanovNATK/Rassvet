@@ -8,10 +8,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Divider
-import androidx.compose.material.Icon
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,6 +32,7 @@ import com.emelyanov.rassvet.ui.theme.Red
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import io.iamjosephmj.flinger.bahaviours.StockFlingBehaviours
 
+@ExperimentalMaterialApi
 @ExperimentalAnimationApi
 @Composable
 fun ProfileTab(

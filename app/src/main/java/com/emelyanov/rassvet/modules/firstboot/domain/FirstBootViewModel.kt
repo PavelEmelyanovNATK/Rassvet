@@ -29,7 +29,8 @@ constructor(
     private val navigateToDetails: NavigateToSectionDetailsUseCase
 ) : ViewModel() {
 
-    private val _sectionsListViewState: MutableState<SectionsListViewState> = mutableStateOf(SectionsListViewState.Loading)
+    private val _sectionsListViewState: MutableState<SectionsListViewState>
+    = mutableStateOf(SectionsListViewState.Loading)
     val sectionsListViewState: State<SectionsListViewState>
         get() = _sectionsListViewState
 

@@ -1,12 +1,14 @@
 package com.emelyanov.rassvet.navigation.authorization
 
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.emelyanov.rassvet.modules.authorization.domain.AuthorizationViewModel
+import com.emelyanov.rassvet.modules.authorization.domain.LoginViewModel
 import com.emelyanov.rassvet.modules.authorization.presentation.components.LoginScreen
 import com.emelyanov.rassvet.modules.authorization.presentation.components.RegistrationScreen
 import com.google.accompanist.navigation.animation.AnimatedNavHost
@@ -14,7 +16,9 @@ import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.pager.ExperimentalPagerApi
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlin.math.log
 
+@ExperimentalMaterialApi
 @ExperimentalPagerApi
 @ExperimentalAnimationApi
 @Composable
@@ -44,11 +48,12 @@ fun AuthNavHost(
         startDestination = AuthDestinations.Login.route
     ) {
         composable(AuthDestinations.Login.route) {
+            val loginViewModel = hiltViewModel<LoginViewModel>()
+
             LoginScreen(
-                onCreateAccountClick = {
-                    authViewModel.authNavController.navigateTo(AuthDestinations.Login)
-                },
-                onLogInClick = onLogInClick
+                loginViewState = loginViewModel.viewState.value,
+                loginViewModel.notificationsFlow,
+                onNotificationProcessed = loginViewModel::onNotificationProcessed
             )
         }
 

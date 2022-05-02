@@ -46,6 +46,8 @@ data class RassvetColors(
     val linkButton: Color,
     val tabCircleSelected: Color,
     val tabCircleUnselected: Color,
-    val logoColor: Color
+    val logoColor: Color,
+    val shimmerCornersColor: Color,
+    val shimmerCenterColor: Color
 )
 

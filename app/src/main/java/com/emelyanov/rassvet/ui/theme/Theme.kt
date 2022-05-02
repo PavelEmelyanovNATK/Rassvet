@@ -54,7 +54,9 @@ private val LightColorPalette = RassvetColors(
     linkButton = White,
     tabCircleSelected = White,
     tabCircleUnselected = TransparentGray,
-    logoColor = White
+    logoColor = White,
+    shimmerCornersColor = TransparentGray,
+    shimmerCenterColor = White.copy(alpha = 0.5f)
 )
 
 private val DarkColorPalette = RassvetColors(
@@ -83,7 +85,9 @@ private val DarkColorPalette = RassvetColors(
     linkButton = White,
     tabCircleSelected = Color(0xff514C5C),
     tabCircleUnselected = Color(0xcc2D2D2D),
-    logoColor = White
+    logoColor = White,
+    shimmerCornersColor = Color(0xcc2D2D2D),
+    shimmerCenterColor = Color(0xff514C5C)
 )
 
 @ExperimentalFoundationApi

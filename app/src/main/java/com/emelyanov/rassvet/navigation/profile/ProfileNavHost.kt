@@ -57,7 +57,7 @@ fun ProfileNavHost(
                 onSectionsClick = {
                     profileViewModel.profileNavProvider.navigateTo(ProfileDestinations.Subscriptions)
                 },
-                onExitClick = {}
+                onExitClick = profileViewModel::onLogoutClick
             )
         }
 
