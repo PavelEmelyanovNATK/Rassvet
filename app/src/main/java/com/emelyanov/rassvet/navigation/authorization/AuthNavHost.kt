@@ -9,6 +9,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.emelyanov.rassvet.modules.authorization.domain.AuthorizationViewModel
 import com.emelyanov.rassvet.modules.authorization.domain.LoginViewModel
+import com.emelyanov.rassvet.modules.authorization.domain.RegistrationViewModel
 import com.emelyanov.rassvet.modules.authorization.presentation.components.LoginScreen
 import com.emelyanov.rassvet.modules.authorization.presentation.components.RegistrationScreen
 import com.google.accompanist.navigation.animation.AnimatedNavHost
@@ -24,8 +25,7 @@ import kotlin.math.log
 @Composable
 fun AuthNavHost(
     modifier: Modifier = Modifier,
-    authNavController: NavHostController,
-    onLogInClick: () -> Unit
+    authNavController: NavHostController
 ) {
     val authViewModel = hiltViewModel<AuthorizationViewModel>()
 
@@ -58,10 +58,12 @@ fun AuthNavHost(
         }
 
         composable(AuthDestinations.Registration.route) {
+            val registrationViewModel = hiltViewModel<RegistrationViewModel>()
+
             RegistrationScreen(
-                onBackClick = {
-                    authViewModel.authNavController.navigateTo(AuthDestinations.PopBack)
-                }
+                registrationViewModel.viewState.value,
+                registrationNotificationFlow = registrationViewModel.notificationsFlow,
+                onNotificationProcessed = registrationViewModel::onNotificationProcessed
             )
         }
     }

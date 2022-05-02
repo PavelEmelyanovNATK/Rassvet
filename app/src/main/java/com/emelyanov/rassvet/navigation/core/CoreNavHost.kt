@@ -83,11 +83,7 @@ fun CoreNavHost(
             popEnterTransition = { null },
             popExitTransition = { null }
         ) {
-            AuthorizationScreen(
-                onLogInClick = {
-                    coreViewModel.coreNavProvider.navigateTo(CoreDestinations.Main)
-                }
-            )
+            AuthorizationScreen()
         }
 
         composable(

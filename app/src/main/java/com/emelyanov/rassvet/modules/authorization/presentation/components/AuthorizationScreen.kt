@@ -12,12 +12,10 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 @ExperimentalAnimationApi
 @Composable
 fun AuthorizationScreen(
-    onLogInClick: () -> Unit
 ) {
     val authNavControlelr = rememberAnimatedNavController()
 
     AuthNavHost(
-        authNavController = authNavControlelr,
-        onLogInClick = onLogInClick
+        authNavController = authNavControlelr
     )
 }

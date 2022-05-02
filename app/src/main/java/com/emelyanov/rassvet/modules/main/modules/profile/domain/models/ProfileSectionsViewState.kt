@@ -1,4 +1,4 @@
-package com.emelyanov.rassvet.modules.main.modules.profile.domain.domain
+package com.emelyanov.rassvet.modules.main.modules.profile.domain.models
 
 sealed class ProfileSectionsViewState {
     object Loading : ProfileSectionsViewState()

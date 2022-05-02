@@ -53,6 +53,7 @@ fun ProfileNavHost(
             route = ProfileDestinations.Menu.route
         ) {
             ProfileMenuScreen(
+                viewState = profileViewModel.viewState.value,
                 onAboutClick = {},
                 onSectionsClick = {
                     profileViewModel.profileNavProvider.navigateTo(ProfileDestinations.Subscriptions)

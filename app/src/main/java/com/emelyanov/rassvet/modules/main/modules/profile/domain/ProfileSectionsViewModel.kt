@@ -5,9 +5,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.emelyanov.rassvet.modules.firstboot.domain.models.SectionsListViewState
-import com.emelyanov.rassvet.modules.main.modules.profile.domain.domain.ProfileSectionsViewState
-import com.emelyanov.rassvet.navigation.firstboot.FirstBootDestinations
+import com.emelyanov.rassvet.modules.main.modules.profile.domain.models.ProfileSectionsViewState
 import com.emelyanov.rassvet.navigation.profile.ProfileDestinations
 import com.emelyanov.rassvet.navigation.profile.ProfileNavProvider
 import dagger.hilt.android.lifecycle.HiltViewModel

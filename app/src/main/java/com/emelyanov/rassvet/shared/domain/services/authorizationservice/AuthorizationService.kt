@@ -54,7 +54,13 @@ constructor(
     }
 
     override suspend fun register(registerRequest: RegisterRequest) {
-        TODO("Not yet implemented")
+        try {
+            requestWrapper {
+                rassvetApi.register(registerRequest)
+            }
+        } catch (ex: EmptyBodyException) {
+
+        }
     }
 
     override suspend fun authorize() {

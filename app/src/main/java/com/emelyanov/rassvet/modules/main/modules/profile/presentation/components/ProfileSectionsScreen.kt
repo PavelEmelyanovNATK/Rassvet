@@ -1,24 +1,18 @@
 package com.emelyanov.rassvet.modules.main.modules.profile.presentation.components
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.key
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.emelyanov.rassvet.R
-import com.emelyanov.rassvet.modules.main.modules.profile.domain.domain.ProfileSectionsViewState
+import com.emelyanov.rassvet.modules.main.modules.profile.domain.models.ProfileSectionsViewState
 import com.emelyanov.rassvet.modules.main.presentation.components.LocalNavBarVisibilityState
 import com.emelyanov.rassvet.modules.main.presentation.components.NAV_BAR_HEIGHT
 import com.emelyanov.rassvet.modules.main.presentation.components.NAV_BAR_PADDING
@@ -26,8 +20,6 @@ import com.emelyanov.rassvet.shared.presentation.components.BackButtonLeft
 import com.emelyanov.rassvet.shared.presentation.components.SolidBackgroundBox
 import com.emelyanov.rassvet.ui.theme.Gray
 import com.emelyanov.rassvet.ui.theme.RassvetTheme
-import com.emelyanov.rassvet.ui.theme.Red
-import io.iamjosephmj.flinger.bahaviours.StockFlingBehaviours
 
 @Composable
 fun ProfileSectionsScreen(

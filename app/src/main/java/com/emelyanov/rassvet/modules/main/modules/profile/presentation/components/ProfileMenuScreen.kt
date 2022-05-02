@@ -15,9 +15,14 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.emelyanov.rassvet.R
+import com.emelyanov.rassvet.modules.main.modules.profile.domain.models.ProfileViewState
 import com.emelyanov.rassvet.modules.main.presentation.components.LocalNavBarVisibilityState
 import com.emelyanov.rassvet.modules.main.presentation.components.NAV_BAR_HEIGHT
 import com.emelyanov.rassvet.modules.main.presentation.components.NAV_BAR_PADDING
+import com.emelyanov.rassvet.shared.domain.utils.formatDate
+import com.emelyanov.rassvet.shared.domain.utils.formatDay
+import com.emelyanov.rassvet.shared.domain.utils.formatMonth
+import com.emelyanov.rassvet.shared.domain.utils.getMonthName
 import com.emelyanov.rassvet.shared.presentation.components.SolidBackgroundBox
 import com.emelyanov.rassvet.ui.theme.Gray
 import com.emelyanov.rassvet.ui.theme.RassvetTheme
@@ -25,6 +30,7 @@ import com.emelyanov.rassvet.ui.theme.Red
 
 @Composable
 fun ProfileMenuScreen(
+    viewState: ProfileViewState,
     onSectionsClick: () -> Unit,
     onAboutClick: () -> Unit,
     onExitClick: () -> Unit
@@ -51,57 +57,56 @@ fun ProfileMenuScreen(
                                 end = Offset(pxWidth , 0f)
                             )
                         )
-                    //.shadow(
-                    //    elevation = 1.dp,
-                    //    shape = RoundedCornerShape(bottomStart = 15.dp, bottomEnd = 15.dp)
-                    //),
+
                 ) {
-                    Column(
-                        modifier = Modifier.padding(15.dp)
-                    ) {
-
-                        Text(
-                            modifier = Modifier.sizeIn(maxWidth = 250.dp),
-                            text = "Емельянов Павел Александрович",
-                            style = RassvetTheme.typography.toolbarTitle
-                                .copy(color = RassvetTheme.colors.logoColor)
-                        )
-
-                        Spacer(Modifier.height(25.dp))
-
-                        Text(
-                            text = "День рождения: 10 фев",
-                            style = RassvetTheme.typography.cardBody2
-                                .copy(color = RassvetTheme.colors.logoColor)
-                        )
-
-                        Box(
-                            modifier = Modifier.fillMaxWidth()
+                    if(viewState is ProfileViewState.Authorized) {
+                        Column(
+                            modifier = Modifier.padding(15.dp)
                         ) {
+
                             Text(
-                                modifier = Modifier.align(Alignment.CenterStart),
-                                text = "Зарегистрирован: ",
+                                modifier = Modifier.sizeIn(maxWidth = 250.dp),
+                                text = "${viewState.surname} ${viewState.name} ${viewState.patronymic ?: ""}",
+                                style = RassvetTheme.typography.toolbarTitle
+                                    .copy(color = RassvetTheme.colors.logoColor)
+                            )
+
+                            Spacer(Modifier.height(25.dp))
+
+                            Text(
+                                text = "День рождения: ${viewState.birthDate.formatDay()} ${getMonthName(viewState.birthDate.formatMonth())}",
                                 style = RassvetTheme.typography.cardBody2
                                     .copy(color = RassvetTheme.colors.logoColor)
                             )
 
-                            Row(
-                                modifier = Modifier.align(Alignment.CenterEnd),
-                                verticalAlignment = Alignment.CenterVertically
+                            Box(
+                                modifier = Modifier.fillMaxWidth()
                             ) {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.ic_calendar),
-                                    contentDescription = "Calendar icon",
-                                    tint = RassvetTheme.colors.logoColor
-                                )
-
-                                Spacer(Modifier.width(10.dp))
-
                                 Text(
-                                    text = "10.02.2021",
+                                    modifier = Modifier.align(Alignment.CenterStart),
+                                    text = "Зарегистрирован: ",
                                     style = RassvetTheme.typography.cardBody2
                                         .copy(color = RassvetTheme.colors.logoColor)
                                 )
+
+                                Row(
+                                    modifier = Modifier.align(Alignment.CenterEnd),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Icon(
+                                        painter = painterResource(id = R.drawable.ic_calendar),
+                                        contentDescription = "Calendar icon",
+                                        tint = RassvetTheme.colors.logoColor
+                                    )
+
+                                    Spacer(Modifier.width(10.dp))
+
+                                    Text(
+                                        text = viewState.registrationDate.formatDate(),
+                                        style = RassvetTheme.typography.cardBody2
+                                            .copy(color = RassvetTheme.colors.logoColor)
+                                    )
+                                }
                             }
                         }
                     }

@@ -1,4 +1,4 @@
-package com.emelyanov.rassvet.shared.domain.models.responseModels
+package com.emelyanov.rassvet.shared.domain.models
 
 import java.util.*
 

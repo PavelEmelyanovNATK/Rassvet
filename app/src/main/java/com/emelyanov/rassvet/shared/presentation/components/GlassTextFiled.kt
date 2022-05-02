@@ -1,7 +1,6 @@
 package com.emelyanov.rassvet.shared.presentation.components
 
 import androidx.compose.animation.animateColor
-import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -21,7 +20,6 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -29,17 +27,50 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.emelyanov.rassvet.R
+import com.emelyanov.rassvet.shared.domain.models.TextFieldViewState
 import com.emelyanov.rassvet.ui.theme.CreamyPurple
 import com.emelyanov.rassvet.ui.theme.RassvetTheme
 
 private const val TOP_PADDING = 6f
 private const val SPACE_BETWEEN_PLACEHOLDER = 0f
 private const val PLACEHOLDER_OFFSET = 30f
+
+@Composable
+fun GlassTextFiled(
+    modifier: Modifier = Modifier,
+    state: TextFieldViewState,
+    onValueChange: (String) -> Unit,
+    placeholderText: String,
+    keyboardType: KeyboardType = KeyboardType.Text
+) {
+    Column(
+        modifier = modifier
+    ) {
+        GlassTextFiled(
+            value = state.text,
+            onValueChange = onValueChange,
+            placeholderText = placeholderText,
+            keyboardType = keyboardType
+        )
+
+        if(state is TextFieldViewState.Error)
+            Text(
+                modifier = Modifier.align(Alignment.End),
+                text = state.error,
+                style = RassvetTheme.typography.inputText
+                    .copy(
+                        color = RassvetTheme.colors.error,
+                        textAlign = TextAlign.End
+                    )
+            )
+    }
+}
 
 @Composable
 fun GlassTextFiled(

@@ -1,6 +1,6 @@
 package com.emelyanov.rassvet.shared.domain.utils
 
-import com.emelyanov.rassvet.shared.domain.models.responseModels.ClientInfo
+import com.emelyanov.rassvet.shared.domain.models.ClientInfo
 import com.emelyanov.rassvet.shared.domain.models.responseModels.ClientInfoResponse
 
 fun ClientInfoResponse.toClientInfo(): ClientInfo

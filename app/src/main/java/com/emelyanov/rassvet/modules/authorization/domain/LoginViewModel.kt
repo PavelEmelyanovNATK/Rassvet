@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.emelyanov.rassvet.modules.authorization.domain.models.LoginViewState
+import com.emelyanov.rassvet.modules.authorization.domain.usecases.LogInUseCase
 import com.emelyanov.rassvet.navigation.authorization.AuthDestinations
 import com.emelyanov.rassvet.navigation.authorization.AuthNavProvider
 import com.emelyanov.rassvet.shared.domain.models.requestModels.LogInRequest
@@ -20,8 +21,8 @@ import javax.inject.Inject
 class LoginViewModel
 @Inject
 constructor(
-    private val _authService: IAuthorizationService,
-    private val _authNavProvider: AuthNavProvider
+    private val _authNavProvider: AuthNavProvider,
+    private val logIn: LogInUseCase
 ) : ViewModel() {
     private val _notificationsFlow: MutableSharedFlow<String?> = MutableSharedFlow(replay = 1)
     val notificationsFlow: SharedFlow<String?> = _notificationsFlow
@@ -47,11 +48,9 @@ constructor(
             )
 
             try{
-                _authService.logIn(
-                    LogInRequest(
-                        email = viewState.value.email.value,
-                        password = viewState.value.password.value
-                    )
+                logIn(
+                    email = viewState.value.email.value,
+                    password = viewState.value.password.value
                 )
             } catch(ex: Exception) {
                 _notificationsFlow.tryEmit(ex.message)

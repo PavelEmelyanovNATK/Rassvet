@@ -8,6 +8,6 @@ data class RegisterRequest(
     val confirmPassword: String,
     val surname: String,
     val name: String,
-    val patronymic: String,
-    val birthDate: Date
+    val patronymic: String?,
+    val birthDate: String
 )

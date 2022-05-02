@@ -143,7 +143,7 @@ fun LoginScreen(
                             )
                         }
                     }
-                    
+
                     Spacer(
                         Modifier
                             .height(maxHeight * 0.185f)

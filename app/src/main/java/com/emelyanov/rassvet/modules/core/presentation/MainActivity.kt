@@ -20,6 +20,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
 import com.emelyanov.rassvet.R
+import com.emelyanov.rassvet.modules.authorization.domain.RegistrationViewModel
+import com.emelyanov.rassvet.modules.authorization.domain.models.RegistrationViewState
 import com.emelyanov.rassvet.modules.authorization.presentation.components.LoginScreen
 import com.emelyanov.rassvet.modules.authorization.presentation.components.RegistrationScreen
 import com.emelyanov.rassvet.modules.core.domain.CoreViewModel
