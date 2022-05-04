@@ -1,4 +1,4 @@
-package com.emelyanov.rassvet.modules.main.modules.subscriptions.domain.models
+package com.emelyanov.rassvet.modules.main.modules.subscriptions.domain
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State

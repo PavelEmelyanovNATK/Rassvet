@@ -27,8 +27,10 @@ const val NAV_BAR_HEIGHT = 60f
 @Composable
 fun RassvetNavBar(
     modifier: Modifier = Modifier,
-    mainNavController: NavHostController,
-    onTabClick: (MainDestinations) -> Unit
+    currentDestination: String,
+    onTrainingsTabClick: () -> Unit,
+    onSubscriptionsTabClick: () -> Unit,
+    onProfileTabClick: () -> Unit
 ) {
     val interactionSource = remember { MutableInteractionSource() }
 
@@ -36,9 +38,7 @@ fun RassvetNavBar(
     var subscriptionsButtonColor = RassvetTheme.colors.navbarUnselectedItem
     var profileButtonColor = RassvetTheme.colors.navbarUnselectedItem
 
-    val curEntry = mainNavController.currentBackStackEntryAsState()
-
-    when(curEntry.value?.destination?.route) {
+    when(currentDestination) {
         MainDestinations.Trainings.route -> trainingsButtonColor = RassvetTheme.colors.navbarSelectedItem
         MainDestinations.Subscriptions.route -> subscriptionsButtonColor = RassvetTheme.colors.navbarSelectedItem
         MainDestinations.Profile.route -> profileButtonColor = RassvetTheme.colors.navbarSelectedItem
@@ -67,9 +67,7 @@ fun RassvetNavBar(
                     modifier = Modifier.clickable(
                         interactionSource = interactionSource,
                         indication = null,
-                        onClick = {
-                            onTabClick(MainDestinations.Trainings)
-                        }
+                        onClick = onTrainingsTabClick
                     ),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
@@ -89,9 +87,7 @@ fun RassvetNavBar(
                     modifier = Modifier.clickable(
                         interactionSource = interactionSource,
                         indication = null,
-                        onClick = {
-                            onTabClick(MainDestinations.Subscriptions)
-                        }
+                        onClick = onSubscriptionsTabClick
                     ),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
@@ -120,9 +116,7 @@ fun RassvetNavBar(
                     modifier = Modifier.clickable(
                         interactionSource = interactionSource,
                         indication = null,
-                        onClick = {
-                            onTabClick(MainDestinations.Profile)
-                        }
+                        onClick = onProfileTabClick
                     ),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {

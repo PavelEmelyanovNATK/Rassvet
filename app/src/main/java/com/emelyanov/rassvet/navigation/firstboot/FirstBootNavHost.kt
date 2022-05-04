@@ -12,9 +12,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import com.emelyanov.rassvet.modules.firstboot.domain.FirstBootViewModel
-import com.emelyanov.rassvet.modules.firstboot.domain.SectionDetailsViewModel
+import com.emelyanov.rassvet.modules.firstboot.domain.FirstBootSubscriptionDetailsViewModel
 import com.emelyanov.rassvet.modules.firstboot.presentation.components.FirstBootContainer
-import com.emelyanov.rassvet.modules.firstboot.presentation.components.SectionDetailsScreen
+import com.emelyanov.rassvet.shared.presentation.components.SectionDetailsScreen
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -68,7 +68,7 @@ fun FirstBootNavHost(
                 slideOutOfContainer(AnimatedContentScope.SlideDirection.Down, animationSpec = spring())
             }
         ) { backStackEntry ->
-            val sectionDetailsViewModel = hiltViewModel<SectionDetailsViewModel>()
+            val sectionDetailsViewModel = hiltViewModel<FirstBootSubscriptionDetailsViewModel>()
             val sectionId = backStackEntry.arguments?.getInt("id") ?: 0
 
             LaunchedEffect(true) {
@@ -76,8 +76,7 @@ fun FirstBootNavHost(
             }
 
             SectionDetailsScreen(
-                sectionDetailsViewState = sectionDetailsViewModel.sectionsListViewState.value,
-                onAuthClick = sectionDetailsViewModel::authClicked,
+                viewState = sectionDetailsViewModel.sectionsListViewState.value,
                 onBackClick = sectionDetailsViewModel::backClicked
             )
         }

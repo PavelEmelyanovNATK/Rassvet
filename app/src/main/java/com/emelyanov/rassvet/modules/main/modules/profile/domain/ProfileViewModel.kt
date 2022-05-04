@@ -7,6 +7,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.emelyanov.rassvet.modules.main.modules.profile.domain.models.ProfileViewState
 import com.emelyanov.rassvet.modules.main.modules.profile.domain.usecases.GetUserDataUseCase
+import com.emelyanov.rassvet.modules.main.modules.profile.domain.usecases.LogoutUseCase
+import com.emelyanov.rassvet.modules.main.modules.profile.domain.usecases.NavigateToSubscriptionsListUseCase
 import com.emelyanov.rassvet.navigation.profile.ProfileNavProvider
 import com.emelyanov.rassvet.shared.domain.services.authorizationservice.AuthorizationService
 import com.emelyanov.rassvet.shared.domain.services.authorizationservice.IAuthorizationService
@@ -19,9 +21,10 @@ import javax.inject.Inject
 class ProfileViewModel
 @Inject
 constructor(
+    getUserData: GetUserDataUseCase,
     val profileNavProvider: ProfileNavProvider,
-    private val authorizationService: IAuthorizationService,
-    getUserData: GetUserDataUseCase
+    private val logout: LogoutUseCase,
+    private val navigateToSubscriptions: NavigateToSubscriptionsListUseCase
 ) : ViewModel() {
 
     private var _viewState: MutableState<ProfileViewState>
@@ -42,9 +45,11 @@ constructor(
         }
     }
 
-    fun onLogoutClick() {
+    fun logoutClick() {
         viewModelScope.launch {
-            authorizationService.logout()
+            logout()
         }
     }
+
+    fun subscriptionsClick() = navigateToSubscriptions()
 }

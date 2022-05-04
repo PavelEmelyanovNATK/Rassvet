@@ -1,9 +1,8 @@
 package com.emelyanov.rassvet.modules.main.modules.trainings.domain.usecases
 
-import com.emelyanov.rassvet.modules.main.modules.trainings.domain.models.Section
-import com.emelyanov.rassvet.modules.main.modules.trainings.domain.utils.SectionMapper
+import com.emelyanov.rassvet.shared.domain.models.Section
+import com.emelyanov.rassvet.shared.domain.utils.SectionMapper
 import com.emelyanov.rassvet.shared.domain.services.rassvetApi.IRassvetApi
-import com.emelyanov.rassvet.shared.domain.usecases.GetAccessTokenUseCase
 import com.emelyanov.rassvet.shared.domain.usecases.GetAuthHeaderUseCase
 import com.emelyanov.rassvet.shared.domain.usecases.ProvideAuthedRequestUseCase
 import javax.inject.Inject

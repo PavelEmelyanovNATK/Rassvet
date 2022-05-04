@@ -17,6 +17,7 @@ import com.emelyanov.rassvet.modules.main.presentation.components.LocalNavBarVis
 import com.emelyanov.rassvet.modules.main.presentation.components.NAV_BAR_HEIGHT
 import com.emelyanov.rassvet.modules.main.presentation.components.NAV_BAR_PADDING
 import com.emelyanov.rassvet.shared.presentation.components.BackButtonLeft
+import com.emelyanov.rassvet.shared.presentation.components.NoSubscriptionsScreen
 import com.emelyanov.rassvet.shared.presentation.components.SolidBackgroundBox
 import com.emelyanov.rassvet.ui.theme.Gray
 import com.emelyanov.rassvet.ui.theme.RassvetTheme
@@ -50,7 +51,7 @@ fun ProfileSectionsScreen(
                     Spacer(Modifier.height(15.dp))
 
                     Text(
-                        text = "Мои абонементы",
+                        text = "Мои секции",
                         style = RassvetTheme.typography.toolbarTitle
                             .copy(color = RassvetTheme.colors.surfaceText)
                     )
@@ -95,10 +96,10 @@ fun ProfileSectionsScreen(
                                                 modifier = Modifier
                                                     .fillMaxWidth()
                                                     .clickable(
-                                                        onClick = { profileSectionsViewState.onSectionClick(section) }
+                                                        onClick = { profileSectionsViewState.onSectionClick(section.id) }
                                                     )
                                                     .padding(vertical = 10.dp, horizontal = 15.dp),
-                                                text = "Секция $section",
+                                                text = section.title,
                                                 style = RassvetTheme.typography.cardBody1
                                                     .copy(color = RassvetTheme.colors.surfaceText)
                                             )
@@ -118,6 +119,16 @@ fun ProfileSectionsScreen(
                         Spacer(Modifier.height((NAV_BAR_HEIGHT + NAV_BAR_PADDING + 15).dp))
                     }
                 }
+
+                is ProfileSectionsViewState.NoSubscriptions ->
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        NoSubscriptionsScreen(
+                            onSubscriptionsClick = profileSectionsViewState.onSubscriptionsClick
+                        )
+                    }
             }
         }
     }

@@ -84,7 +84,7 @@ fun TrainingsListScreen(
                                 contentAlignment = Alignment.Center
                             ) {
                                 NoSubscriptionsScreen(
-                                    onSubscriptionsClick = trainingsListViewState.subscriptionsClick
+                                    onSubscriptionsClick = trainingsListViewState.onSubscriptionsClick
                                 )
                             }
                         }

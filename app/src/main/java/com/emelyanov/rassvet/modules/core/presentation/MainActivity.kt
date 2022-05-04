@@ -26,7 +26,6 @@ import com.emelyanov.rassvet.modules.authorization.presentation.components.Login
 import com.emelyanov.rassvet.modules.authorization.presentation.components.RegistrationScreen
 import com.emelyanov.rassvet.modules.core.domain.CoreViewModel
 import com.emelyanov.rassvet.modules.firstboot.presentation.components.FirstBootScreen
-import com.emelyanov.rassvet.modules.firstboot.presentation.components.SectionDetailsScreen
 import com.emelyanov.rassvet.modules.main.presentation.components.MainScreen
 import com.emelyanov.rassvet.navigation.core.CoreNavHost
 import com.emelyanov.rassvet.ui.theme.*

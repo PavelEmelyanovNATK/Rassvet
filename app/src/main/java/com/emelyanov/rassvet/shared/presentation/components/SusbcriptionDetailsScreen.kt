@@ -1,40 +1,31 @@
-package com.emelyanov.rassvet.modules.firstboot.presentation.components
+package com.emelyanov.rassvet.shared.presentation.components
 
 import android.annotation.SuppressLint
+import android.widget.Space
 import androidx.compose.foundation.*
-import androidx.compose.foundation.gestures.*
+import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.Velocity
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
-import coil.request.ImageRequest
 import com.emelyanov.rassvet.R
-import com.emelyanov.rassvet.modules.firstboot.domain.models.SectionDetailsViewState
-import com.emelyanov.rassvet.modules.firstboot.domain.models.SectionsListViewState
-import com.emelyanov.rassvet.shared.presentation.components.GradientButton
-import com.emelyanov.rassvet.shared.presentation.components.HighlightedBackButton
+import com.emelyanov.rassvet.shared.domain.models.SubscriptionDetailsViewState
 import com.emelyanov.rassvet.ui.theme.Black
-import com.emelyanov.rassvet.ui.theme.CreamyPurple
 import com.emelyanov.rassvet.ui.theme.RassvetTheme
 import io.iamjosephmj.flinger.bahaviours.StockFlingBehaviours
 import kotlin.math.roundToInt
@@ -49,8 +40,7 @@ private const val SURFACE_CORNER_RADIUS = 15f
 @ExperimentalMaterialApi
 @Composable
 fun SectionDetailsScreen(
-    sectionDetailsViewState: SectionDetailsViewState,
-    onAuthClick: () -> Unit,
+    viewState: SubscriptionDetailsViewState,
     onBackClick: () -> Unit
 ) {
     val surfaceSwipeState = rememberSwipeableState(initialValue = false)
@@ -133,63 +123,109 @@ fun SectionDetailsScreen(
                 ),
             contentAlignment = Alignment.TopCenter
         ) {
-            when(sectionDetailsViewState) {
-                is SectionDetailsViewState.Loading
-                    -> LoadingView()
-                is SectionDetailsViewState.PresentInfo
-                    -> PresentationView(
-                    viewState = sectionDetailsViewState,
+            when(viewState) {
+                is SubscriptionDetailsViewState.Loading
+                -> LoadingView()
+                is SubscriptionDetailsViewState.Error
+                -> ErrorView(message = viewState.message)
+                is SubscriptionDetailsViewState.PresentInfo
+                -> PresentationView(
+                    viewState = viewState,
                     bodyScrollState = bodyScrollState,
                     swipeState = surfaceSwipeState,
-                    pxSurfaceOffset = pxSurfaceOffset,
-                    onAuthClick = onAuthClick
-                ) 
-                is SectionDetailsViewState.Error
-                    -> ErrorView(message = sectionDetailsViewState.message)
+                    pxSurfaceOffset = pxSurfaceOffset
+                )
             }
         }
 
-        Column(
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .fillMaxWidth()
-                .padding(25.dp),
-            verticalArrangement = Arrangement.spacedBy(2.dp),
-            horizontalAlignment = Alignment.End
-        ) {
-
-            Box(
-                modifier = Modifier
-                    .clip(RoundedCornerShape(25.dp))
-                    .background(RassvetTheme.colors.surfaceBackground)
-                    .padding(start = 8.dp, top = 2.dp, end = 8.dp, bottom = 3.dp)
-            ) {
-                if(sectionDetailsViewState is SectionDetailsViewState.PresentInfo)
-                    Text(
-                        text = "${sectionDetailsViewState.price} р/мес",
-                        style = RassvetTheme.typography.cardBody1
-                            .copy(RassvetTheme.colors.surfaceText)
-                    )
-            }
-
-            GradientButton(
-                modifier = Modifier.fillMaxWidth(),
-                text = "Авторизоваться",
-                onClick = onAuthClick,
-                gradient = RassvetTheme.colors.positiveButton)
+        when(viewState) {
+            is SubscriptionDetailsViewState.Loading
+            -> ButtonLoadingView()
+            is SubscriptionDetailsViewState.PresentInfo
+            -> ButtonPresentationView(
+                viewState = viewState
+            )
         }
     }
 }
 
+private const val SHIMMER_TEXT_CR = 8
+
 @Composable
 private fun LoadingView() {
     Box(
-        modifier = Modifier
-            .fillMaxSize(),
-        contentAlignment = Alignment.Center
+        modifier = Modifier.fillMaxSize()
     ) {
-        CircularProgressIndicator(
-            color = RassvetTheme.colors.cardIcons
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(25.dp)
+        ) {
+            ShimmerBox(
+                Modifier.clip(RoundedCornerShape(SHIMMER_TEXT_CR.dp))
+            ) {
+                Text(
+                    modifier = it,
+                    text = "Заголовок",
+                    style = RassvetTheme.typography.title
+                        .copy(RassvetTheme.colors.surfaceText)
+                )
+            }
+
+            (0..5).forEach {
+                Spacer(Modifier.height(3.dp))
+
+                ShimmerBox(
+                    Modifier.clip(RoundedCornerShape(SHIMMER_TEXT_CR.dp))
+                ) {
+                    Text(
+                        modifier = it,
+                        text = "viewState.description",
+                        style = RassvetTheme.typography.cardBody1
+                            .copy(RassvetTheme.colors.surfaceText)
+                    )
+                }
+            }
+
+            Spacer(Modifier.height(100.dp))
+        }
+
+        Box(
+            modifier = Modifier
+                .padding(top = 12.dp)
+                .size(66.dp, 11.dp)
+                .clip(RoundedCornerShape(50))
+                .border(
+                    width = (-2).dp,
+                    color = RassvetTheme.colors.surfaceBackground,
+                    shape = RoundedCornerShape(50)
+                )
+                .background(
+                    RassvetTheme.colors.surfaceBackground
+                )
+                .align(Alignment.TopCenter),
+            contentAlignment = Alignment.Center
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(60.dp, 5.dp)
+                    .clip(RoundedCornerShape(50))
+                    .border(
+                        width = (-2).dp,
+                        color = RassvetTheme.colors.surfaceBackground,
+                        shape = RoundedCornerShape(50)
+                    )
+                    .background(
+                        RassvetTheme.colors.surfaceText
+                            .copy(alpha = 0.65f)
+                    )
+            )
+        }
+
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(20.dp)
         )
     }
 }
@@ -197,11 +233,10 @@ private fun LoadingView() {
 @ExperimentalMaterialApi
 @Composable
 private fun PresentationView(
-    viewState: SectionDetailsViewState.PresentInfo,
+    viewState: SubscriptionDetailsViewState.PresentInfo,
     bodyScrollState: ScrollState,
     swipeState: SwipeableState<Boolean>,
     pxSurfaceOffset: Float,
-    onAuthClick: () -> Unit
 ) {
     Box(
         modifier = Modifier.fillMaxSize()
@@ -281,12 +316,106 @@ private fun PresentationView(
 private fun ErrorView(
     message: String
 ) {
-    com.emelyanov.rassvet.shared.presentation.components.ErrorView(
+    ErrorView(
         modifier = Modifier
             .fillMaxSize()
             .padding(20.dp),
         message = message
     )
+}
+
+@Composable
+fun BoxScope.ButtonLoadingView() {
+    Column(
+        modifier = Modifier
+            .align(Alignment.BottomCenter)
+            .fillMaxWidth()
+            .padding(25.dp),
+        verticalArrangement = Arrangement.spacedBy(2.dp),
+        horizontalAlignment = Alignment.End
+    ) {
+
+        Box(
+            modifier = Modifier
+                .clip(RoundedCornerShape(25.dp))
+                .background(RassvetTheme.colors.surfaceBackground)
+                .padding(start = 8.dp, top = 2.dp, end = 8.dp, bottom = 3.dp)
+        ) {
+            ShimmerBox(
+                Modifier.clip(RoundedCornerShape(8.dp))
+            ) {
+                Text(
+                    modifier = it,
+                    text = "999 р/мес",
+                    style = RassvetTheme.typography.cardBody1
+                        .copy(RassvetTheme.colors.surfaceText)
+                )
+            }
+        }
+
+        ShimmerBox(
+            Modifier.clip(RoundedCornerShape(50))
+        ) {
+            GradientButton(
+                modifier = it.fillMaxWidth(),
+                text = "Авторизоваться",
+                onClick = {},
+                gradient = RassvetTheme.colors.positiveButton)
+        }
+    }
+}
+
+@Composable
+fun BoxScope.ButtonPresentationView(
+    viewState: SubscriptionDetailsViewState.PresentInfo
+) {
+    Column(
+        modifier = Modifier
+            .align(Alignment.BottomCenter)
+            .fillMaxWidth()
+            .padding(25.dp),
+        verticalArrangement = Arrangement.spacedBy(2.dp),
+        horizontalAlignment = Alignment.End
+    ) {
+
+        Box(
+            modifier = Modifier
+                .clip(RoundedCornerShape(25.dp))
+                .background(RassvetTheme.colors.surfaceBackground)
+                .padding(start = 8.dp, top = 2.dp, end = 8.dp, bottom = 3.dp)
+        ) {
+            Text(
+                text = "${viewState.price} р/мес",
+                style = RassvetTheme.typography.cardBody1
+                    .copy(RassvetTheme.colors.surfaceText)
+            )
+        }
+
+        when(viewState) {
+            is SubscriptionDetailsViewState.PresentInfo.Unauthorized -> {
+                GradientButton(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = "Авторизоваться",
+                    onClick = viewState.onAuthClick,
+                    gradient = RassvetTheme.colors.positiveButton)
+            }
+            is SubscriptionDetailsViewState.PresentInfo.Unsubscribed -> {
+                GradientButton(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = "Записаться",
+                    onClick = viewState.onSubscribeClick,
+                    gradient = RassvetTheme.colors.positiveButton)
+            }
+            is SubscriptionDetailsViewState.PresentInfo.Subscribed -> {
+                GradientButton(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = "Отписаться",
+                    onClick = viewState.onUnsubscribeClick,
+                    gradient = RassvetTheme.colors.negativeButton)
+            }
+        }
+
+    }
 }
 
 @ExperimentalMaterialApi
@@ -329,23 +458,5 @@ private class NestedScrollConnectionImpl<T> (
         val delta = available.y
         swipeableState.performFling(delta)
         return super.onPostFling(consumed, available)
-    }
-}
-
-@ExperimentalMaterialApi
-@ExperimentalFoundationApi
-@Preview
-@Composable
-private fun Preview(){
-    RassvetTheme {
-        SectionDetailsScreen(
-            onAuthClick = {},
-            sectionDetailsViewState = SectionDetailsViewState.PresentInfo(
-                "asdasd",
-                "asdasd",
-                1000
-            ),
-            onBackClick = {}
-        )
     }
 }

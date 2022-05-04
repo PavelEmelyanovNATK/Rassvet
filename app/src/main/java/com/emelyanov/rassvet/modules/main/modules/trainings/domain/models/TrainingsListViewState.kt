@@ -1,11 +1,12 @@
 package com.emelyanov.rassvet.modules.main.modules.trainings.domain.models
 
 import androidx.compose.runtime.MutableState
+import com.emelyanov.rassvet.shared.domain.models.Section
 
 sealed class TrainingsListViewState {
     object Loading : TrainingsListViewState()
     data class NoSubscriptions(
-        val subscriptionsClick: () -> Unit
+        val onSubscriptionsClick: () -> Unit
     ) : TrainingsListViewState()
     data class PresentInfo(
         val pagesCount: Int = 1,

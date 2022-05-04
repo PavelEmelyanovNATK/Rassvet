@@ -6,11 +6,10 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.emelyanov.rassvet.modules.main.modules.trainings.domain.models.Section
+import com.emelyanov.rassvet.shared.domain.models.Section
 import com.emelyanov.rassvet.modules.main.modules.trainings.domain.models.TrainingsListViewState
 import com.emelyanov.rassvet.modules.main.modules.trainings.domain.usecases.*
-import com.emelyanov.rassvet.navigation.trainings.TrainingsDestinations
-import com.emelyanov.rassvet.navigation.trainings.TrainingsNavProvider
+import com.emelyanov.rassvet.shared.domain.usecases.NavigateToAllSubscriptionsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -68,7 +67,7 @@ constructor(
 
         if(!sections.any { it.id > 0}) {
             _trainingsListViewState.value = TrainingsListViewState.NoSubscriptions(
-                subscriptionsClick = ::goToSubscriptions
+                onSubscriptionsClick = ::goToSubscriptions
             )
             return
         }
@@ -108,7 +107,7 @@ constructor(
 
         if(!sections.any { it.id > 0}) {
             _trainingsListViewState.value = TrainingsListViewState.NoSubscriptions(
-                subscriptionsClick = ::goToSubscriptions
+                onSubscriptionsClick = ::goToSubscriptions
             )
             return
         }

@@ -13,7 +13,6 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.emelyanov.rassvet.modules.main.modules.subscriptions.domain.SubscriptionsViewModel
-import com.emelyanov.rassvet.modules.main.modules.subscriptions.presentation.SubscriptionDetailsScreen
 import com.emelyanov.rassvet.modules.main.modules.subscriptions.presentation.SubscriptionsContainer
 import com.emelyanov.rassvet.modules.main.modules.subscriptions.presentation.SubscriptionsTab
 import com.emelyanov.rassvet.navigation.firstboot.FirstBootDestinations
@@ -89,12 +88,7 @@ fun SubscriptionsNavHost(
                 )
             }
         ) {
-            SubscriptionDetailsScreen(
-                onActionClick = {},
-                onBackClick = {
-                    subscriptionsViewModel.subscriptionsNavProvider.navigateTo(SubscriptionsDestinations.PopBack)
-                }
-            )
+
         }
     }
 }

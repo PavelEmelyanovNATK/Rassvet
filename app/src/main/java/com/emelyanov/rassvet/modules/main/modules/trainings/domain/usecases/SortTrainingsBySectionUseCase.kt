@@ -1,8 +1,7 @@
 package com.emelyanov.rassvet.modules.main.modules.trainings.domain.usecases
 
-import com.emelyanov.rassvet.modules.main.modules.trainings.domain.models.Section
+import com.emelyanov.rassvet.shared.domain.models.Section
 import com.emelyanov.rassvet.modules.main.modules.trainings.domain.models.Training
-import com.emelyanov.rassvet.shared.domain.models.responseModels.TrainingResponse
 import javax.inject.Inject
 
 

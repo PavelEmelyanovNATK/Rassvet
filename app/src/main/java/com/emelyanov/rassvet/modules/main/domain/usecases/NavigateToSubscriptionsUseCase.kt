@@ -1,4 +1,4 @@
-package com.emelyanov.rassvet.modules.main.modules.trainings.domain.usecases
+package com.emelyanov.rassvet.modules.main.domain.usecases
 
 import com.emelyanov.rassvet.navigation.main.MainDestinations
 import com.emelyanov.rassvet.navigation.main.MainNavProvider
@@ -6,20 +6,19 @@ import com.emelyanov.rassvet.navigation.subscriptions.SubscriptionsDestinations
 import com.emelyanov.rassvet.navigation.subscriptions.SubscriptionsListDestinations
 import com.emelyanov.rassvet.navigation.subscriptions.SubscriptionsListNavProvider
 import com.emelyanov.rassvet.navigation.subscriptions.SubscriptionsNavProvider
-import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ViewModelComponent
 import javax.inject.Inject
 
-class NavigateToAllSubscriptionsUseCase
+
+class NavigateToSubscriptionsUseCase
 @Inject
 constructor(
     private val mainNavProvider: MainNavProvider,
     private val subscriptionsNavProvider: SubscriptionsNavProvider,
     private val subscriptionsListNavProvider: SubscriptionsListNavProvider
 ) {
-    operator fun invoke()  {
+    operator fun invoke() {
         mainNavProvider.navigateTo(MainDestinations.Subscriptions)
         subscriptionsNavProvider.navigateTo(SubscriptionsDestinations.SubscriptionsList)
-        subscriptionsListNavProvider.navigateTo(SubscriptionsListDestinations.AllSubscriptions)
+        subscriptionsListNavProvider.navigateTo(SubscriptionsListDestinations.ClientSubscriptions)
     }
 }

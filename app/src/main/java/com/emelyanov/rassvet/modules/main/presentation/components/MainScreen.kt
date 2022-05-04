@@ -22,6 +22,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.emelyanov.rassvet.shared.presentation.components.SolidBackgroundBox
 import com.emelyanov.rassvet.ui.theme.RassvetTheme
@@ -70,15 +71,17 @@ fun MainScreen(
                 )
             )
 
+            val curBackEntry = mainNavController.currentBackStackEntryAsState()
+
             RassvetNavBar(
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
                     .padding(NAV_BAR_PADDING.dp)
                     .offset(y = navbarOffset.value.dp),
-                mainNavController = mainNavController,
-                onTabClick = {
-                    mainViewModel.mainNavProvider.navigateTo(it)
-                }
+                currentDestination = curBackEntry.value?.destination?.route ?: "",
+                onTrainingsTabClick = mainViewModel::trainingsTabClick,
+                onSubscriptionsTabClick = mainViewModel::subscriptionsTabClick,
+                onProfileTabClick = mainViewModel::profileTabClick
             )
         }
     }

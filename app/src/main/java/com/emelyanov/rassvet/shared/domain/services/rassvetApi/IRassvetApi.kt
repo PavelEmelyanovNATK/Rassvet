@@ -68,4 +68,10 @@ interface IRassvetApi {
         @Header("Authorization") authHeader: String,
         @Path("id") id: Int
     ) : Response<BaseResponse<TrainingDetailsResponse>>
+
+    @GET("me/section-details/{id}")
+    suspend fun fetchClientSectionDetails(
+        @Header("Authorization") authHeader: String,
+        @Path("id") id: Int
+    ) : Response<BaseResponse<ClientSectionDetailsResponse>>
 }

@@ -14,11 +14,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.emelyanov.rassvet.modules.main.modules.subscriptions.domain.ClientSubscriptionsListViewModel
 import com.emelyanov.rassvet.modules.main.modules.subscriptions.domain.SubscriptionsContainerViewModel
-import com.emelyanov.rassvet.modules.main.modules.subscriptions.domain.models.AllSubscriptionsListViewModel
+import com.emelyanov.rassvet.modules.main.modules.subscriptions.domain.AllSubscriptionsListViewModel
 import com.emelyanov.rassvet.modules.main.modules.subscriptions.presentation.AllSubscriptionsPage
 import com.emelyanov.rassvet.modules.main.modules.subscriptions.presentation.ClientSubscriptionsPage
-import com.emelyanov.rassvet.modules.main.modules.subscriptions.presentation.SubscriptionDetailsScreen
-import com.emelyanov.rassvet.modules.main.modules.subscriptions.presentation.SubscriptionsTab
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import kotlinx.coroutines.flow.launchIn
