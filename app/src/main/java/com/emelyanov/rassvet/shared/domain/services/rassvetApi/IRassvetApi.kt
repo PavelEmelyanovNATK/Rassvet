@@ -24,11 +24,48 @@ interface IRassvetApi {
     suspend fun register(@Body registerRequest: RegisterRequest) : Response<BaseResponse<Unit>>
 
     @GET("me/info")
-    suspend fun fetchClientInfo(@Header("Authorization") authHeader: String) : Response<BaseResponse<ClientInfoResponse>>
+    suspend fun fetchClientInfo(
+        @Header("Authorization") authHeader: String
+    ) : Response<BaseResponse<ClientInfoResponse>>
 
     @POST("auth/refresh")
     suspend fun refreshTokens(@Body refreshRequest: RefreshRequest) : Response<BaseResponse<TokensResponse>>
 
     @POST("auth/logout")
     suspend fun logout(@Body refreshRequest: RefreshRequest) : Response<BaseResponse<Unit>>
+
+    @GET("me/active-trainings")
+    suspend fun fetchClientActiveTrainings(
+        @Header("Authorization") authHeader: String
+    ) : Response<BaseResponse<List<TrainingResponse>>>
+
+    @GET("me/active-trainings/{sectionId}")
+    suspend fun fetchClientActiveTrainingsBySection(
+        @Header("Authorization") authHeader: String,
+        @Path("sectionId") sectionId: Int
+    ) : Response<BaseResponse<List<TrainingResponse>>>
+
+    @GET("me/past-trainings/{pagesCount}")
+    suspend fun fetchClientPastTrainings(
+        @Header("Authorization") authHeader: String,
+        @Path("pagesCount") pagesCount: Int,
+    ) : Response<BaseResponse<List<TrainingResponse>>>
+
+    @GET("me/past-training/{sectionId}/{pagesCount}")
+    suspend fun fetchClientPastTrainingsBySection(
+        @Header("Authorization") authHeader: String,
+        @Path("sectionId") sectionId: Int,
+        @Path("pagesCount") pagesCount: Int
+    ) : Response<BaseResponse<List<TrainingResponse>>>
+
+    @GET("me/sections")
+    suspend fun fetchClientSections(
+        @Header("Authorization") authHeader: String
+    ) : Response<BaseResponse<List<SectionResponse>>>
+
+    @GET("me/training-details/{id}")
+    suspend fun fetchTrainingDetails(
+        @Header("Authorization") authHeader: String,
+        @Path("id") id: Int
+    ) : Response<BaseResponse<TrainingDetailsResponse>>
 }

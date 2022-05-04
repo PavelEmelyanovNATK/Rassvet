@@ -40,6 +40,27 @@ fun Date.formatYear() : Int{
 }
 
 @SuppressLint("SimpleDateFormat")
+fun Date.formatHours() : String{
+    val dateFormatter = SimpleDateFormat("HH")
+
+    return dateFormatter.format(this)
+}
+
+@SuppressLint("SimpleDateFormat")
+fun Date.formatMinutes() : String{
+    val dateFormatter = SimpleDateFormat("mm")
+
+    return dateFormatter.format(this)
+}
+
+@SuppressLint("SimpleDateFormat")
+fun Date.formatShortTime() : Int{
+    val dateFormatter = SimpleDateFormat("HH:mm")
+
+    return dateFormatter.format(this).toInt()
+}
+
+@SuppressLint("SimpleDateFormat")
 fun getDateFromString(date: String): Date {
     val dateFormatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
 
@@ -107,3 +128,14 @@ fun getDaysInMonth(month: Int, year: Int)
 
 fun isYearLeap(year: Int) : Boolean
         = (year % 4 == 0 && year % 100 != 0) || year % 400 == 0
+
+@SuppressLint("SimpleDateFormat")
+fun Date.formatToBeautifulDateTimeString() : String
+= "${this.formatDay()} ${getMonthName(this.formatMonth())} ${this.formatHours()}:${this.formatMinutes()}"
+
+fun getTimeStringFromMinutest(minutes: Int)
+= when {
+    minutes <= 60 -> "$minutes мин"
+    minutes % 60 == 0 -> "${minutes / 60} ч"
+    else -> "${minutes / 60} ч ${minutes % 60} мин"
+}

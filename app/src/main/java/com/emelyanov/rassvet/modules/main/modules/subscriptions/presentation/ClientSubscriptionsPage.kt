@@ -103,7 +103,8 @@ fun ClientSubscriptionsPage(
                     contentAlignment = Alignment.Center
                 ) {
                     NoSubscriptionsScreen(
-                        modifier = Modifier.fillMaxSize()
+                        modifier = Modifier.fillMaxSize(),
+                        onSubscriptionsClick = {}
                     )
                 }
             }

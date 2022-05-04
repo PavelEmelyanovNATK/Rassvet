@@ -16,12 +16,16 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.emelyanov.rassvet.R
+import com.emelyanov.rassvet.shared.domain.utils.formatToBeautifulDateTimeString
+import com.emelyanov.rassvet.shared.domain.utils.getTimeStringFromMinutest
 import com.emelyanov.rassvet.ui.theme.Gray
 import com.emelyanov.rassvet.ui.theme.RassvetTheme
+import java.util.*
 
 @Composable
 fun TrainingGroup(
     modifier:Modifier = Modifier,
+    title: String,
     content: @Composable TrainingGroupScope.() -> Unit
 ) {
     Surface(
@@ -30,12 +34,10 @@ fun TrainingGroup(
         color = RassvetTheme.colors.surfaceBackground,
         elevation = 2.dp
     ) {
-        Column(
-            //modifier = Modifier.padding(15.dp)
-        ) {
+        Column {
             Text(
                 modifier = Modifier.padding(start = 15.dp, top = 15.dp, end = 15.dp, bottom = 15.dp),
-                text = "Секция",
+                text = title,
                 style = RassvetTheme.typography.cardGroupTitle
                     .copy(color = RassvetTheme.colors.surfaceText)
             )
@@ -48,6 +50,10 @@ fun TrainingGroup(
 @Composable
 fun TrainingShortCard(
     modifier: Modifier = Modifier,
+    title: String,
+    durationInMinutes: Int,
+    trainerFullName: String,
+    startDate: Date,
     onClick: () -> Unit
 ) {
     Surface(
@@ -66,7 +72,7 @@ fun TrainingShortCard(
         ) {
             Text(
                 //modifier = Modifier.padding(start = 20.dp, top = 5.dp, end = 20.dp),
-                text = "Заголовок",
+                text = title,
                 style = RassvetTheme.typography.cardTitle
                     .copy(color = RassvetTheme.colors.surfaceText)
             )
@@ -85,7 +91,7 @@ fun TrainingShortCard(
                 Spacer(Modifier.width(10.dp))
 
                 Text(
-                    text = "1ч 30м",
+                    text = getTimeStringFromMinutest(durationInMinutes),
                     style = RassvetTheme.typography.cardBody2
                         .copy(color = RassvetTheme.colors.cardIcons)
                 )
@@ -93,21 +99,11 @@ fun TrainingShortCard(
 
             Spacer(Modifier.height(2.dp))
 
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = "Тренер: ",
-                    style = RassvetTheme.typography.cardBody2
-                        .copy(color = RassvetTheme.colors.surfaceText)
-                )
-
-                Text(
-                    text = "Тиньков Олег Олегович",
-                    style = RassvetTheme.typography.cardBody2
-                        .copy(color = RassvetTheme.colors.surfaceText)
-                )
-            }
+            Text(
+                text = "Тренер: $trainerFullName",
+                style = RassvetTheme.typography.cardBody2
+                    .copy(color = RassvetTheme.colors.surfaceText)
+            )
 
             Spacer(Modifier.height(2.dp))
 
@@ -124,7 +120,7 @@ fun TrainingShortCard(
                 Spacer(Modifier.width(10.dp))
 
                 Text(
-                    text = "10 янв 8:00",
+                    text = startDate.formatToBeautifulDateTimeString(),
                     style = RassvetTheme.typography.cardBody2
                         .copy(color = RassvetTheme.colors.surfaceText)
                 )
@@ -136,6 +132,10 @@ fun TrainingShortCard(
 interface TrainingGroupScope {
     @Composable
     fun TrainingGroupItem(
+        title: String,
+        durationInMinutes: Int,
+        trainerFullName: String,
+        startDate: Date,
         onClick: () -> Unit
     ) {
         Column(
@@ -150,7 +150,7 @@ interface TrainingGroupScope {
             )
             Text(
                 modifier = Modifier.padding(start = 20.dp, top = 5.dp, end = 20.dp),
-                text = "Заголовок",
+                text = title,
                 style = RassvetTheme.typography.cardTitle
                     .copy(color = RassvetTheme.colors.surfaceText)
             )
@@ -170,7 +170,7 @@ interface TrainingGroupScope {
                 Spacer(Modifier.width(10.dp))
 
                 Text(
-                    text = "1ч 30м",
+                    text = getTimeStringFromMinutest(durationInMinutes),
                     style = RassvetTheme.typography.cardBody2
                         .copy(color = RassvetTheme.colors.cardIcons)
                 )
@@ -178,22 +178,12 @@ interface TrainingGroupScope {
 
             Spacer(Modifier.height(3.dp))
 
-            Row(
+            Text(
                 modifier = Modifier.padding(horizontal = 20.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = "Тренер: ",
-                    style = RassvetTheme.typography.cardBody2
-                        .copy(color = RassvetTheme.colors.surfaceText)
-                )
-
-                Text(
-                    text = "Тиньков Олег Олегович",
-                    style = RassvetTheme.typography.cardBody2
-                        .copy(color = RassvetTheme.colors.surfaceText)
-                )
-            }
+                text = "Тренер: $trainerFullName",
+                style = RassvetTheme.typography.cardBody2
+                    .copy(color = RassvetTheme.colors.surfaceText)
+            )
 
             Spacer(Modifier.height(3.dp))
 
@@ -212,7 +202,7 @@ interface TrainingGroupScope {
                 Spacer(Modifier.width(10.dp))
 
                 Text(
-                    text = "10 янв 8:00",
+                    text = startDate.formatToBeautifulDateTimeString(),
                     style = RassvetTheme.typography.cardBody2
                         .copy(color = RassvetTheme.colors.surfaceText)
                 )

@@ -2,24 +2,22 @@ package com.emelyanov.rassvet.modules.main.modules.trainings.presentation.compon
 
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.spring
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.key
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.emelyanov.rassvet.modules.main.modules.trainings.domain.models.TrainingsListViewState
 import com.emelyanov.rassvet.modules.main.presentation.components.NAV_BAR_HEIGHT
 import com.emelyanov.rassvet.modules.main.presentation.components.NAV_BAR_PADDING
+import com.emelyanov.rassvet.shared.presentation.components.ErrorView
 import com.emelyanov.rassvet.shared.presentation.components.NoSubscriptionsScreen
 import com.emelyanov.rassvet.shared.presentation.components.SolidBackgroundBox
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -70,6 +68,14 @@ fun TrainingsListScreen(
                         is TrainingsListViewState.Loading -> {
 
                         }
+                        is TrainingsListViewState.Error -> {
+                            ErrorView(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .align(Alignment.Center),
+                                message = trainingsListViewState.message
+                            )
+                        }
                         is TrainingsListViewState.NoSubscriptions -> {
                             Box(
                                 modifier = Modifier
@@ -77,7 +83,9 @@ fun TrainingsListScreen(
                                     .verticalScroll(rememberScrollState()),
                                 contentAlignment = Alignment.Center
                             ) {
-                                NoSubscriptionsScreen()
+                                NoSubscriptionsScreen(
+                                    onSubscriptionsClick = trainingsListViewState.subscriptionsClick
+                                )
                             }
                         }
                         is TrainingsListViewState.PresentInfo -> {
@@ -90,13 +98,11 @@ fun TrainingsListScreen(
                                 when(page) {
                                     0 -> ActiveTrainingsPage(
                                         topOffset = pagerOffset.value,
-                                        activeTrainings = trainingsListViewState.activeTrainings,
-                                        onTrainingClick = trainingsListViewState.onTrainingClick
+                                        viewState = trainingsListViewState
                                     )
                                     1 -> PastTrainingsPage(
                                         topOffset = pagerOffset.value,
-                                        pastTrainings = trainingsListViewState.pastTrainings,
-                                        onTrainingClick = trainingsListViewState.onTrainingClick
+                                        viewState = trainingsListViewState
                                     )
                                 }
                             }
@@ -104,7 +110,7 @@ fun TrainingsListScreen(
                     }
                 }
 
-                TrainingsDropdownBar(
+                TrainingsExpanderBar(
                     pagerState = pagerState,
                     barState = toolbarExpanderState,
                     trainingsListViewState = trainingsListViewState,
@@ -119,8 +125,7 @@ fun TrainingsListScreen(
 @Composable
 fun ActiveTrainingsPage(
     topOffset: Dp = 0.dp,
-    activeTrainings: Map<Int, List<Int>>,
-    onTrainingClick: (Int) -> Unit
+    viewState: TrainingsListViewState.PresentInfo
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
@@ -132,13 +137,19 @@ fun ActiveTrainingsPage(
             Spacer(Modifier.height(topOffset))
         }
 
-        activeTrainings.forEach { group ->
+        viewState.activeTrainings.forEach { group ->
             item {
-                key(group.key) {
-                    TrainingGroup() {
-                        group.value.forEach {
+                key(group.key.id) {
+                    TrainingGroup(
+                        title = group.key.title
+                    ) {
+                        group.value.forEach { training ->
                             TrainingGroupItem(
-                                onClick = { onTrainingClick(it) }
+                                title = training.title,
+                                durationInMinutes = training.durationInMinutes,
+                                trainerFullName = training.trainerFullName,
+                                startDate = training.startDate,
+                                onClick = { viewState.onTrainingClick(training.id) }
                             )
                         }
                     }
@@ -151,8 +162,7 @@ fun ActiveTrainingsPage(
 @Composable
 fun PastTrainingsPage(
     topOffset: Dp = 0.dp,
-    pastTrainings: List<Int>,
-    onTrainingClick: (Int) -> Unit
+    viewState: TrainingsListViewState.PresentInfo
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
@@ -164,11 +174,15 @@ fun PastTrainingsPage(
             Spacer(Modifier.height(topOffset))
         }
 
-        pastTrainings.forEach { training ->
+        viewState.pastTrainings.forEach { training ->
             item {
                 key(training) {
                     TrainingShortCard(
-                        onClick = { onTrainingClick(training) }
+                        title = training.title,
+                        durationInMinutes = training.durationInMinutes,
+                        trainerFullName = training.trainerFullName,
+                        startDate = training.startDate,
+                        onClick = { viewState.onTrainingClick(training.id) }
                     )
                 }
             }

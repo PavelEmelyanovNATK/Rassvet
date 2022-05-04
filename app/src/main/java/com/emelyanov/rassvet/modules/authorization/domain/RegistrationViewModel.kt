@@ -22,14 +22,14 @@ import javax.inject.Inject
 class RegistrationViewModel
 @Inject
 constructor(
-    private val _authNavProvider: AuthNavProvider,
     private val validateEmail: ValidateEmailUseCase,
     private val validatePassword: ValidatePasswordUseCase,
     private val validateConfirmPassword: ValidateConfirmPasswordUseCase,
     private val validateRequiredField: ValidateRequiredFieldUseCase,
     private val validateBirthDate: ValidateBirthDateUseCase,
     private val register: RegisterUseCase,
-    private val login: LogInUseCase
+    private val login: LogInUseCase,
+    private val popBack: PopBackFromRegistrationUseCase
 ) : ViewModel() {
     private val _notificationsFlow: MutableSharedFlow<String?> = MutableSharedFlow(replay = 1)
     val notificationsFlow: SharedFlow<String?> = _notificationsFlow
@@ -46,7 +46,7 @@ constructor(
     val viewState: State<RegistrationViewState>
         get() = _viewState
 
-    private fun backClick() = _authNavProvider.navigateTo(AuthDestinations.PopBack)
+    private fun backClick() = popBack()
 
     private fun registerClick() {
         viewModelScope.launch {

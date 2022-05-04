@@ -52,7 +52,7 @@ class Services {
     fun provideAuthorizationService(
         rassvetApi: IRassvetApi,
         saveTokensUseCase: SaveTokensUseCase,
-        getAccessTokenUseCase: GetAccessTokenUseCase,
+        getAuthHeaderUseCase: GetAuthHeaderUseCase,
         getRefreshTokenUseCase: GetRefreshTokenUseCase,
         provideAuthedRequestUseCase: ProvideAuthedRequestUseCase,
         clearTokensUseCase: ClearTokensUseCase
@@ -61,7 +61,7 @@ class Services {
         rassvetApi,
         saveTokensUseCase,
         getRefreshTokenUseCase,
-        getAccessTokenUseCase,
+        getAuthHeaderUseCase,
         provideAuthedRequestUseCase,
         clearTokensUseCase
     )

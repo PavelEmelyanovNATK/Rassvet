@@ -40,8 +40,8 @@ constructor(
                     request().body()!!.data
                 }
                 response.body() == null -> throw EmptyBodyException()
-                response.body()?.code == 200 -> return response.body()!!.data
-                else -> throw java.lang.Exception(response.body()?.errors)
+                response.body()?.code == 200 -> return response.body()?.data
+                else -> throw Exception(response.body()?.errors)
             }
         } catch (ex: SocketTimeoutException) {
             throw Exception("Сервер не отвечает...")

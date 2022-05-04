@@ -1,5 +1,6 @@
 package com.emelyanov.rassvet.navigation.trainings
 
+import android.util.Log
 import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.spring
@@ -10,6 +11,9 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
+import androidx.navigation.navArgument
+import com.emelyanov.rassvet.modules.main.modules.trainings.domain.TrainingDetailsViewModel
 import com.emelyanov.rassvet.modules.main.modules.trainings.domain.TrainingsListViewModel
 import com.emelyanov.rassvet.modules.main.modules.trainings.domain.TrainingsViewModel
 import com.emelyanov.rassvet.modules.main.modules.trainings.presentation.components.TrainingDetailsScreen
@@ -66,6 +70,7 @@ fun TrainingsNavHost(
 
         composable(
             route = TrainingsDestinations.TrainingDetailsCompRoute.route,
+            arguments = listOf(navArgument("id") { type = NavType.IntType }),
             enterTransition = {
                 slideIntoContainer(
                     towards = AnimatedContentScope.SlideDirection.Left,
@@ -85,12 +90,20 @@ fun TrainingsNavHost(
                     animationSpec = spring()
                 )
             }
-        ) {
+        ) { backStackEntry ->
             LocalNavBarVisibilityState.current.value = false
+
+            val trainingDetailsViewModel = hiltViewModel<TrainingDetailsViewModel>()
+            val id = backStackEntry.arguments?.getInt("id") ?: 0
+            Log.d("Section ID", "$id")
+
+            LaunchedEffect(key1 = true) {
+                trainingDetailsViewModel.fetchInfo(id)
+            }
+
             TrainingDetailsScreen(
-                onBackClick = {
-                    trainingsViewModel.trainingsNavProvider.navigateTo(TrainingsDestinations.PopBack)
-                }
+                trainingDetailsViewState = trainingDetailsViewModel.viewState.value,
+                onBackClick = trainingDetailsViewModel::backClick
             )
         }
     }

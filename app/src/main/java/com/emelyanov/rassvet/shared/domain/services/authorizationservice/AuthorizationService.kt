@@ -12,14 +12,13 @@ import com.emelyanov.rassvet.shared.domain.utils.requestWrapper
 import com.emelyanov.rassvet.shared.domain.utils.toClientInfo
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import java.lang.Exception
 
 class AuthorizationService
 constructor(
     private val rassvetApi: IRassvetApi,
     private val saveTokens: SaveTokensUseCase,
     private val getRefreshToken: GetRefreshTokenUseCase,
-    private val getAccessToken: GetAccessTokenUseCase,
+    private val getAuthHeader: GetAuthHeaderUseCase,
     private val provideAuthedRequest: ProvideAuthedRequestUseCase,
     private val clearTokens: ClearTokensUseCase
 ): IAuthorizationService {
@@ -38,7 +37,7 @@ constructor(
             saveTokens(tokens)
 
             val userInfo = requestWrapper {
-                rassvetApi.fetchClientInfo(AUTH_PREFIX + getAccessToken())
+                rassvetApi.fetchClientInfo(getAuthHeader())
             }!!.toClientInfo()
 
             _authorizationState.tryEmit(
@@ -66,7 +65,7 @@ constructor(
     override suspend fun authorize() {
         try {
             val userInfo = provideAuthedRequest {
-                rassvetApi.fetchClientInfo(AUTH_PREFIX + getAccessToken())
+                rassvetApi.fetchClientInfo(getAuthHeader())
             }!!.toClientInfo()
 
             _authorizationState.tryEmit(

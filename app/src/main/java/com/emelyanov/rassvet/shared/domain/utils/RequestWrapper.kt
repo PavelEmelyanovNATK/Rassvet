@@ -20,7 +20,7 @@ fun <T> processResponse(response: Response<BaseResponse<T>>): T? {
     when {
         response.body() == null -> throw EmptyBodyException()
         response.body()?.code == 401 -> throw UnauthorizedException()
-        response.body()?.code == 200 -> return response.body()!!.data
+        response.body()?.code == 200 -> return response.body()?.data
         else -> throw java.lang.Exception(response.body()?.errors)
     }
 }

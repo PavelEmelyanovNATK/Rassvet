@@ -12,7 +12,8 @@ import com.emelyanov.rassvet.ui.theme.RassvetTheme
 
 @Composable
 fun NoSubscriptionsScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onSubscriptionsClick: () -> Unit
 ) {
     Box(
         modifier = modifier,
@@ -36,7 +37,7 @@ fun NoSubscriptionsScreen(
             GradientButton(
                 modifier = Modifier.width(190.dp),
                 text = "Записаться",
-                onClick = { /*TODO*/ },
+                onClick = onSubscriptionsClick,
                 gradient = RassvetTheme.colors.positiveButton
             )
         }

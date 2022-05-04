@@ -34,7 +34,7 @@ private const val TEXT_HEIGHT = 20f
 @ExperimentalPagerApi
 @ExperimentalMaterialApi
 @Composable
-fun TrainingsDropdownBar(
+fun TrainingsExpanderBar(
     modifier: Modifier = Modifier,
     pagerState: PagerState,
     barState: SwipeableState<Boolean>,
@@ -91,6 +91,8 @@ fun TrainingsDropdownBar(
     ) {
         when (trainingsListViewState) {
             is TrainingsListViewState.PresentInfo -> {
+                var dropdownState by remember { mutableStateOf(false) }
+
                 Row(
                     modifier = Modifier.padding(bottom =  100.dp),
                     horizontalArrangement = Arrangement.spacedBy(24.dp)
@@ -169,11 +171,17 @@ fun TrainingsDropdownBar(
                             .copy(color = RassvetTheme.colors.logoColor)
                     )
 
+                    val ins = remember { MutableInteractionSource() }
                     Row(
+                        modifier = Modifier.clickable (
+                            interactionSource = ins,
+                            indication = null,
+                            onClick ={ dropdownState = !dropdownState }
+                        ),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = "Любая",
+                            text = trainingsListViewState.selectedSection.value.title,
                             style = RassvetTheme.typography.cardBody2
                                 .copy(color = RassvetTheme.colors.logoColor)
                         )
@@ -183,6 +191,29 @@ fun TrainingsDropdownBar(
                             contentDescription = "Expander icon",
                             tint = RassvetTheme.colors.logoColor
                         )
+
+                        DropdownMenu(
+                            modifier = Modifier.background(RassvetTheme.colors.surfaceBackground),
+                            expanded = dropdownState,
+                            onDismissRequest = {
+                                dropdownState = false
+                            }
+                        ) {
+                            trainingsListViewState.sections.forEach{ section ->
+                                DropdownMenuItem(
+                                    onClick ={
+                                        trainingsListViewState.onSectionChange(section)
+                                        dropdownState = false
+                                    }
+                                ) {
+                                    Text(
+                                        text = section.title,
+                                        style = RassvetTheme.typography.cardBody2
+                                            .copy(color = RassvetTheme.colors.surfaceText)
+                                    )
+                                }
+                            }
+                        }
                     }
                 }
 
@@ -301,7 +332,7 @@ fun TrainingsDropdownBar(
                         modifier = Modifier
                             .align(Alignment.BottomCenter)
                             .fillMaxWidth()
-                            .height(16.dp)
+                            .height(18.dp)
                             .swipeable(
                                 state = barState,
                                 anchors = mapOf(

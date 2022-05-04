@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.emelyanov.rassvet.modules.authorization.domain.models.LoginViewState
 import com.emelyanov.rassvet.modules.authorization.domain.usecases.LogInUseCase
+import com.emelyanov.rassvet.modules.authorization.domain.usecases.NavigateToRegistrationUseCase
 import com.emelyanov.rassvet.navigation.authorization.AuthDestinations
 import com.emelyanov.rassvet.navigation.authorization.AuthNavProvider
 import com.emelyanov.rassvet.shared.domain.models.requestModels.LogInRequest
@@ -21,8 +22,8 @@ import javax.inject.Inject
 class LoginViewModel
 @Inject
 constructor(
-    private val _authNavProvider: AuthNavProvider,
-    private val logIn: LogInUseCase
+    private val logIn: LogInUseCase,
+    private val navigateToRegistration: NavigateToRegistrationUseCase
 ) : ViewModel() {
     private val _notificationsFlow: MutableSharedFlow<String?> = MutableSharedFlow(replay = 1)
     val notificationsFlow: SharedFlow<String?> = _notificationsFlow
@@ -64,5 +65,5 @@ constructor(
         }
     }
 
-    private fun createAccountClick() = _authNavProvider.navigateTo(AuthDestinations.Registration)
+    private fun createAccountClick() = navigateToRegistration()
 }
