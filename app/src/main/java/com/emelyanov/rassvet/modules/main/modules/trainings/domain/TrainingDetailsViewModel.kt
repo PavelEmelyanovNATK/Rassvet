@@ -6,10 +6,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.emelyanov.rassvet.modules.main.modules.trainings.domain.models.TrainingDetailsViewState
-import com.emelyanov.rassvet.modules.main.modules.trainings.domain.usecases.GetSectionDetailsUseCase
+import com.emelyanov.rassvet.modules.main.modules.trainings.domain.usecases.GetTrainingDetailsUseCase
 import com.emelyanov.rassvet.modules.main.modules.trainings.domain.usecases.PopBackFromDetailsUseCase
-import com.emelyanov.rassvet.navigation.trainings.TrainingsDestinations
-import com.emelyanov.rassvet.navigation.trainings.TrainingsNavProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -18,7 +16,7 @@ import javax.inject.Inject
 class TrainingDetailsViewModel
 @Inject
 constructor(
-    private val getSectionDetails: GetSectionDetailsUseCase,
+    private val getSectionDetails: GetTrainingDetailsUseCase,
     private val popBack: PopBackFromDetailsUseCase
 ) : ViewModel() {
     private val _viewState: MutableState<TrainingDetailsViewState>

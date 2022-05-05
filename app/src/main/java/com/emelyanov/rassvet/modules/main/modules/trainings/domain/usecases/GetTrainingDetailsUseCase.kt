@@ -9,7 +9,7 @@ import com.emelyanov.rassvet.shared.domain.usecases.ProvideAuthedRequestUseCase
 import javax.inject.Inject
 
 
-class GetSectionDetailsUseCase
+class GetTrainingDetailsUseCase
 @Inject
 constructor(
     private val rassvetApi: IRassvetApi,

@@ -1,15 +1,15 @@
 package com.emelyanov.rassvet.shared.domain.models
 
-sealed class SubscriptionDetailsViewState {
-    object Loading : SubscriptionDetailsViewState()
+sealed class SectionDetailsViewState {
+    object Loading : SectionDetailsViewState()
 
-    data class Error(val message: String) : SubscriptionDetailsViewState()
+    data class Error(val message: String) : SectionDetailsViewState()
 
     sealed class PresentInfo(
         open val title: String,
         open val description: String,
         open val price: Int
-    ) : SubscriptionDetailsViewState() {
+    ) : SectionDetailsViewState() {
         data class Unauthorized(
             override val title: String,
             override val description: String,

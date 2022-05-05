@@ -69,7 +69,7 @@ constructor(
                 is ValidationResult.Success -> {
                     val state = viewState.value.email.value
                     if(state is TextFieldViewState.Error)
-                        state.toNormal()
+                        viewState.value.email.value = state.toNormal()
                 }
             }
 

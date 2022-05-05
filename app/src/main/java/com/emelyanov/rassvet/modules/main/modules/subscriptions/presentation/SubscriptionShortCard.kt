@@ -22,6 +22,7 @@ import com.emelyanov.rassvet.ui.theme.RassvetTheme
 @Composable
 fun SubscriptionShortCard(
     modifier: Modifier = Modifier,
+    section: String,
     onClick: () -> Unit
 ) {
     BoxWithConstraints(
@@ -29,7 +30,7 @@ fun SubscriptionShortCard(
     ) {
         Box(
             modifier = Modifier
-                .clip(RoundedCornerShape(20.dp))
+                .clip(RoundedCornerShape(15.dp))
                 .fillMaxWidth()
                 .height(maxWidth * 0.6f)
                 .background(
@@ -48,7 +49,7 @@ fun SubscriptionShortCard(
                 modifier = Modifier.fillMaxSize()
             ) {
                 Text(
-                    text = "Секция",
+                    text = section,
                     style = RassvetTheme.typography.cardSubtitle
                         .copy(color = RassvetTheme.colors.logoColor)
                 )

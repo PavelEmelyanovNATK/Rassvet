@@ -6,6 +6,7 @@ buildscript {
         retrofit_version = '2.9.0'
         numberpicker_version = '1.0.3'
         flinger_version = '1.1.1'
+        zxing_version = '3.5.0'
     }
 
     dependencies {

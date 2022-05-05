@@ -1,4 +1,4 @@
-package com.emelyanov.rassvet.modules.firstboot.domain.usecases
+package com.emelyanov.rassvet.shared.domain.usecases
 
 import com.emelyanov.rassvet.shared.domain.models.responseModels.SectionResponse
 import com.emelyanov.rassvet.shared.domain.services.sectionsrepository.FakeSectionsRepository

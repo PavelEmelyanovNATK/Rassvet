@@ -5,6 +5,7 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -14,9 +15,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.emelyanov.rassvet.modules.main.modules.subscriptions.domain.ClientSubscriptionsListViewModel
 import com.emelyanov.rassvet.modules.main.modules.subscriptions.domain.SubscriptionsContainerViewModel
-import com.emelyanov.rassvet.modules.main.modules.subscriptions.domain.AllSubscriptionsListViewModel
-import com.emelyanov.rassvet.modules.main.modules.subscriptions.presentation.AllSubscriptionsPage
+import com.emelyanov.rassvet.modules.main.modules.subscriptions.domain.SectionsListViewModel
 import com.emelyanov.rassvet.modules.main.modules.subscriptions.presentation.ClientSubscriptionsPage
+import com.emelyanov.rassvet.shared.presentation.components.SectionsListView
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import kotlinx.coroutines.flow.launchIn
@@ -68,13 +69,13 @@ fun SubscriptionsListNavHost(
             val clientSubsViewModel = hiltViewModel<ClientSubscriptionsListViewModel>()
 
             ClientSubscriptionsPage(
-                clientSubscriptionsListViewState = clientSubsViewModel.clientSubscriptionsListViewState.value,
+                viewState = clientSubsViewModel.viewState.value,
                 onRefresh = clientSubsViewModel::refresh
             )
         }
 
         composable(
-            route = SubscriptionsListDestinations.AllSubscriptions.route,
+            route = SubscriptionsListDestinations.Sections.route,
             enterTransition = {
                 slideIntoContainer(AnimatedContentScope.SlideDirection.Up, animationSpec = spring())
             },
@@ -82,9 +83,12 @@ fun SubscriptionsListNavHost(
                 slideOutOfContainer(AnimatedContentScope.SlideDirection.Down, animationSpec = spring())
             }
         ) {
-            val allSubscriptionsListViewModel = hiltViewModel<AllSubscriptionsListViewModel>()
+            val allSubscriptionsListViewModel = hiltViewModel<SectionsListViewModel>()
 
-            AllSubscriptionsPage(sectionsListViewState = allSubscriptionsListViewModel.sectionsListViewState.value)
+            SectionsListView(
+                modifier = Modifier.fillMaxSize(),
+                viewState = allSubscriptionsListViewModel.sectionsListViewState.value
+            )
         }
     }
 }

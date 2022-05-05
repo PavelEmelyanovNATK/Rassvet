@@ -24,7 +24,7 @@ fun LaunchingScreen(
         initialValue = 0f,
         targetValue = 360f,
         animationSpec = infiniteRepeatable(
-            animation = tween(durationMillis = 1000)
+            animation = tween(durationMillis = 1500)
         )
     )
     Box(

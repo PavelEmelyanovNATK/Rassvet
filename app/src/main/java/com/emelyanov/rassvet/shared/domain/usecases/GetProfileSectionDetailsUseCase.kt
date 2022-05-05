@@ -1,4 +1,4 @@
-package com.emelyanov.rassvet.modules.main.modules.profile.domain.usecases
+package com.emelyanov.rassvet.shared.domain.usecases
 
 import com.emelyanov.rassvet.shared.domain.models.responseModels.ClientSectionDetailsResponse
 import com.emelyanov.rassvet.shared.domain.models.responseModels.SectionDetailsResponse

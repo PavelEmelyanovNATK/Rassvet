@@ -14,7 +14,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import com.emelyanov.rassvet.modules.main.modules.profile.domain.ProfileSectionsViewModel
-import com.emelyanov.rassvet.modules.main.modules.profile.domain.ProfileSubscriptionDetailsViewModel
+import com.emelyanov.rassvet.modules.main.modules.profile.domain.ProfileSectionDetailsViewModel
 import com.emelyanov.rassvet.modules.main.modules.profile.domain.ProfileViewModel
 import com.emelyanov.rassvet.modules.main.modules.profile.presentation.components.ProfileMenuScreen
 import com.emelyanov.rassvet.modules.main.modules.profile.presentation.components.ProfileSectionsScreen
@@ -89,7 +89,7 @@ fun ProfileNavHost(
         }
 
         composable(
-            route = ProfileDestinations.SubscriptionDetailsCompRoute.route,
+            route = ProfileDestinations.SectionDetailsCompRoute.route,
             arguments = listOf(navArgument("id") { type = NavType.IntType }),
             enterTransition = {
                 slideIntoContainer(AnimatedContentScope.SlideDirection.Left)
@@ -99,7 +99,7 @@ fun ProfileNavHost(
             }
         ) { backStackEntry ->
             val id = backStackEntry.arguments?.getInt("id") ?: 0
-            val subscriptionDetailsViewModel = hiltViewModel<ProfileSubscriptionDetailsViewModel>()
+            val subscriptionDetailsViewModel = hiltViewModel<ProfileSectionDetailsViewModel>()
 
             LaunchedEffect(key1 = true) {
                 subscriptionDetailsViewModel.fetchInfo(id)

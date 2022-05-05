@@ -74,4 +74,9 @@ interface IRassvetApi {
         @Header("Authorization") authHeader: String,
         @Path("id") id: Int
     ) : Response<BaseResponse<ClientSectionDetailsResponse>>
+
+    @GET("me/subscriptions")
+    suspend fun fetchClientSubscriptions(
+        @Header("Authorization") authHeader: String
+    ) : Response<BaseResponse<List<SubscriptionResponse>>>
 }

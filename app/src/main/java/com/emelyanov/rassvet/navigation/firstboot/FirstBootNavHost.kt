@@ -12,7 +12,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import com.emelyanov.rassvet.modules.firstboot.domain.FirstBootViewModel
-import com.emelyanov.rassvet.modules.firstboot.domain.FirstBootSubscriptionDetailsViewModel
+import com.emelyanov.rassvet.modules.firstboot.domain.FirstBootSectionDetailsViewModel
 import com.emelyanov.rassvet.modules.firstboot.presentation.components.FirstBootContainer
 import com.emelyanov.rassvet.shared.presentation.components.SectionDetailsScreen
 import com.google.accompanist.navigation.animation.AnimatedNavHost
@@ -68,7 +68,7 @@ fun FirstBootNavHost(
                 slideOutOfContainer(AnimatedContentScope.SlideDirection.Down, animationSpec = spring())
             }
         ) { backStackEntry ->
-            val sectionDetailsViewModel = hiltViewModel<FirstBootSubscriptionDetailsViewModel>()
+            val sectionDetailsViewModel = hiltViewModel<FirstBootSectionDetailsViewModel>()
             val sectionId = backStackEntry.arguments?.getInt("id") ?: 0
 
             LaunchedEffect(true) {

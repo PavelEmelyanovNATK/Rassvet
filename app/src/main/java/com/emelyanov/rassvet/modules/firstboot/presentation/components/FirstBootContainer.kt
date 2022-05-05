@@ -1,23 +1,16 @@
 package com.emelyanov.rassvet.modules.firstboot.presentation.components
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.Icon
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.emelyanov.rassvet.R
-import com.emelyanov.rassvet.modules.firstboot.domain.models.SectionsListViewState
+import com.emelyanov.rassvet.shared.domain.models.SectionsListViewState
 import com.emelyanov.rassvet.shared.presentation.components.DotTabs
 import com.emelyanov.rassvet.shared.presentation.components.GradientBackgroundBox
-import com.emelyanov.rassvet.ui.theme.RassvetTheme
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState

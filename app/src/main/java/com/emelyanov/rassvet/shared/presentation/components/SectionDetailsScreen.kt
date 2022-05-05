@@ -1,7 +1,6 @@
 package com.emelyanov.rassvet.shared.presentation.components
 
 import android.annotation.SuppressLint
-import android.widget.Space
 import androidx.compose.foundation.*
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.layout.*
@@ -11,7 +10,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
@@ -24,7 +22,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.Velocity
 import androidx.compose.ui.unit.dp
 import com.emelyanov.rassvet.R
-import com.emelyanov.rassvet.shared.domain.models.SubscriptionDetailsViewState
+import com.emelyanov.rassvet.shared.domain.models.SectionDetailsViewState
 import com.emelyanov.rassvet.ui.theme.Black
 import com.emelyanov.rassvet.ui.theme.RassvetTheme
 import io.iamjosephmj.flinger.bahaviours.StockFlingBehaviours
@@ -40,7 +38,7 @@ private const val SURFACE_CORNER_RADIUS = 15f
 @ExperimentalMaterialApi
 @Composable
 fun SectionDetailsScreen(
-    viewState: SubscriptionDetailsViewState,
+    viewState: SectionDetailsViewState,
     onBackClick: () -> Unit
 ) {
     val surfaceSwipeState = rememberSwipeableState(initialValue = false)
@@ -124,11 +122,11 @@ fun SectionDetailsScreen(
             contentAlignment = Alignment.TopCenter
         ) {
             when(viewState) {
-                is SubscriptionDetailsViewState.Loading
+                is SectionDetailsViewState.Loading
                 -> LoadingView()
-                is SubscriptionDetailsViewState.Error
+                is SectionDetailsViewState.Error
                 -> ErrorView(message = viewState.message)
-                is SubscriptionDetailsViewState.PresentInfo
+                is SectionDetailsViewState.PresentInfo
                 -> PresentationView(
                     viewState = viewState,
                     bodyScrollState = bodyScrollState,
@@ -139,9 +137,9 @@ fun SectionDetailsScreen(
         }
 
         when(viewState) {
-            is SubscriptionDetailsViewState.Loading
+            is SectionDetailsViewState.Loading
             -> ButtonLoadingView()
-            is SubscriptionDetailsViewState.PresentInfo
+            is SectionDetailsViewState.PresentInfo
             -> ButtonPresentationView(
                 viewState = viewState
             )
@@ -233,7 +231,7 @@ private fun LoadingView() {
 @ExperimentalMaterialApi
 @Composable
 private fun PresentationView(
-    viewState: SubscriptionDetailsViewState.PresentInfo,
+    viewState: SectionDetailsViewState.PresentInfo,
     bodyScrollState: ScrollState,
     swipeState: SwipeableState<Boolean>,
     pxSurfaceOffset: Float,
@@ -367,7 +365,7 @@ fun BoxScope.ButtonLoadingView() {
 
 @Composable
 fun BoxScope.ButtonPresentationView(
-    viewState: SubscriptionDetailsViewState.PresentInfo
+    viewState: SectionDetailsViewState.PresentInfo
 ) {
     Column(
         modifier = Modifier
@@ -392,21 +390,21 @@ fun BoxScope.ButtonPresentationView(
         }
 
         when(viewState) {
-            is SubscriptionDetailsViewState.PresentInfo.Unauthorized -> {
+            is SectionDetailsViewState.PresentInfo.Unauthorized -> {
                 GradientButton(
                     modifier = Modifier.fillMaxWidth(),
                     text = "Авторизоваться",
                     onClick = viewState.onAuthClick,
                     gradient = RassvetTheme.colors.positiveButton)
             }
-            is SubscriptionDetailsViewState.PresentInfo.Unsubscribed -> {
+            is SectionDetailsViewState.PresentInfo.Unsubscribed -> {
                 GradientButton(
                     modifier = Modifier.fillMaxWidth(),
                     text = "Записаться",
                     onClick = viewState.onSubscribeClick,
                     gradient = RassvetTheme.colors.positiveButton)
             }
-            is SubscriptionDetailsViewState.PresentInfo.Subscribed -> {
+            is SectionDetailsViewState.PresentInfo.Subscribed -> {
                 GradientButton(
                     modifier = Modifier.fillMaxWidth(),
                     text = "Отписаться",

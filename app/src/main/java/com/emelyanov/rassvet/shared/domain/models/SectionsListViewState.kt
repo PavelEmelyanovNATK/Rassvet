@@ -1,4 +1,4 @@
-package com.emelyanov.rassvet.modules.firstboot.domain.models
+package com.emelyanov.rassvet.shared.domain.models
 
 import com.emelyanov.rassvet.shared.domain.models.responseModels.SectionResponse
 
@@ -7,8 +7,8 @@ sealed class SectionsListViewState {
 
     data class Error(val message: String) : SectionsListViewState()
 
-    data class PresentSections(
+    data class PresentInfo(
         val sections: List<SectionResponse>,
         val onSectionClick: (Int) -> Unit
-        ) : SectionsListViewState()
+    ) : SectionsListViewState()
 }

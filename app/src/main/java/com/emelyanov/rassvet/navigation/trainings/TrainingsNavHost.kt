@@ -95,7 +95,6 @@ fun TrainingsNavHost(
 
             val trainingDetailsViewModel = hiltViewModel<TrainingDetailsViewModel>()
             val id = backStackEntry.arguments?.getInt("id") ?: 0
-            Log.d("Section ID", "$id")
 
             LaunchedEffect(key1 = true) {
                 trainingDetailsViewModel.fetchInfo(id)

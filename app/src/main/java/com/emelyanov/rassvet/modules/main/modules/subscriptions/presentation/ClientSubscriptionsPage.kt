@@ -2,31 +2,28 @@ package com.emelyanov.rassvet.modules.main.modules.subscriptions.presentation
 
 import androidx.compose.animation.*
 import androidx.compose.animation.core.MutableTransitionState
-import androidx.compose.animation.core.spring
 import androidx.compose.foundation.*
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.AlertDialog
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.key
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.emelyanov.rassvet.modules.main.modules.subscriptions.domain.models.ClientSubscriptionsListViewState
+import com.emelyanov.rassvet.modules.main.modules.subscriptions.domain.models.SubscriptionDialogViewState
 import com.emelyanov.rassvet.modules.main.presentation.components.NAV_BAR_HEIGHT
 import com.emelyanov.rassvet.modules.main.presentation.components.NAV_BAR_PADDING
+import com.emelyanov.rassvet.shared.domain.utils.formatDate
 import com.emelyanov.rassvet.shared.presentation.components.NoSubscriptionsScreen
 import com.emelyanov.rassvet.ui.theme.RassvetTheme
 import com.google.accompanist.swiperefresh.SwipeRefresh
@@ -38,21 +35,27 @@ import kotlin.math.roundToInt
 @ExperimentalFoundationApi
 @Composable
 fun ClientSubscriptionsPage(
-    clientSubscriptionsListViewState: ClientSubscriptionsListViewState,
+    viewState: ClientSubscriptionsListViewState,
     onRefresh: () -> Unit
 ) {
     val swipeRefreshState = rememberSwipeRefreshState(
-        isRefreshing = clientSubscriptionsListViewState is ClientSubscriptionsListViewState.Loading
+        isRefreshing = viewState is ClientSubscriptionsListViewState.Loading
     )
 
     val dialogVisibility = remember { MutableTransitionState(false) }
+
+    if(viewState is ClientSubscriptionsListViewState.SeveralSubscriptions) {
+        dialogVisibility.targetState = viewState.subscriptionDialogViewState.value is SubscriptionDialogViewState.Visible
+    } else {
+        dialogVisibility.targetState = false
+    }
 
     SwipeRefresh(
         modifier = Modifier.fillMaxSize(),
         state = swipeRefreshState,
         onRefresh = onRefresh
     ) {
-        when(clientSubscriptionsListViewState) {
+        when(viewState) {
             is ClientSubscriptionsListViewState.Loading -> { }
 
             is ClientSubscriptionsListViewState.Error -> {
@@ -65,7 +68,7 @@ fun ClientSubscriptionsPage(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = clientSubscriptionsListViewState.message,
+                        text = viewState.message,
                         style = RassvetTheme.typography.cardBody1
                             .copy(color = RassvetTheme.colors.error)
                     )
@@ -80,17 +83,12 @@ fun ClientSubscriptionsPage(
                             state = rememberScrollState()
                         )
                 ) {
-                    OneSubscriptionPage(clientSubscriptionsListViewState.id)
+                    OneSubscriptionPage(viewState)
                 }
             }
 
             is ClientSubscriptionsListViewState.SeveralSubscriptions -> {
-                SeveralSubscriptionsPage(
-                    subs = clientSubscriptionsListViewState.ids,
-                    onSubClick = {
-                        dialogVisibility.targetState = true
-                    }
-                )
+                SeveralSubscriptionsPage(viewState)
             }
 
             is ClientSubscriptionsListViewState.NoSubscriptions -> {
@@ -104,7 +102,7 @@ fun ClientSubscriptionsPage(
                 ) {
                     NoSubscriptionsScreen(
                         modifier = Modifier.fillMaxSize(),
-                        onSubscriptionsClick = {}
+                        onSubscriptionsClick = viewState.onSubscriptionsClick
                     )
                 }
             }
@@ -116,52 +114,63 @@ fun ClientSubscriptionsPage(
         enter = fadeIn(),
         exit = fadeOut()
     ) {
-        Dialog(
-            onDismissRequest = { dialogVisibility.targetState = false },
-            properties = DialogProperties(usePlatformDefaultWidth = false)
-        ) {
-            BoxWithConstraints(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .clickable(
-                        interactionSource = MutableInteractionSource(),
-                        indication = null,
-                        onClick = { dialogVisibility.targetState = false }
-                    ),
-                contentAlignment = Alignment.Center,
-            ) {
-                val offset = with(LocalDensity.current) { maxHeight.toPx().roundToInt()/2 }
+        if(viewState is ClientSubscriptionsListViewState.SeveralSubscriptions) {
+            val dialogState = viewState.subscriptionDialogViewState.value
 
-                Column(
-                    modifier = Modifier
-                        .padding(horizontal = 15.dp)
-                        .animateEnterExit(
-                            enter = slideInVertically(
-                                initialOffsetY = { _ ->
-                                    offset
-                                }
-                            ),
-                            exit = slideOutVertically(
-                                targetOffsetY = { _ ->
-                                    offset * 2
-                                }
-                            )
-                        ),
-                    verticalArrangement = Arrangement.spacedBy(15.dp)
+            if(dialogState is SubscriptionDialogViewState.Visible) {
+                Dialog(
+                    onDismissRequest = viewState.onDismissRequest,
+                    properties = DialogProperties(usePlatformDefaultWidth = false)
                 ) {
-                    SubscriptionDetailCard()
+                    BoxWithConstraints(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .clickable(
+                                interactionSource = MutableInteractionSource(),
+                                indication = null,
+                                onClick = viewState.onDismissRequest
+                            ),
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        val offset = with(LocalDensity.current) { maxHeight.toPx().roundToInt()/2 }
 
-                    Text(
-                        text = "Дата оформления: 10.12.2021",
-                        style = RassvetTheme.typography.cardBody2
-                            .copy(color = RassvetTheme.colors.logoColor)
-                    )
+                        Column(
+                            modifier = Modifier
+                                .padding(horizontal = 15.dp)
+                                .animateEnterExit(
+                                    enter = slideInVertically(
+                                        initialOffsetY = { _ ->
+                                            offset
+                                        }
+                                    ),
+                                    exit = slideOutVertically(
+                                        targetOffsetY = { _ ->
+                                            offset * 2
+                                        }
+                                    )
+                                ),
+                            verticalArrangement = Arrangement.spacedBy(15.dp)
+                        ) {
+                            SubscriptionDetailCard(
+                                section = dialogState.section,
+                                clientFullName = dialogState.clientFullName,
+                                barcodeString = dialogState.barcodeString,
+                                barcodeImage = dialogState.barcodeImage
+                            )
 
-                    Text(
-                        text = "Действительна до 10.12.2022",
-                        style = RassvetTheme.typography.cardBody2
-                            .copy(color = RassvetTheme.colors.logoColor)
-                    )
+                            Text(
+                                text = "Дата оформления: ${dialogState.startDate.formatDate()}",
+                                style = RassvetTheme.typography.cardBody2
+                                    .copy(color = RassvetTheme.colors.logoColor)
+                            )
+
+                            Text(
+                                text = "Действительна до ${dialogState.expirationDate.formatDate()}",
+                                style = RassvetTheme.typography.cardBody2
+                                    .copy(color = RassvetTheme.colors.logoColor)
+                            )
+                        }
+                    }
                 }
             }
         }
@@ -170,7 +179,7 @@ fun ClientSubscriptionsPage(
 
 @Composable
 private fun OneSubscriptionPage(
-    id: Int
+    viewState: ClientSubscriptionsListViewState.OneSubscription
 ) {
     Column(
         modifier = Modifier
@@ -178,16 +187,21 @@ private fun OneSubscriptionPage(
             .padding(15.dp),
         verticalArrangement = Arrangement.spacedBy(15.dp)
     ) {
-        SubscriptionDetailCard()
+        SubscriptionDetailCard(
+            section = viewState.section,
+            clientFullName = viewState.clientFullName,
+            barcodeString = viewState.barcodeString,
+            barcodeImage = viewState.barcodeImage
+        )
 
         Text(
-            text = "Дата оформления: 10.12.2021",
+            text = "Дата оформления: ${viewState.startDate.formatDate()}",
             style = RassvetTheme.typography.cardBody2
                 .copy(color = RassvetTheme.colors.surfaceText)
         )
 
         Text(
-            text = "Действительна до 10.12.2022",
+            text = "Действительна до ${viewState.expirationDate.formatDate()}",
             style = RassvetTheme.typography.cardBody2
                 .copy(color = RassvetTheme.colors.surfaceText)
         )
@@ -197,8 +211,7 @@ private fun OneSubscriptionPage(
 @ExperimentalFoundationApi
 @Composable
 fun SeveralSubscriptionsPage(
-    subs: List<Int>,
-    onSubClick: (Int) -> Unit
+    viewState: ClientSubscriptionsListViewState.SeveralSubscriptions
 ) {
     LazyVerticalGrid(
         modifier = Modifier.fillMaxSize(),
@@ -207,11 +220,12 @@ fun SeveralSubscriptionsPage(
         horizontalArrangement = Arrangement.spacedBy(10.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
-        items(subs) { card ->
-            key(card){
+        items(viewState.subscriptions) { sub ->
+            key(sub.id){
                 SubscriptionShortCard(
+                    section = sub.section,
                     onClick = {
-                        onSubClick(card)
+                        viewState.onSubscriptionClick(sub.id)
                     }
                 )
             }

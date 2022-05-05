@@ -37,15 +37,15 @@ fun SubscriptionsTopBar(
             .height(TOOL_BAR_HEIGHT.dp)
     ) {
         val curEntry = subscriptionsListNavController.currentBackStackEntryAsState()
-        val isBackButtonVisible = remember { MutableTransitionState(curEntry.value?.destination?.route == SubscriptionsListDestinations.AllSubscriptions.route) }
+        val isBackButtonVisible = remember { MutableTransitionState(curEntry.value?.destination?.route == SubscriptionsListDestinations.Sections.route) }
         val isAddSubButtonVisible = remember { MutableTransitionState(curEntry.value?.destination?.route == SubscriptionsListDestinations.ClientSubscriptions.route) }
         val currentTitleText = remember { mutableStateOf("Абонементы") }
 
-        isBackButtonVisible.targetState = curEntry.value?.destination?.route == SubscriptionsListDestinations.AllSubscriptions.route
+        isBackButtonVisible.targetState = curEntry.value?.destination?.route == SubscriptionsListDestinations.Sections.route
         isAddSubButtonVisible.targetState = curEntry.value?.destination?.route == SubscriptionsListDestinations.ClientSubscriptions.route
 
         currentTitleText.value = when(curEntry.value?.destination?.route) {
-            SubscriptionsListDestinations.AllSubscriptions.route -> "Секции"
+            SubscriptionsListDestinations.Sections.route -> "Секции"
             SubscriptionsListDestinations.ClientSubscriptions.route -> "Абонементы"
             else -> ""
         }

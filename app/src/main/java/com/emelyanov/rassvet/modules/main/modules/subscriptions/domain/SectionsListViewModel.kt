@@ -5,20 +5,22 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.emelyanov.rassvet.modules.firstboot.domain.models.SectionsListViewState
-import com.emelyanov.rassvet.navigation.firstboot.FirstBootNavProvider
+import com.emelyanov.rassvet.modules.main.modules.subscriptions.domain.usecases.NavigateToSectionDetailsUseCase
+import com.emelyanov.rassvet.shared.domain.models.SectionsListViewState
 import com.emelyanov.rassvet.navigation.subscriptions.SubscriptionsDestinations
 import com.emelyanov.rassvet.navigation.subscriptions.SubscriptionsNavProvider
+import com.emelyanov.rassvet.shared.domain.usecases.GetAllSectionsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class AllSubscriptionsListViewModel
+class SectionsListViewModel
 @Inject
 constructor(
-    private val _subscriptionsNavProvider: SubscriptionsNavProvider
+    private val navigateToSectionDetails: NavigateToSectionDetailsUseCase,
+    private val getAllSections: GetAllSectionsUseCase
 ) : ViewModel() {
     private val _sectionsListViewState: MutableState<SectionsListViewState> = mutableStateOf(
         SectionsListViewState.Loading)
@@ -34,14 +36,18 @@ constructor(
         viewModelScope.launch {
             _sectionsListViewState.value = SectionsListViewState.Loading
 
-            delay(5000)
-
-            _sectionsListViewState.value = SectionsListViewState.PresentSections(
-                sections = listOf(),
-                onSectionClick = { sectionId ->
-                    _subscriptionsNavProvider.navigateTo(SubscriptionsDestinations.SubscriptionDetails(sectionId))
+            try {
+                getAllSections().let {
+                    _sectionsListViewState.value = SectionsListViewState.PresentInfo(
+                        sections = it,
+                        onSectionClick = navigateToSectionDetails::invoke
+                    )
                 }
-            )
+            } catch (ex: Exception) {
+                _sectionsListViewState.value = SectionsListViewState.Error(
+                    message = ex.message ?: "Неописанная ошибка: ${ex::class.java.simpleName}"
+                )
+            }
         }
     }
 }

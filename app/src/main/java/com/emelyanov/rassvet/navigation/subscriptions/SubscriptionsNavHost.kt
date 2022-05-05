@@ -12,16 +12,17 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
+import androidx.navigation.navArgument
+import com.emelyanov.rassvet.modules.main.modules.subscriptions.domain.SectionDetailsViewModel
 import com.emelyanov.rassvet.modules.main.modules.subscriptions.domain.SubscriptionsViewModel
 import com.emelyanov.rassvet.modules.main.modules.subscriptions.presentation.SubscriptionsContainer
-import com.emelyanov.rassvet.modules.main.modules.subscriptions.presentation.SubscriptionsTab
-import com.emelyanov.rassvet.navigation.firstboot.FirstBootDestinations
-import com.emelyanov.rassvet.navigation.main.MainDestinations
+import com.emelyanov.rassvet.modules.main.presentation.components.LocalNavBarVisibilityState
+import com.emelyanov.rassvet.shared.presentation.components.SectionDetailsScreen
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import javax.inject.Inject
 
 @ExperimentalComposeUiApi
 @ExperimentalMaterialApi
@@ -56,18 +57,17 @@ fun SubscriptionsNavHost(
         composable(
             route = SubscriptionsDestinations.SubscriptionsList.route
         ) {
+            LocalNavBarVisibilityState.current.value = true
+
             SubscriptionsContainer(
-                onAddButtonClick ={
-                    subscriptionsViewModel.subscriptionsListNavProvider.navigateTo(SubscriptionsListDestinations.AllSubscriptions)
-                },
-                onBackClick = {
-                    subscriptionsViewModel.subscriptionsListNavProvider.navigateTo(SubscriptionsListDestinations.PopBack)
-                }
+                onAddButtonClick = subscriptionsViewModel::addSubscriptionCLick,
+                onBackClick = subscriptionsViewModel::backFromSubscriptionsClick
             )
         }
 
         composable(
             route = SubscriptionsDestinations.SubscriptionDetailsCompRoute.route,
+            arguments = listOf(navArgument("id") { type = NavType.IntType }),
             enterTransition = {
                 slideIntoContainer(
                     towards = AnimatedContentScope.SlideDirection.Left,
@@ -87,8 +87,20 @@ fun SubscriptionsNavHost(
                     animationSpec = spring()
                 )
             }
-        ) {
+        ) { backStackEntry ->
+            LocalNavBarVisibilityState.current.value = false
 
+            val sectionDetailsViewModel = hiltViewModel<SectionDetailsViewModel>()
+            val id = backStackEntry.arguments?.getInt("id") ?: 0
+
+            LaunchedEffect(key1 = true) {
+                sectionDetailsViewModel.fetchInfo(id)
+            }
+
+            SectionDetailsScreen(
+                viewState = sectionDetailsViewModel.viewState.value,
+                onBackClick = sectionDetailsViewModel::backClick
+            )
         }
     }
 }

@@ -86,4 +86,7 @@ dependencies {
 
     //Flinger
     implementation "com.github.iamjosephmj:Flinger:$flinger_version"
+
+    //Barcodes
+    implementation "com.google.zxing:core:$zxing_version"
 }

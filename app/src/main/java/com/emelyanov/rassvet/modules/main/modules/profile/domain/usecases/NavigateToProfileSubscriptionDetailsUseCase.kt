@@ -11,6 +11,6 @@ constructor(
     private val profileNavProvider: ProfileNavProvider
 ) {
     operator fun invoke(id: Int) {
-        profileNavProvider.navigateTo(ProfileDestinations.SubscriptionDetails(id))
+        profileNavProvider.navigateTo(ProfileDestinations.SectionDetails(id))
     }
 }

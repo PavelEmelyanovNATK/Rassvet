@@ -6,8 +6,6 @@ import com.emelyanov.rassvet.navigation.subscriptions.SubscriptionsDestinations
 import com.emelyanov.rassvet.navigation.subscriptions.SubscriptionsListDestinations
 import com.emelyanov.rassvet.navigation.subscriptions.SubscriptionsListNavProvider
 import com.emelyanov.rassvet.navigation.subscriptions.SubscriptionsNavProvider
-import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ViewModelComponent
 import javax.inject.Inject
 
 class NavigateToAllSubscriptionsUseCase
@@ -20,6 +18,6 @@ constructor(
     operator fun invoke()  {
         mainNavProvider.navigateTo(MainDestinations.Subscriptions)
         subscriptionsNavProvider.navigateTo(SubscriptionsDestinations.SubscriptionsList)
-        subscriptionsListNavProvider.navigateTo(SubscriptionsListDestinations.AllSubscriptions)
+        subscriptionsListNavProvider.navigateTo(SubscriptionsListDestinations.Sections)
     }
 }

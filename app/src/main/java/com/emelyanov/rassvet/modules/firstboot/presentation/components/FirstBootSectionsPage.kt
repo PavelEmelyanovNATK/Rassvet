@@ -9,7 +9,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -19,11 +18,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import com.emelyanov.rassvet.modules.firstboot.domain.models.SectionsListViewState
+import com.emelyanov.rassvet.shared.domain.models.SectionsListViewState
 import com.emelyanov.rassvet.shared.presentation.components.LinkButton
 import com.emelyanov.rassvet.shared.presentation.components.SectionCard
+import com.emelyanov.rassvet.shared.presentation.components.SectionsListView
 import com.emelyanov.rassvet.ui.theme.RassvetTheme
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
@@ -69,14 +68,10 @@ fun FirstBootSectionsPage(
                     state = swipeRefreshState,
                     onRefresh = onRefresh
                 ) {
-                    when(sectionsListViewState) {
-                        is SectionsListViewState.PresentSections
-                        -> PresentationView(viewState = sectionsListViewState)
-                        is SectionsListViewState.Loading
-                        -> LoadingView()
-                        is SectionsListViewState.Error
-                        -> ErrorView(message = sectionsListViewState.message)
-                    }
+                    SectionsListView(
+                        modifier = Modifier.fillMaxSize(),
+                        viewState = sectionsListViewState
+                    )
                 }
 
                 Box(
@@ -118,53 +113,4 @@ fun FirstBootSectionsPage(
             Spacer(Modifier.height(80.dp))
         }
     }
-}
-
-@Composable
-private fun LoadingView() {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState()),
-        contentAlignment = Alignment.Center
-    ) {
-
-    }
-}
-
-@ExperimentalMaterialApi
-@ExperimentalFoundationApi
-@Composable
-private fun PresentationView(
-    viewState: SectionsListViewState.PresentSections
-) {
-    LazyVerticalGrid(
-        cells = GridCells.Adaptive(150.dp,),
-        contentPadding = PaddingValues(vertical = 15.dp, horizontal = 15.dp),
-        horizontalArrangement = Arrangement.spacedBy(10.dp),
-        verticalArrangement = Arrangement.spacedBy(10.dp)
-    ) {
-        items(viewState.sections) { card ->
-            key(card){
-                SectionCard(
-                    title = card.sectionName,
-                    onClick = {
-                        viewState.onSectionClick(card.id)
-                    }
-                )
-            }
-        }
-    }
-}
-
-@Composable
-private fun ErrorView(
-    message: String
-) {
-    com.emelyanov.rassvet.shared.presentation.components.ErrorView(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(20.dp),
-        message = message
-    )
 }
