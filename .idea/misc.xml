@@ -1,5 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/pemel/AndroidStudioProjects/Rassvet/app/src/main/res/drawable-v23/bg_splash.xml" value="0.166" />
+        <entry key="..\:/Users/pemel/AndroidStudioProjects/Rassvet/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1025" />
+        <entry key="..\:/Users/pemel/AndroidStudioProjects/Rassvet/app/src/main/res/drawable/bg_gradient_light.xml" value="0.1755" />
+        <entry key="..\:/Users/pemel/AndroidStudioProjects/Rassvet/app/src/main/res/drawable/bg_icons.xml" value="0.166" />
+        <entry key="..\:/Users/pemel/AndroidStudioProjects/Rassvet/app/src/main/res/drawable/bg_rassvet_logo_truesize.xml" value="0.166" />
+        <entry key="..\:/Users/pemel/AndroidStudioProjects/Rassvet/app/src/main/res/drawable/bg_splash.xml" value="0.166" />
+        <entry key="..\:/Users/pemel/AndroidStudioProjects/Rassvet/app/src/main/res/drawable/bg_splashscreen.xml" value="0.166" />
+        <entry key="..\:/Users/pemel/AndroidStudioProjects/Rassvet/app/src/main/res/drawable/bg_transparent_icons.xml" value="0.166" />
+        <entry key="..\:/Users/pemel/AndroidStudioProjects/Rassvet/app/src/main/res/drawable/ic_add_sub.xml" value="0.1085" />
+        <entry key="..\:/Users/pemel/AndroidStudioProjects/Rassvet/app/src/main/res/drawable/ic_arrow_right.xml" value="0.1025" />
+        <entry key="..\:/Users/pemel/AndroidStudioProjects/Rassvet/app/src/main/res/drawable/ic_calendar.xml" value="0.1025" />
+        <entry key="..\:/Users/pemel/AndroidStudioProjects/Rassvet/app/src/main/res/drawable/ic_dumbel.xml" value="0.1025" />
+        <entry key="..\:/Users/pemel/AndroidStudioProjects/Rassvet/app/src/main/res/drawable/ic_expander.xml" value="0.1025" />
+        <entry key="..\:/Users/pemel/AndroidStudioProjects/Rassvet/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1025" />
+        <entry key="..\:/Users/pemel/AndroidStudioProjects/Rassvet/app/src/main/res/drawable/ic_left_arrow.xml" value="0.1025" />
+        <entry key="..\:/Users/pemel/AndroidStudioProjects/Rassvet/app/src/main/res/drawable/ic_pass_hidden.xml" value="0.172" />
+        <entry key="..\:/Users/pemel/AndroidStudioProjects/Rassvet/app/src/main/res/drawable/ic_pass_showed.xml" value="0.172" />
+        <entry key="..\:/Users/pemel/AndroidStudioProjects/Rassvet/app/src/main/res/drawable/ic_profile.xml" value="0.1025" />
+        <entry key="..\:/Users/pemel/AndroidStudioProjects/Rassvet/app/src/main/res/drawable/ic_rassvet_logo.xml" value="0.1025" />
+        <entry key="..\:/Users/pemel/AndroidStudioProjects/Rassvet/app/src/main/res/drawable/ic_timer.xml" value="0.126" />
+        <entry key="..\:/Users/pemel/AndroidStudioProjects/Rassvet/app/src/main/res/drawable/image_placeholder.xml" value="0.172" />
+        <entry key="..\:/Users/pemel/AndroidStudioProjects/Rassvet/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.1085" />
+      </map>
+    </option>
+  </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
