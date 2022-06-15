@@ -13,7 +13,10 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.emelyanov.rassvet.modules.main.domain.MainViewModel
@@ -38,23 +41,26 @@ fun MainNavHost(
     mainNavController: NavHostController,
     mainViewModel: MainViewModel
 ) {
-    LaunchedEffect(key1 = true) {
-        mainViewModel.mainNavProvider.destinationFlow.onEach { destination ->
-            destination?.let {
-                when (destination) {
-                    is MainDestinations.PopBack -> mainNavController.popBackStack()
-                    else -> mainNavController.navigate(destination.route) {
-                        launchSingleTop = true
-                        restoreState = true
-                        popUpTo(mainNavController.graph.startDestinationId) {
-                            saveState = true
+    val lifecycle = LocalLifecycleOwner.current
+    LaunchedEffect(true) {
+        lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            mainViewModel.mainNavProvider.destinationFlow.onEach { destination ->
+                destination?.let {
+                    when (destination) {
+                        is MainDestinations.PopBack -> mainNavController.popBackStack()
+                        else -> mainNavController.navigate(destination.route) {
+                            launchSingleTop = true
+                            restoreState = true
+                            popUpTo(mainNavController.graph.startDestinationId) {
+                                saveState = true
+                            }
                         }
                     }
-                }
 
-                mainViewModel.mainNavProvider.navigated()
-            }
-        }.launchIn(this)
+                    mainViewModel.mainNavProvider.navigated()
+                }
+            }.launchIn(this@repeatOnLifecycle)
+        }
     }
 
     AnimatedNavHost(

@@ -10,6 +10,4 @@ class AuthorizationViewModel
 @Inject
 constructor(
     val authNavController: AuthNavProvider
-) : ViewModel() {
-
-}
+) : ViewModel()

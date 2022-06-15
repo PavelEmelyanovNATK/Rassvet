@@ -97,11 +97,11 @@ fun TrainingsListScreen(
                             ) { page ->
                                 when(page) {
                                     0 -> ActiveTrainingsPage(
-                                        topOffset = pagerOffset.value,
+                                        topOffset = { pagerOffset.value },
                                         viewState = trainingsListViewState
                                     )
                                     1 -> PastTrainingsPage(
-                                        topOffset = pagerOffset.value,
+                                        topOffset = { pagerOffset.value },
                                         viewState = trainingsListViewState
                                     )
                                 }
@@ -124,19 +124,15 @@ fun TrainingsListScreen(
 
 @Composable
 fun ActiveTrainingsPage(
-    topOffset: Dp = 0.dp,
+    topOffset: () -> Dp,
     viewState: TrainingsListViewState.PresentInfo
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(start = 15.dp, top = 15.dp, end = 15.dp, bottom = (NAV_BAR_HEIGHT + NAV_BAR_PADDING + 15).dp),
+        contentPadding = PaddingValues(start = 15.dp, top = 15.dp +  topOffset(), end = 15.dp, bottom = (NAV_BAR_HEIGHT + NAV_BAR_PADDING + 15).dp),
         verticalArrangement = Arrangement.spacedBy(10.dp),
         flingBehavior = StockFlingBehaviours.smoothScroll()
     ) {
-        item {
-            Spacer(Modifier.height(topOffset))
-        }
-
         viewState.activeTrainings.forEach { group ->
             item {
                 key(group.key.id) {
@@ -144,7 +140,7 @@ fun ActiveTrainingsPage(
                         title = group.key.title
                     ) {
                         group.value.forEach { training ->
-                            TrainingGroupItem(
+                            TrainingGroupItemConstraint(
                                 title = training.title,
                                 durationInMinutes = training.durationInMinutes,
                                 trainerFullName = training.trainerFullName,
@@ -161,19 +157,15 @@ fun ActiveTrainingsPage(
 
 @Composable
 fun PastTrainingsPage(
-    topOffset: Dp = 0.dp,
+    topOffset: () -> Dp,
     viewState: TrainingsListViewState.PresentInfo
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(start = 15.dp, top = 15.dp, end = 15.dp, bottom = (NAV_BAR_HEIGHT + NAV_BAR_PADDING + 15).dp),
+        contentPadding = PaddingValues(start = 15.dp, top = 15.dp  + topOffset(), end = 15.dp, bottom = (NAV_BAR_HEIGHT + NAV_BAR_PADDING + 15).dp),
         verticalArrangement = Arrangement.spacedBy(10.dp),
         flingBehavior = StockFlingBehaviours.smoothScroll()
     ) {
-        item {
-            Spacer(Modifier.height(topOffset))
-        }
-
         viewState.pastTrainings.forEach { training ->
             item {
                 key(training) {

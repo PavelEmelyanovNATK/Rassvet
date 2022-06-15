@@ -9,7 +9,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavHostController
 import com.emelyanov.rassvet.modules.authorization.presentation.components.AuthorizationScreen
 import com.emelyanov.rassvet.modules.core.domain.CoreViewModel
@@ -34,21 +37,23 @@ fun CoreNavHost(
     navHostController: NavHostController,
     coreViewModel: CoreViewModel
 ) {
-
+    val lifecycle = LocalLifecycleOwner.current
     LaunchedEffect(true) {
-        coreViewModel.coreNavProvider.destinationFlow.onEach { destination ->
-            destination?.let {
-                if(destination is CoreDestinations.PopBack)
-                    navHostController.popBackStack()
-                else
-                    navHostController.navigate(destination.route) {
-                        launchSingleTop = true
-                        navHostController.backQueue.clear()
-                    }
+        lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            coreViewModel.coreNavProvider.destinationFlow.onEach { destination ->
+                destination?.let {
+                    if (destination is CoreDestinations.PopBack)
+                        navHostController.popBackStack()
+                    else
+                        navHostController.navigate(destination.route) {
+                            launchSingleTop = true
+                            navHostController.backQueue.clear()
+                        }
 
-                coreViewModel.coreNavProvider.navigated()
-            }
-        }.launchIn(this)
+                    coreViewModel.coreNavProvider.navigated()
+                }
+            }.launchIn(this@repeatOnLifecycle)
+        }
     }
 
     AnimatedNavHost(

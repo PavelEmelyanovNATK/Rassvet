@@ -5,7 +5,10 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavHostController
 import com.emelyanov.rassvet.modules.authorization.domain.AuthorizationViewModel
 import com.emelyanov.rassvet.modules.authorization.domain.LoginViewModel
@@ -29,17 +32,20 @@ fun AuthNavHost(
 ) {
     val authViewModel = hiltViewModel<AuthorizationViewModel>()
 
+    val lifecycle = LocalLifecycleOwner.current
     LaunchedEffect(true) {
-        authViewModel.authNavController.destinationFlow.onEach { destination ->
-            destination?.let {
-                if(destination is AuthDestinations.PopBack)
-                    authNavController.popBackStack()
-                else
-                    authNavController.navigate(destination.route) { launchSingleTop = true }
+        lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            authViewModel.authNavController.destinationFlow.onEach { destination ->
+                destination?.let {
+                    if (destination is AuthDestinations.PopBack)
+                        authNavController.popBackStack()
+                    else
+                        authNavController.navigate(destination.route) { launchSingleTop = true }
 
-                authViewModel.authNavController.navigated()
-            }
-        }.launchIn(this)
+                    authViewModel.authNavController.navigated()
+                }
+            }.launchIn(this@repeatOnLifecycle)
+        }
     }
 
     AnimatedNavHost(

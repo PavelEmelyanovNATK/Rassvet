@@ -8,6 +8,4 @@ import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
 @Module
-class SharedUseCases {
-
-}
+class SharedUseCases

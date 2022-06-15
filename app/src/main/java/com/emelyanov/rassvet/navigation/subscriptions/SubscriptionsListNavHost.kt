@@ -11,7 +11,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavHostController
 import com.emelyanov.rassvet.modules.main.modules.subscriptions.domain.ClientSubscriptionsListViewModel
 import com.emelyanov.rassvet.modules.main.modules.subscriptions.domain.SubscriptionsContainerViewModel
@@ -33,23 +36,26 @@ fun SubscriptionsListNavHost(
 ) {
     val subscriptionsContainerViewModel = hiltViewModel<SubscriptionsContainerViewModel>()
 
-    LaunchedEffect(key1 = true) {
-        subscriptionsContainerViewModel.subscriptionsListNavProvider.destinationFlow.onEach { destination ->
-            destination?.let {
-                if(destination is SubscriptionsListDestinations.PopBack)
-                    subscriptionsListNavController.popBackStack()
-                else
-                    subscriptionsListNavController.navigate(destination.route) {
-                        launchSingleTop = true
-                        restoreState = true
-                        popUpTo(subscriptionsListNavController.graph.startDestinationId) {
-                            saveState = true
+    val lifecycle = LocalLifecycleOwner.current
+    LaunchedEffect(true) {
+        lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            subscriptionsContainerViewModel.subscriptionsListNavProvider.destinationFlow.onEach { destination ->
+                destination?.let {
+                    if (destination is SubscriptionsListDestinations.PopBack)
+                        subscriptionsListNavController.popBackStack()
+                    else
+                        subscriptionsListNavController.navigate(destination.route) {
+                            launchSingleTop = true
+                            restoreState = true
+                            popUpTo(subscriptionsListNavController.graph.startDestinationId) {
+                                saveState = true
+                            }
                         }
-                    }
 
-                subscriptionsContainerViewModel.subscriptionsListNavProvider.navigated()
-            }
-        }.launchIn(this)
+                    subscriptionsContainerViewModel.subscriptionsListNavProvider.navigated()
+                }
+            }.launchIn(this@repeatOnLifecycle)
+        }
     }
 
     AnimatedNavHost(

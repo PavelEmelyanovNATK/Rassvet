@@ -24,6 +24,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.emelyanov.rassvet.ui.theme.RassvetTheme
 import com.emelyanov.rassvet.R
+import com.emelyanov.rassvet.ui.theme.CreamyPurple
 import com.emelyanov.rassvet.ui.theme.Gray
 
 @ExperimentalMaterialApi
@@ -97,8 +98,8 @@ fun ShimmerSectionCard(
             ) {
                 ShimmerBox(
                     modifier = Modifier
-                        .clip(RoundedCornerShape(8.dp))
                         .padding(vertical = 7.dp, horizontal = 12.dp)
+                        .clip(RoundedCornerShape(8.dp))
                 ) {
                     Text(
                         modifier = it,
@@ -121,9 +122,10 @@ private fun Preview(){
         Box(
             Modifier
                 .fillMaxSize()
-                .background(RassvetTheme.colors.layoutBackground)
+                .background(CreamyPurple)
         ) {
             SectionCard(
+                modifier = Modifier.width(160.dp),
                 title = "Test"
             )
         }

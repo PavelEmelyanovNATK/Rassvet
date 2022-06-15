@@ -45,7 +45,7 @@ fun SubscriptionDetailCard(
             modifier = Modifier
                 .clip(RoundedCornerShape(20.dp))
                 .fillMaxWidth()
-                .height(maxWidth * 0.6f)
+                .height(maxWidth * 0.7f)
                 .background(
                     brush = Brush.linearGradient(
                         RassvetTheme.colors.layoutGradientBackground,

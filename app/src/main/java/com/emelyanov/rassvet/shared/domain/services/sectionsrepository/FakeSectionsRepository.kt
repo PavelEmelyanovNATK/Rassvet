@@ -4,9 +4,7 @@ import com.emelyanov.rassvet.shared.domain.models.responseModels.SectionDetailsR
 import com.emelyanov.rassvet.shared.domain.models.responseModels.SectionResponse
 
 class FakeSectionsRepository
-constructor(
-
-) : ISectionsRepository {
+    : ISectionsRepository {
     override suspend fun getAllSections(): List<SectionResponse> {
         return listOf(
             SectionResponse(

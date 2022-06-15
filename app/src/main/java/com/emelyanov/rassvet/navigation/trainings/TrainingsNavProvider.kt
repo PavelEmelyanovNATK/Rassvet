@@ -9,5 +9,5 @@ import kotlinx.coroutines.flow.SharedFlow
 import javax.inject.Inject
 
 
-class TrainingsNavProvider() :
+class TrainingsNavProvider :
     BaseNavProvider<TrainingsDestinations>()

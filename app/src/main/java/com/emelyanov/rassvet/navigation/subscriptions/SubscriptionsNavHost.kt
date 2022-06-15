@@ -10,7 +10,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
@@ -34,19 +37,22 @@ fun SubscriptionsNavHost(
 ) {
     val subscriptionsViewModel = hiltViewModel<SubscriptionsViewModel>()
 
-    LaunchedEffect(key1 = true) {
-        subscriptionsViewModel.subscriptionsNavProvider.destinationFlow.onEach { destination ->
-            destination?.let {
-                if(destination is SubscriptionsDestinations.PopBack)
-                    subscriptionsNavController.popBackStack()
-                else
-                    subscriptionsNavController.navigate(destination.route) {
-                        launchSingleTop = true
-                    }
+    val lifecycle = LocalLifecycleOwner.current
+    LaunchedEffect(true) {
+        lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            subscriptionsViewModel.subscriptionsNavProvider.destinationFlow.onEach { destination ->
+                destination?.let {
+                    if (destination is SubscriptionsDestinations.PopBack)
+                        subscriptionsNavController.popBackStack()
+                    else
+                        subscriptionsNavController.navigate(destination.route) {
+                            launchSingleTop = true
+                        }
 
-                subscriptionsViewModel.subscriptionsNavProvider.navigated()
-            }
-        }.launchIn(this)
+                    subscriptionsViewModel.subscriptionsNavProvider.navigated()
+                }
+            }.launchIn(this@repeatOnLifecycle)
+        }
     }
 
     AnimatedNavHost(

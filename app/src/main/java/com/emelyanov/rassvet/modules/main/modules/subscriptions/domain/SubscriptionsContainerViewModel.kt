@@ -10,6 +10,4 @@ class SubscriptionsContainerViewModel
 @Inject
 constructor(
     val subscriptionsListNavProvider: SubscriptionsListNavProvider
-) : ViewModel() {
-
-}
+) : ViewModel()

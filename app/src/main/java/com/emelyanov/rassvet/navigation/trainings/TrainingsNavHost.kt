@@ -9,7 +9,10 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
@@ -34,17 +37,22 @@ fun TrainingsNavHost(
 ) {
     val trainingsViewModel = hiltViewModel<TrainingsViewModel>()
 
+    val lifecycle = LocalLifecycleOwner.current
     LaunchedEffect(true) {
-        trainingsViewModel.trainingsNavProvider.destinationFlow.onEach { destination ->
-            destination?.let {
-                if(destination is TrainingsDestinations.PopBack)
-                    trainingsNavController.popBackStack()
-                else
-                    trainingsNavController.navigate(destination.route) { launchSingleTop = true }
+        lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            trainingsViewModel.trainingsNavProvider.destinationFlow.onEach { destination ->
+                destination?.let {
+                    if (destination is TrainingsDestinations.PopBack)
+                        trainingsNavController.popBackStack()
+                    else
+                        trainingsNavController.navigate(destination.route) {
+                            launchSingleTop = true
+                        }
 
-                trainingsViewModel.trainingsNavProvider.navigated()
-            }
-        }.launchIn(this)
+                    trainingsViewModel.trainingsNavProvider.navigated()
+                }
+            }.launchIn(this@repeatOnLifecycle)
+        }
     }
 
     AnimatedNavHost(

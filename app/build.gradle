@@ -45,6 +45,7 @@ android {
             excludes += '/META-INF/{AL2.0,LGPL2.1}'
         }
     }
+    namespace 'com.emelyanov.rassvet'
 }
 
 dependencies {
@@ -62,6 +63,8 @@ dependencies {
     implementation "androidx.compose.runtime:runtime-livedata:$compose_version"
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
+    implementation "androidx.constraintlayout:constraintlayout-compose:1.0.1"
+
 
     //Hilt
     implementation "com.google.dagger:hilt-android:$hilt_version"
@@ -71,7 +74,6 @@ dependencies {
     //Accompanist
     implementation "com.google.accompanist:accompanist-swiperefresh:$accompanist_version"
     implementation "com.google.accompanist:accompanist-navigation-animation:$accompanist_version"
-    implementation "com.google.accompanist:accompanist-flowlayout:$accompanist_version"
     implementation "com.google.accompanist:accompanist-pager:$accompanist_version"
 
     //Retrofit

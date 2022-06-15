@@ -23,19 +23,13 @@ constructor(
         return try {
             val response = request()
 
-            Log.d("Test", "${response.code()}")
-
             when {
                 response.code() == 401 -> {
                     val tokensResponse = rassvetApi.refreshTokens(RefreshRequest(refreshToken = getRefreshToken()))
-                    Log.d("Test tokens", "${tokensResponse.code()}")
-                    Log.d("Test tokens", "${getRefreshToken()}")
                     if(tokensResponse.code() != 200 || tokensResponse.body()?.code != 200)
                         throw RefreshTokenException()
 
                     saveTokens(tokensResponse.body()!!.data!!)
-
-                    Log.d("Test tokens", "${getRefreshToken()}")
 
                     request().body()!!.data
                 }

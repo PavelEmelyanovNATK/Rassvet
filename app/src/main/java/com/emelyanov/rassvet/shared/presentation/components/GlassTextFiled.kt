@@ -77,13 +77,10 @@ fun GlassTextFiled(
     modifier: Modifier = Modifier,
     value: String,
     onValueChange: (String) -> Unit,
-    enabled: Boolean = true,
-    readOnly: Boolean = false,
     textStyle: TextStyle = RassvetTheme.typography.inputText
         .copy(color = RassvetTheme.colors.inputText),
     placeholderText: String = "",
     placeholderColor:Color = RassvetTheme.colors.inputPlaceholder,
-    keyboardActions: KeyboardActions = KeyboardActions.Default,
     keyboardType: KeyboardType = KeyboardType.Text,
     singleLine: Boolean = true,
     maxLines: Int = 1,
@@ -93,14 +90,13 @@ fun GlassTextFiled(
     var isPassVisible by remember { mutableStateOf(false) }
 
     val visualTransformation =
-        if((keyboardType == KeyboardType.NumberPassword || keyboardType == KeyboardType.Password) && !isPassVisible)
+        if((keyboardType == KeyboardType.NumberPassword || keyboardType == KeyboardType.Password)
+            && !isPassVisible)
             PasswordVisualTransformation()
         else
             VisualTransformation.None
 
     val placeholderHeight = with(LocalDensity.current) { RassvetTheme.typography.inputText.fontSize.value.sp.toDp() }
-
-    //val targetOffset = -(TOP_PADDING +SPACE_BETWEEN_PLACEHOLDER + placeholderHeight)
 
     var isInfocus by remember { mutableStateOf(false) }
     val placeholderTriggered = value != "" || isInfocus
@@ -156,11 +152,8 @@ fun GlassTextFiled(
                     },
                 value = value,
                 onValueChange = onValueChange,
-                enabled = enabled,
-                readOnly = readOnly,
                 textStyle = textStyle,
                 keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
-                keyboardActions = keyboardActions,
                 singleLine = singleLine,
                 maxLines = maxLines,
                 visualTransformation = visualTransformation,
@@ -171,9 +164,6 @@ fun GlassTextFiled(
                 Text(
                     modifier = Modifier
                         .padding(start = 18.dp, top = TOP_PADDING.dp, bottom = 7.dp, end = 18.dp)
-                        //.onGloballyPositioned {
-                        //    placeholderHeight = (it.size.height / density.density)
-                        //}
                         .offset(y = placeholderOffset.value.dp),
                     style = textStyle.copy(
                         color = placeholderColorAnimation.value,

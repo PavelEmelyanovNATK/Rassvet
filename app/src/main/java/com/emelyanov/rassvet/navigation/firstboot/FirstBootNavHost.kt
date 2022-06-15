@@ -7,7 +7,10 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
@@ -31,17 +34,22 @@ fun FirstBootNavHost(
 ) {
     val firstBootViewModel = hiltViewModel<FirstBootViewModel>()
 
+    val lifecycle = LocalLifecycleOwner.current
     LaunchedEffect(true) {
-        firstBootViewModel.firstBootNavProvider.destinationFlow.onEach { destination ->
-            destination?.let {
-                if(destination is FirstBootDestinations.PopBack)
-                    firstBootNavController.popBackStack()
-                else
-                    firstBootNavController.navigate(destination.route) { launchSingleTop = true }
+        lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            firstBootViewModel.firstBootNavProvider.destinationFlow.onEach { destination ->
+                destination?.let {
+                    if (destination is FirstBootDestinations.PopBack)
+                        firstBootNavController.popBackStack()
+                    else
+                        firstBootNavController.navigate(destination.route) {
+                            launchSingleTop = true
+                        }
 
-                firstBootViewModel.firstBootNavProvider.navigated()
-            }
-        }.launchIn(this)
+                    firstBootViewModel.firstBootNavProvider.navigated()
+                }
+            }.launchIn(this@repeatOnLifecycle)
+        }
     }
 
     AnimatedNavHost(
@@ -53,8 +61,7 @@ fun FirstBootNavHost(
         ) {
             FirstBootContainer(
                 sectionsListViewState = firstBootViewModel.sectionsListViewState.value,
-                onAuthClick = firstBootViewModel::authClicked,
-                onRefresh = firstBootViewModel::reloadSections
+                onAuthClick = firstBootViewModel::authClicked
             )
         }
 

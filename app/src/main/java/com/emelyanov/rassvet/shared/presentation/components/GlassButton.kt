@@ -63,7 +63,6 @@ private fun Preview(){
                 .background(CreamyPurple)
         ) {
             GlassButton(
-                text = "Test",
                 onClick = {}
             )
         }

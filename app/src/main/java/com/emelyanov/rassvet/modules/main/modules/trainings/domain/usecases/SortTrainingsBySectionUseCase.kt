@@ -20,7 +20,6 @@ constructor(
             val section = sections.find { s -> training.sectionId == s.id }
                 ?: throw Exception("Ошибка поиска секции")
 
-            map[section]?.add(training) ?:
             if(!map.keys.contains(section))
                 map[section] = mutableListOf(training)
             else

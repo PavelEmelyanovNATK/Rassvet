@@ -9,7 +9,10 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
@@ -32,17 +35,20 @@ fun ProfileNavHost(
 ) {
     val profileViewModel = hiltViewModel<ProfileViewModel>()
 
-    LaunchedEffect(key1 = true) {
-        profileViewModel.profileNavProvider.destinationFlow.onEach { destination ->
-            destination?.let {
-                if(destination is ProfileDestinations.PopBack)
-                    profileNavController.popBackStack()
-                else
-                    profileNavController.navigate(destination.route) { launchSingleTop = true }
+    val lifecycle = LocalLifecycleOwner.current
+    LaunchedEffect(true) {
+        lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            profileViewModel.profileNavProvider.destinationFlow.onEach { destination ->
+                destination?.let {
+                    if (destination is ProfileDestinations.PopBack)
+                        profileNavController.popBackStack()
+                    else
+                        profileNavController.navigate(destination.route) { launchSingleTop = true }
 
-                profileViewModel.profileNavProvider.navigated()
-            }
-        }.launchIn(this)
+                    profileViewModel.profileNavProvider.navigated()
+                }
+            }.launchIn(this@repeatOnLifecycle)
+        }
     }
 
     AnimatedNavHost(

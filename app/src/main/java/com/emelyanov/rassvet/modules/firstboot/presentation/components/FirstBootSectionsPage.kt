@@ -33,13 +33,8 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 @Composable
 fun FirstBootSectionsPage(
     sectionsListViewState: SectionsListViewState,
-    onAuthClick: () -> Unit,
-    onRefresh: () -> Unit
+    onAuthClick: () -> Unit
 ) {
-    val swipeRefreshState = rememberSwipeRefreshState(
-        isRefreshing = sectionsListViewState is SectionsListViewState.Loading
-    )
-
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -64,15 +59,10 @@ fun FirstBootSectionsPage(
                     .fillMaxWidth()
                     .weight(1f)
             ) {
-                SwipeRefresh(
-                    state = swipeRefreshState,
-                    onRefresh = onRefresh
-                ) {
-                    SectionsListView(
-                        modifier = Modifier.fillMaxSize(),
-                        viewState = sectionsListViewState
-                    )
-                }
+                SectionsListView(
+                    modifier = Modifier.fillMaxSize(),
+                    viewState = sectionsListViewState
+                )
 
                 Box(
                     modifier = Modifier

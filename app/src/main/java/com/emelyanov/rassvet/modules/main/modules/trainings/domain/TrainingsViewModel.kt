@@ -10,5 +10,4 @@ class TrainingsViewModel
 @Inject
 constructor(
     val trainingsNavProvider: TrainingsNavProvider
-) : ViewModel() {
-}
+) : ViewModel()
